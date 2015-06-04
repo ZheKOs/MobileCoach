@@ -1,11 +1,192 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="#ffdcdcdc"
+    >
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_height="150dp"
+        android:layout_width="match_parent">
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:foregroundGravity="center">
+            <!--<com.rey.material.widget.TabPageIndicator-->
+            <!--style="@style/Material.Widget.TabPageIndicator"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?attr/actionBarSize"-->
+            <!--app:tpi_indicatorColor="#fff"-->
+            <!--app:tpi_mode="fixed"-->
+            <!--android:id="@+id/tab"-->
+            <!--android:fillViewport="false" />-->
+            <android.support.design.widget.TabLayout
+                android:layout_height="?attr/actionBarSize"
+                android:layout_width="match_parent"
+                app:layout_collapseMode="pin"
+                app:tabIndicatorColor="#fff"
+                app:tabTextColor="#fff"
+                app:tabMode="scrollable"
+                app:tabSelectedTextColor="#fff"
+                android:id="@+id/tabLayout" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.CardView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_marginTop="75dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:id="@+id/view"
+        android:layout_above="@+id/view2"
+        android:layout_marginBottom="25dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="ИМЯ ПЛАНА"
+                android:id="@+id/textView"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="22dp"
+                android:layout_marginLeft="16dp" />
+
+            <com.rey.material.widget.ImageButton
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:id="@+id/btn_i0"
+                android:background="#fffafafa"
+                app:rd_enable="true"
+                app:rd_rippleType="wave"
+                app:rd_rippleColor="#ffdcdcdc"
+                app:rd_delayClick="afterRelease"
+                android:src="@drawable/ic_mode_edit_black_36dp"
+                android:scaleType="center"
+                android:layout_toRightOf="@+id/btn_start"
+                android:layout_marginTop="10dp" />
+
+            <com.rey.material.widget.Button
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:text="СТАРТ"
+                android:id="@+id/btn_start"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="16dp"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorAccent"
+                app:rd_enable="true"
+                app:rd_rippleType="wave"
+                app:rd_rippleColor="#1976D2"
+                app:rd_delayClick="afterRelease"
+                android:textColor="#fff" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:id="@+id/imageView"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="69dp"
+                android:background="#ffdcdcdc" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/view"
+        android:layout_alignStart="@+id/view"
+        android:layout_marginBottom="25dp"
+        android:id="@+id/view2">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.rey.material.widget.ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/btn_set_time"
+                android:layout_alignParentBottom="true"
+                android:background="#FFFAFAFA"
+                app:rd_enable="true"
+                app:rd_rippleType="wave"
+                app:rd_rippleColor="#ffdcdcdc"
+                app:rd_delayClick="afterRelease"
+                android:src="@drawable/ic_alarm_add_black_36dp"
+                android:layout_centerInParent="true"
+                android:scaleType="center" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignTop="@+id/view2"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/view3">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.rey.material.widget.ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/btn_i2"
+                android:layout_alignParentBottom="true"
+                android:background="#FFFAFAFA"
+                app:rd_enable="true"
+                app:rd_rippleType="wave"
+                app:rd_rippleColor="#ffdcdcdc"
+                app:rd_delayClick="afterRelease"
+                android:src="@drawable/ic_sync_black_36dp"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignTop="@+id/view3"
+        android:layout_alignRight="@+id/view"
+        android:layout_alignEnd="@+id/view">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.rey.material.widget.ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/btn_i3"
+                android:layout_alignParentBottom="true"
+                android:background="#FFFAFAFA"
+                app:rd_enable="true"
+                app:rd_rippleType="wave"
+                app:rd_rippleColor="#ffdcdcdc"
+                app:rd_delayClick="afterRelease"
+                android:src="@drawable/ic_cloud_black_36dp"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
 
 </RelativeLayout>
