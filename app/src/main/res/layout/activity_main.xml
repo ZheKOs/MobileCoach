@@ -15,7 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            android:foregroundGravity="center">
+            android:foregroundGravity="center"
+            android:visibility="visible">
             <!--<com.rey.material.widget.TabPageIndicator-->
             <!--style="@style/Material.Widget.TabPageIndicator"-->
             <!--android:layout_width="match_parent"-->
@@ -49,32 +50,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="ИМЯ ПЛАНА"
-                android:id="@+id/textView"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="22dp"
-                android:layout_marginLeft="16dp" />
-
-            <com.rey.material.widget.ImageButton
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:id="@+id/btn_i0"
-                android:background="#fffafafa"
-                app:rd_enable="true"
-                app:rd_rippleType="wave"
-                app:rd_rippleColor="#ffdcdcdc"
-                app:rd_delayClick="afterRelease"
-                android:src="@drawable/ic_mode_edit_black_36dp"
-                android:scaleType="center"
-                android:layout_toRightOf="@+id/btn_start"
-                android:layout_marginTop="10dp" />
-
             <com.rey.material.widget.Button
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
@@ -99,6 +74,57 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="69dp"
                 android:background="#ffdcdcdc" />
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lv_main_workouts"
+                android:layout_below="@+id/imageView"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/btn_start"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="7dp"
+                android:choiceMode="singleChoice" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignBottom="@+id/imageView">
+
+                <com.rey.material.widget.ImageButton
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:id="@+id/btn_i0"
+                    android:background="#fffafafa"
+                    app:rd_enable="true"
+                    app:rd_rippleType="wave"
+                    app:rd_rippleColor="#ffdcdcdc"
+                    app:rd_delayClick="afterRelease"
+                    android:src="@drawable/ic_mode_edit_black_36dp"
+                    android:scaleType="center"
+                    android:layout_toRightOf="@+id/btn_start"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="6dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="ИМЯ ПЛАНА"
+                    android:id="@+id/textView"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginLeft="16dp" />
+            </RelativeLayout>
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
