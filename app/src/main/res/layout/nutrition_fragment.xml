@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="78dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="#ff4daf51"
@@ -48,5 +48,7 @@
         android:id="@+id/listView"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/relativeLayout"
-        android:layout_margin="6dp" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:divider="@null" />
 </RelativeLayout>

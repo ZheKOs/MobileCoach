@@ -2,6 +2,11 @@ package com.evdokimov.eugene.mobilecoach;
 
 import android.content.Context;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,79 +16,152 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rey.material.app.Dialog;
 import com.rey.material.app.TimePickerDialog;
 import com.rey.material.widget.ImageButton;
+import com.rey.material.widget.TabPageIndicator;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private DrawerLayout dl_navigator;
+
+    private FrameLayout fl_drawer;
+    private ListView lv_drawer;
+
+    private PagerAdapter mPagerAdapter;
+    private CustomViewPager vp;
+    private TabPageIndicator tpi;
+
+
+    private Tab[] mItems = new Tab[]{
+            Tab.TRAINING, Tab.NUTRITION, Tab.STATS
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Context context = this;
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.addTab(tabLayout.newTab().setText("ТРЕНИРОВКА"));
-        tabLayout.addTab(tabLayout.newTab().setText("ПИТАНИЕ"));
-        tabLayout.addTab(tabLayout.newTab().setText("СТАТИСТИКА"));
-
-        String[] workouts = {"УПРАЖНЕНИЕ","УПРАЖНЕНИЕ","УПРАЖНЕНИЕ","УПРАЖНЕНИЕ","УПРАЖНЕНИЕ","УПРАЖНЕНИЕ","УПРАЖНЕНИЕ"};
-
-        ListView lv_plan_workouts = (ListView) findViewById(R.id.lv_main_workouts);
-        WorkoutsAdapter workoutsAdapter = new WorkoutsAdapter(context, workouts);
-        lv_plan_workouts.setAdapter(workoutsAdapter);
+        vp = (CustomViewPager)findViewById(R.id.main_vp);
+        tpi = (TabPageIndicator)findViewById(R.id.main_tpi);
 
 
-        ImageButton btnStart = (ImageButton) findViewById(R.id.btn_set_time);
-        btnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.btn_set_time:
-                        Dialog dialog = new TimePickerDialog(context);
+        mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), mItems,this);
+        vp.setAdapter(mPagerAdapter);
+        tpi.setViewPager(vp);
 
-                        dialog.show();
-                        break;
-                }
-            }
-        });
+        vp.setCurrentItem(0);
 
     }
 
-    class WorkoutsAdapter extends ArrayAdapter<String>
-    {
+    private static class PagerAdapter extends FragmentStatePagerAdapter {
 
+        Fragment[] mFragments;
+        Tab[] mTabs;
         private Context context;
-        private String[] strings;
 
-        public WorkoutsAdapter(Context context, String[] objects) {
-            super(context, R.layout.row_main_training, objects);
+        private static final Field sActiveField;
 
+        static {
+            Field f = null;
+            try {
+                Class<?> c = Class.forName("android.support.v4.app.FragmentManagerImpl");
+                f = c.getDeclaredField("mActive");
+                f.setAccessible(true);
+            } catch (Exception e) {}
+
+            sActiveField = f;
+        }
+
+        public PagerAdapter(FragmentManager fm, Tab[] tabs, Context context) {
+            super(fm);
+            mTabs = tabs;
+            mFragments = new Fragment[mTabs.length];
             this.context = context;
-            this.strings = objects;
 
+
+            //dirty way to get reference of cached fragment
+            try{
+                ArrayList<Fragment> mActive = (ArrayList<Fragment>)sActiveField.get(fm);
+                if(mActive != null){
+                    for(Fragment fragment : mActive){
+                        if(fragment instanceof TrainingFragment)
+                            setFragment(Tab.TRAINING, fragment);
+                        else if(fragment instanceof NutritionFragment)
+                            setFragment(Tab.NUTRITION, fragment);
+                        else if(fragment instanceof StatsFragment)
+                            setFragment(Tab.STATS, fragment);
+                    }
+                }
+            }
+            catch(Exception e){}
+        }
+
+
+        private void setFragment(Tab tab, Fragment f){
+            for(int i = 0; i < mTabs.length; i++)
+                if(mTabs[i] == tab){
+                    mFragments[i] = f;
+                    break;
+                }
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public Fragment getItem(int position) {
+            if(mFragments[position] == null){
+                switch (mTabs[position]) {
+                    case TRAINING:
+                        mFragments[position] = TrainingFragment.newInstance();
+                        break;
+                    case NUTRITION:
+                        mFragments[position] = NutritionFragment.newInstance();
+                        break;
+                    case STATS:
+                        mFragments[position] = StatsFragment.newInstance();
+                        break;
+                }
+            }
 
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.row_main_training,parent,false);
-
-            TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.main_row_tv_workout);
-            TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.main_row_times);
-
-            tvWorkoutName.setText(strings[position]);
-
-            return rowView;
+            return mFragments[position];
         }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTabs[position].toString().toUpperCase();
+        }
+
+        @Override
+        public int getCount() {
+            return mFragments.length;
+        }
+    }
+
+    public enum Tab {
+        TRAINING ("ТРЕНИРОВКА"),
+        NUTRITION ("ПИТАНИЕ"),
+        STATS ("СТАИСТИКА");
+        private final String name;
+
+        private Tab(String s) {
+            name = s;
+        }
+
+        public boolean equalsName(String otherName){
+            return (otherName != null) && name.equals(otherName);
+        }
+
+        public String toString(){
+            return name;
+        }
+
     }
 
 }
