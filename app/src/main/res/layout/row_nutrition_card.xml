@@ -47,14 +47,14 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="ЕДА"
-                        android:id="@+id/textView3" />
+                        android:id="@+id/tv_dish_name" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="000 каллорий"
-                        android:id="@+id/textView4"
+                        android:id="@+id/tv_kcal_dish"
                         android:layout_marginTop="3dp" />
                 </LinearLayout>
 
@@ -69,7 +69,7 @@
                     android:scaleType="center"
                     app:rd_enable="true"
                     app:rd_rippleType="wave"
-                    app:rd_rippleColor="#B6B6B6"
+                    app:rd_rippleColor="#ffdcdcdc"
                     app:rd_delayClick="afterRelease"
                     android:background="#fff"
                     android:layout_marginRight="16dp" />
@@ -81,7 +81,7 @@
                     android:scaleType="center"
                     app:rd_enable="true"
                     app:rd_rippleType="wave"
-                    app:rd_rippleColor="#B6B6B6"
+                    app:rd_rippleColor="#ffdcdcdc"
                     app:rd_delayClick="afterRelease"
                     android:background="#fff"
                     android:layout_centerVertical="true"
@@ -97,7 +97,7 @@
                     android:scaleType="center"
                     app:rd_enable="true"
                     app:rd_rippleType="wave"
-                    app:rd_rippleColor="#1976D2"
+                    app:rd_rippleColor="#BBDEFB"
                     app:rd_delayClick="afterRelease"
                     android:background="#fff"
                     android:layout_alignTop="@+id/imageButton3"
