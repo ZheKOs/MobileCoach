@@ -1,28 +1,20 @@
-package com.evdokimov.eugene.mobilecoach;
+package com.evdokimov.eugene.mobilecoach.Activities;
 
 import android.content.Context;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.rey.material.app.Dialog;
-import com.rey.material.app.TimePickerDialog;
-import com.rey.material.widget.ImageButton;
+import com.evdokimov.eugene.mobilecoach.Fragments.NutritionFragment;
+import com.evdokimov.eugene.mobilecoach.Fragments.StatsFragment;
+import com.evdokimov.eugene.mobilecoach.Fragments.TrainingFragment;
+import com.evdokimov.eugene.mobilecoach.R;
+import com.rey.material.widget.SnackBar;
 import com.rey.material.widget.TabPageIndicator;
 
 import java.lang.reflect.Field;
@@ -30,6 +22,8 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private Context context;
 
     private DrawerLayout dl_navigator;
 
@@ -40,8 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private CustomViewPager vp;
     private TabPageIndicator tpi;
 
+    private SnackBar snackBar;
 
-    private Tab[] mItems = new Tab[]{
+    private Tab[] mItems = new Tab[]{ //initialize tabs using enum
             Tab.TRAINING, Tab.NUTRITION, Tab.STATS
     };
 
@@ -49,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        context = this; //save context for using it in specific components
 
         vp = (CustomViewPager)findViewById(R.id.main_vp);
         tpi = (TabPageIndicator)findViewById(R.id.main_tpi);
@@ -88,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             this.context = context;
 
 
-            //dirty way to get reference of cached fragment
+            //dirty way to get reference of cached fragment TODO in proper way
             try{
                 ArrayList<Fragment> mActive = (ArrayList<Fragment>)sActiveField.get(fm);
                 if(mActive != null){
@@ -133,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
             return mFragments[position];
         }
 
+
+
         @Override
         public CharSequence getPageTitle(int position) {
             return mTabs[position].toString().toUpperCase();
@@ -142,12 +141,14 @@ public class MainActivity extends AppCompatActivity {
         public int getCount() {
             return mFragments.length;
         }
+
+
     }
 
     public enum Tab {
-        TRAINING ("ТРЕНИРОВКА"),
+        TRAINING ("ТРЕНИНГ"),
         NUTRITION ("ПИТАНИЕ"),
-        STATS ("СТАИСТИКА");
+        STATS ("СТАТИСТИКА");
         private final String name;
 
         private Tab(String s) {

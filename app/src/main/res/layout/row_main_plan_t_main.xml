@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <android.support.v7.widget.CardView
+        android:layout_height="340dp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="3dp"
+        android:id="@+id/view"
+        android:layout_marginBottom="20dp"
+        cardview:contentPadding="0dp"
+        cardview:cardPreventCornerOverlap="false">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentStart="true"
+                android:id="@+id/relativeLayout2"
+                android:layout_alignParentBottom="false">
+
+                <com.rey.material.widget.ImageButton
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:id="@+id/main_btn_edit_plan"
+                    android:background="#fffafafa"
+                    app:rd_enable="true"
+                    app:rd_rippleType="wave"
+                    app:rd_rippleColor="#ddd"
+                    app:rd_delayClick="afterRelease"
+                    android:src="@drawable/ic_mode_edit_black_36dp"
+                    android:scaleType="center"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="ИМЯ ПЛАНА"
+                    android:id="@+id/textView"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentStart="false"
+                    android:layout_marginLeft="16dp"
+                    android:layout_alignWithParentIfMissing="false"
+                    android:layout_centerVertical="true"
+                    android:textSize="22dp" />
+            </RelativeLayout>
+
+            <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="2dp"-->
+                <!--android:id="@+id/imageView"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:background="#ffdcdcdc"-->
+                <!--android:layout_alignParentTop="false"-->
+                <!--android:layout_alignWithParentIfMissing="false"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_marginTop="56dp" />-->
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/lv_main_workouts"
+                android:layout_centerHorizontal="true"
+                android:padding="3dip"
+                android:clipToPadding="false"
+                android:choiceMode="none"
+                android:listSelector="@android:color/transparent"
+                android:smoothScrollbar="false"
+                android:scrollbars="none"
+                android:layout_below="@+id/relativeLayout2"
+                android:layout_margin="3dp" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

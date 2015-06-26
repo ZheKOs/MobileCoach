@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -7,7 +8,12 @@
 
     <android.support.v7.widget.CardView
         android:layout_height="200dp"
-        android:layout_width="match_parent">
+        android:layout_width="wrap_content"
+        cardview:contentPadding="0dp"
+        cardview:cardPreventCornerOverlap="false"
+        cardview:cardCornerRadius="0dp"
+        cardview:cardElevation="3dp"
+        cardview:cardMaxElevation="4dp">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -23,6 +29,23 @@
                 android:background="#ffcccccc"
                 android:src="@drawable/food_apple"
                 android:scaleType="center" />
+
+            <com.rey.material.widget.CheckBox
+                style="@style/Material.Drawable.CheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=""
+                app:cbd_boxSize="20dp"
+                app:cbd_width="40dp"
+                app:cbd_height="40dp"
+                app:cbd_strokeSize="2dp"
+                app:cbd_strokeColor="@drawable/checkbox"
+                app:cbd_animDuration="150"
+                android:checked="false"
+                android:id="@+id/checkbox_nc"
+                android:layout_gravity="left|top"
+                android:background="@drawable/dgrey_bg_to_empty"
+                android:layout_alignBottom="@+id/imageView2" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -47,7 +70,8 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="ЕДА"
-                        android:id="@+id/tv_dish_name" />
+                        android:id="@+id/tv_dish_name"
+                        android:textSize="15dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -55,55 +79,65 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="000 каллорий"
                         android:id="@+id/tv_kcal_dish"
-                        android:layout_marginTop="3dp" />
+                        android:layout_marginTop="3dp"
+                        android:textSize="13dp" />
                 </LinearLayout>
 
                 <com.rey.material.widget.ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/imageButton2"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:id="@+id/btn_info_dish"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/delete"
+                    android:src="@drawable/information_grey_24"
                     android:scaleType="center"
                     app:rd_enable="true"
                     app:rd_rippleType="wave"
                     app:rd_rippleColor="#ffdcdcdc"
                     app:rd_delayClick="afterRelease"
-                    android:background="#fff"
-                    android:layout_marginRight="16dp" />
-                <com.rey.material.widget.ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/imageButton3"
-                    android:src="@drawable/pencil"
-                    android:scaleType="center"
-                    app:rd_enable="true"
-                    app:rd_rippleType="wave"
-                    app:rd_rippleColor="#ffdcdcdc"
-                    app:rd_delayClick="afterRelease"
-                    android:background="#fff"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/imageButton2"
-                    android:layout_toStartOf="@+id/imageButton2"
-                    android:layout_marginRight="3dp" />
+                    android:background="@color/empty_dgrey"
+                    android:layout_marginRight="6dp" />
 
-                <com.rey.material.widget.ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/imageButton4"
-                    android:src="@drawable/checkbox_marked_circle_outline"
-                    android:scaleType="center"
+                <com.rey.material.widget.Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/empty_dgrey"
                     app:rd_enable="true"
                     app:rd_rippleType="wave"
-                    app:rd_rippleColor="#BBDEFB"
-                    app:rd_delayClick="afterRelease"
-                    android:background="#fff"
-                    android:layout_alignTop="@+id/imageButton3"
-                    android:layout_toLeftOf="@+id/imageButton3"
-                    android:layout_toStartOf="@+id/imageButton3"
-                    android:layout_marginRight="3dp" />
+                    app:rd_rippleColor="#70707070"
+                    app:rd_delayClick="afterRelease"/>
+                <!--<com.rey.material.widget.ImageButton-->
+                    <!--android:layout_width="40dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:id="@+id/imageButton3"-->
+                    <!--android:src="@drawable/pencil"-->
+                    <!--android:scaleType="center"-->
+                    <!--app:rd_enable="true"-->
+                    <!--app:rd_rippleType="wave"-->
+                    <!--app:rd_rippleColor="#ffdcdcdc"-->
+                    <!--app:rd_delayClick="afterRelease"-->
+                    <!--android:background="#fff"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_toLeftOf="@+id/imageButton2"-->
+                    <!--android:layout_toStartOf="@+id/imageButton2"-->
+                    <!--android:layout_marginRight="3dp" />-->
+
+                <!--<com.rey.material.widget.ImageButton-->
+                    <!--android:layout_width="40dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:id="@+id/imageButton4"-->
+                    <!--android:src="@drawable/checkbox_marked_circle_outline"-->
+                    <!--android:scaleType="center"-->
+                    <!--app:rd_enable="true"-->
+                    <!--app:rd_rippleType="wave"-->
+                    <!--app:rd_rippleColor="#BBDEFB"-->
+                    <!--app:rd_delayClick="afterRelease"-->
+                    <!--android:background="#fff"-->
+                    <!--android:layout_alignTop="@+id/imageButton3"-->
+                    <!--android:layout_toLeftOf="@+id/imageButton3"-->
+                    <!--android:layout_toStartOf="@+id/imageButton3"-->
+                    <!--android:layout_marginRight="3dp" />-->
 
             </RelativeLayout>
         </RelativeLayout>

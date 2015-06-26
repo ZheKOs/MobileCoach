@@ -17,6 +17,8 @@
              which is used to tint widgets -->
         <item name="colorAccent">@color/colorAccent</item>
 
+        <item name="android:windowBackground">@color/windowBackground</item>
+
         <!-- You can also set colorControlNormal, colorControlActivated
              colorControlHighlight & colorSwitchThumbNormal. -->
 
@@ -26,9 +28,9 @@
         <item name="tpi_tabPadding">12dp</item>
         <item name="tpi_tabRipple">@style/TabRippleStyle</item>
         <item name="tpi_indicatorHeight">3dp</item>
-        <item name="tpi_indicatorColor">#fff</item>
+        <item name="tpi_indicatorColor">@color/colorAccent</item>
         <item name="android:textAppearance">@style/TabTextAppearance</item>
-        <item name="tpi_mode">scroll</item>
+        <item name="tpi_mode">fixed</item>
     </style>
 
     <style name="TabTextAppearance" parent="@style/Base.TextAppearance.AppCompat.Subhead">
@@ -43,5 +45,30 @@
         <item name="rd_cornerRadius">0dp</item>
         <item name="rd_padding">0dp</item>
     </style>
+
+
+    <!-- SnackBar Style -->
+
+    <style name="SnackBarSingleLine" parent="Material.Widget.SnackBar.Mobile">
+        <item name="sb_text"></item>
+        <item name="sb_actionText"></item>
+        <item name="sb_duration">0</item>
+    </style>
+
+    <style name="SnackBarMultiLine" parent="Material.Widget.SnackBar.Mobile.MultiLine">
+        <item name="sb_text"></item>
+        <item name="sb_actionText"></item>
+        <item name="sb_duration">0</item>
+    </style>
+
+    <!-- FloatingActionButton Style -->
+
+    <style name="FloatingWaveColorActionButton" parent="Material.Drawable.Ripple.Wave.Light">
+        <item name="rd_rippleColor">#33000000</item>
+        <item name="fab_backgroundColor">#FF2196F3</item>
+        <item name="fab_elevation">4dp</item>
+        <item name="rd_delayClick">afterRelease</item>
+    </style>
+
 
 </resources>

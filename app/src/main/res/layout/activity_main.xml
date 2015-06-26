@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -20,23 +20,29 @@
                 android:id="@+id/main_tpi"
                 android:layout_height="48dp"
                 android:layout_width="match_parent"
-                android:paddingLeft="60dp"
+                android:paddingLeft="0dp"
                 android:clipToPadding="false"
                 android:background="?attr/colorPrimary"/>
 
-            <com.evdokimov.eugene.mobilecoach.CustomViewPager
+            <com.evdokimov.eugene.mobilecoach.Activities.CustomViewPager
                 android:id="@+id/main_vp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_below="@+id/main_tpi"
+                android:visibility="visible" />
 
-        </LinearLayout>
+            <!--<com.rey.material.widget.SnackBar-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:layout_alignParentLeft="false"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:id="@+id/snackbar_main"-->
+                <!--android:visibility="gone"-->
+                <!--android:layout_alignParentEnd="false">-->
+            <!--</com.rey.material.widget.SnackBar>-->
 
-        <com.rey.material.widget.SnackBar
-            android:id="@+id/main_sn"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:visibility="gone"
-            android:layout_gravity="bottom"/>
+        </RelativeLayout>
 
     </FrameLayout>
 

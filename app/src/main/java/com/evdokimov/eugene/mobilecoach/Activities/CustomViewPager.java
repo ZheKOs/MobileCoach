@@ -1,4 +1,4 @@
-package com.evdokimov.eugene.mobilecoach;
+package com.evdokimov.eugene.mobilecoach.Activities;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
@@ -28,4 +28,5 @@ public class CustomViewPager extends ViewPager{
             return true;
         return false;
     }
+
 }
