@@ -20,6 +20,7 @@ import com.evdokimov.eugene.mobilecoach.Activities.MainActivity;
 import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.WatchTrainPlanActivity;
 import com.evdokimov.eugene.mobilecoach.WorkoutActivity;
+import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
 import com.rey.material.app.SimpleDialog;
 import com.rey.material.app.TimePickerDialog;
 import com.rey.material.widget.FloatingActionButton;
@@ -27,11 +28,27 @@ import com.rey.material.widget.ImageButton;
 import com.rey.material.widget.SnackBar;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class TrainingFragment extends Fragment{
 
-    final String[] workouts = {"УПРАЖНЕНИЕ","УПРАЖНЕНИЕ","УПРАЖНЕНИЕ","УПРАЖНЕНИЕ","УПРАЖНЕНИЕ","УПРАЖНЕНИЕ","УПРАЖНЕНИЕ"};
+    static final int REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY = 1;
+
+    ListView lv_plan_workouts;
+    WorkoutsAdapter workoutsAdapter;
+    final Workout[] workoutsArray = {
+            new Workout(0,"Приседания", "", null),
+            new Workout(0,"Отжимания", "", null),
+            new Workout(0,"Подтягивание", "", null),
+            new Workout(0,"Приседания", "", null),
+            new Workout(0,"Планка", "", null),
+            new Workout(0,"Дельфин", "", null),
+            new Workout(0,"Пресс", "", null)
+    };
+    ArrayList<Workout> workouts = new ArrayList<Workout>(Arrays.asList(workoutsArray));
+
     final String[] plans = {"ПЛАН1", "ПЛАН2", "ПЛАН3", "ПЛАН4", "ПЛАН5", "ПЛАН6", "ПЛАН7", "ПЛАН8"};
 
     private FloatingActionButton mainFAB, secondFAB, thirdFAB;
@@ -69,13 +86,14 @@ public class TrainingFragment extends Fragment{
                 {
                     case R.id.main_btn_edit_plan:
                         Intent intent = new Intent(getActivity(), EditTrainingPlanActivity.class);
-                        startActivity(intent);
+                        intent.putExtra("workouts", workouts);
+                        startActivityForResult(intent, REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY);
                         break;
                 }
             }
         });
-        ListView lv_plan_workouts = (ListView) mTop.findViewById(R.id.lv_main_workouts);
-        WorkoutsAdapter workoutsAdapter = new WorkoutsAdapter(getActivity(), workouts, false);
+        lv_plan_workouts = (ListView) mTop.findViewById(R.id.lv_main_workouts);
+        workoutsAdapter = new WorkoutsAdapter(getActivity(), workouts, false);
         lv_plan_workouts.setAdapter(workoutsAdapter);
         lv_plan_workouts.setOnTouchListener(new ListView.OnTouchListener() {
             @Override
@@ -244,5 +262,18 @@ public class TrainingFragment extends Fragment{
         }
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY)
+            switch (resultCode)
+            {
+                case EditTrainingPlanActivity.RESULT_SAVE:
+                    workoutsAdapter = new WorkoutsAdapter(getActivity(), data.<Workout>getParcelableArrayListExtra("workouts_back"),false);
+                    lv_plan_workouts.setAdapter(workoutsAdapter);
+                    break;
+                case EditTrainingPlanActivity.RESULT_DELETE:
+                    //TODO delete plan
+                    break;
+            }
+    }
 }

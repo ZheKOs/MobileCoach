@@ -8,20 +8,23 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.evdokimov.eugene.mobilecoach.R;
+import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
 
-public class WorkoutsAdapter extends ArrayAdapter<String>
+import java.util.ArrayList;
+
+public class WorkoutsAdapter extends ArrayAdapter<Workout>
 {
 
     private Context context;
-    private String[] strings;
+    private ArrayList<Workout> workouts;
     private boolean editMode;
     private View rowView;
 
-    public WorkoutsAdapter(Context context, String[] objects, boolean editMode) {
-        super(context, R.layout.row_main_training, objects);
+    public WorkoutsAdapter(Context context, ArrayList<Workout> workouts, boolean editMode) {
+        super(context, R.layout.row_main_training, workouts);
 
         this.context = context;
-        this.strings = objects;
+        this.workouts = workouts;
         this.editMode = editMode;
 
     }
@@ -36,17 +39,27 @@ public class WorkoutsAdapter extends ArrayAdapter<String>
             TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.row_tv_workout_edit);
             TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.row_tv_times_todo_edit);
 
-            tvWorkoutName.setText(strings[position]);
+            tvWorkoutName.setText(workouts.get(position).getName());
 
         } else {
-            rowView = inflater.inflate(R.layout.row_main_training, parent, false);
+            if (workouts.size() > position) {
+                rowView = inflater.inflate(R.layout.row_main_training, parent, false);
 
-            TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.main_row_tv_workout);
-            TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.main_row_times);
+                TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.main_row_tv_workout);
+                TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.main_row_times);
 
-            tvWorkoutName.setText(strings[position]);
+
+                tvWorkoutName.setText(workouts.get(position).getName());
+            }
         }
 
         return rowView;
     }
+
+    public ArrayList<Workout> getWorkouts()
+    {
+        return workouts;
+    }
+    public void setWorkouts(ArrayList<Workout> workouts) { this.workouts = workouts; }
+
 }

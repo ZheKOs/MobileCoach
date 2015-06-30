@@ -1,8 +1,11 @@
 package com.evdokimov.eugene.mobilecoach.db.dish;
 
-public class Dish {
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    //public static final String NO_IMG = "NO_IMG";
+public class Dish implements Parcelable { //same implementation is in Workout.class, so go and check out about it there
+
+    public static final String NO_IMG = "NO_IMG_TO_THE_DISH";
 
     private long id;
     private String name;
@@ -50,4 +53,39 @@ public class Dish {
                 "receipt=\'" + receipt + "\'" +
                 "kcal = \'" + getKcal() + "\'";
     }
+
+    public Dish (Parcel in){
+        this.setId(in.readLong());
+        this.setName(in.readString());
+        this.setReceipt(in.readString());
+        this.setKcal(in.readDouble());
+        this.setImgPath(in.readString());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(getId());
+        parcel.writeString(getName());
+        parcel.writeString(getReceipt());
+        parcel.writeDouble(getKcal());
+        parcel.writeString(getImgPath());
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        @Override
+        public Dish createFromParcel(Parcel in) {
+            return new Dish(in);
+        }
+
+        @Override
+        public Dish[] newArray(int size) {
+            return new Dish[size];
+        }
+    };
+
 }

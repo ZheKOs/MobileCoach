@@ -1,84 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
+    android:layout_height="55dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:background="#fff"
+    android:layout_marginTop="0dp"
+    android:layout_alignParentLeft="true"
+    android:layout_marginLeft="0dp"
+    android:layout_alignParentTop="true">
 
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/drag_handle"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="1dp"
+        android:src="@drawable/drag_grey_48"
+        android:background="@color/empty_dgrey"
+        android:layout_marginRight="6dp"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        android:scaleType="fitXY" />
 
-    <RelativeLayout
-        android:layout_height="55dp"
-        android:layout_width="match_parent"
-        android:background="#fff"
-        android:layout_marginTop="2dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="УПРАЖНЕНИЕ"
+        android:id="@+id/row_tv_workout_edit"
+        android:layout_centerVertical="true"
+        android:textColor="#000"
+        android:layout_toRightOf="@+id/drag_handle"
+        android:layout_toEndOf="@+id/drag_handle"
+        android:textSize="15dp" />
 
-
-        <com.rey.material.widget.ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/drag_handle"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="6dp"
-            android:src="@drawable/drag_grey_48"
-            android:background="@color/empty_dgrey"
-            app:rd_enable="false"
-            android:layout_marginRight="6dp"
-            android:padding="5dp"
-            android:clipToPadding="false"
-            android:scaleType="fitXY" />
+    <FrameLayout
+        android:layout_width="70dp"
+        android:layout_height="25dp"
+        android:background="#727272"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="УПРАЖНЕНИЕ"
-            android:id="@+id/row_tv_workout_edit"
-            android:layout_centerVertical="true"
-            android:textColor="#000"
-            android:layout_toRightOf="@+id/drag_handle"
-            android:layout_toEndOf="@+id/drag_handle"
-            android:textSize="15dp" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="000 раз"
+            android:id="@+id/row_tv_times_todo_edit"
+            android:layout_gravity="center"
+            android:textColor="#fff"
+            android:textIsSelectable="false"
+            android:textSize="13dp" />
+    </FrameLayout>
 
-        <FrameLayout
-            android:layout_width="70dp"
-            android:layout_height="25dp"
-            android:background="#727272"
-            android:layout_toLeftOf="@+id/row_btn_delete_edit"
-            android:layout_toStartOf="@+id/row_btn_delete_edit"
-            android:layout_marginRight="16dp"
-            android:layout_centerVertical="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="000 раз"
-                android:id="@+id/row_tv_times_todo_edit"
-                android:layout_gravity="center"
-                android:textColor="#fff"
-                android:textIsSelectable="false"
-                android:textSize="13dp" />
-        </FrameLayout>
-
-        <com.rey.material.widget.ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/row_btn_delete_edit"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="13dp"
-            android:src="@drawable/delete_grey_48"
-            android:background="@color/empty_dgrey"
-            app:rd_enable="true"
-            app:rd_rippleType="wave"
-            app:rd_rippleColor="#70707070"
-            app:rd_delayClick="afterRelease"
-            android:layout_centerVertical="true"
-            android:visibility="visible"
-            android:padding="5dp"
-            android:clipToPadding="false"
-            android:scaleType="fitXY" />
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>
