@@ -1119,6 +1119,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_watch_train_plan">WatchTrainPlanActivity</string>
+    <string name="title_activity_watch_dish">WatchDishActivity</string>
 
 
     <!--_________________________________________-->

@@ -1,0 +1,149 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.evdokimov.eugene.mobilecoach.DishActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="false"
+        android:background="@color/colorPrimary"
+        android:id="@+id/relativeLayout"
+        android:visibility="visible">
+        <com.rey.material.widget.ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/btn_edit_dish"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/pencil_white_24"
+            android:scaleType="center"
+            app:rd_enable="true"
+            app:rd_rippleType="wave"
+            app:rd_rippleColor="@color/colorPrimaryDark"
+            app:rd_delayClick="afterRelease"
+            android:background="@color/colorPrimary"
+            android:layout_marginRight="6dp" />
+        <com.rey.material.widget.ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/btn_back_dish"
+            android:src="@drawable/arrowleft_white_36"
+            android:scaleType="fitXY"
+            app:rd_enable="true"
+            app:rd_rippleType="wave"
+            app:rd_rippleColor="@color/colorPrimary"
+            app:rd_delayClick="none"
+            android:background="@color/colorPrimary"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="6dp"
+            android:padding="7dp"
+            android:cropToPadding="false"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/sv_wDish"
+        android:layout_below="@+id/relativeLayout">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/watchDish"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/iv_w_dish"
+                android:layout_below="@+id/relativeLayout"
+                android:layout_centerHorizontal="true"
+                android:background="#aaa"
+                android:src="@drawable/food_apple"
+                android:scaleType="center"/>
+
+            <com.rey.material.widget.FloatingActionButton
+                style="@style/FloatingWaveColorActionButton"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignBottom="@+id/iv_w_dish"
+                android:layout_marginBottom="-32dp"
+                android:layout_marginRight="16dp"
+                android:id="@+id/btn_float_main"
+                app:fab_animDuration="10"
+                app:fab_iconSize="24dp"
+                app:fab_backgroundColor="@color/colorAccent"
+                app:rd_rippleColor="@color/colorAccentDark"
+                app:rd_delayClick="afterRelease"
+                app:rd_enable="true"
+                app:fab_iconSrc="@drawable/check_white"
+                app:rd_rippleType="wave"
+                android:layout_alignParentEnd="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="БЛЮДО"
+                android:id="@+id/textView5"
+                android:layout_below="@+id/iv_w_dish"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="16dp"
+                android:textSize="22dp"
+                android:layout_marginTop="6dp"
+                android:layout_toLeftOf="@+id/btn_float_main"
+                android:layout_toStartOf="@+id/btn_float_main" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="000 ккал"
+                android:id="@+id/textView6"
+                android:layout_below="@+id/textView5"
+                android:layout_alignLeft="@+id/textView5"
+                android:layout_alignStart="@+id/textView5"
+                android:layout_marginTop="3dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_below="@+id/textView6"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="#BDBDBD"
+                android:layout_marginTop="6dp"
+                android:id="@+id/view2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Рецепт\n\nСъешь ещё этих мягких французских булок, да выпей же чаю.Съешь ещё этих мягких французских булок, да выпей же чаю.Съешь ещё этих мягких французских булок, да выпей же чаю.Съешь ещё этих мягких французских булок, да выпей же чаю.Съешь ещё этих мягких французских булок, да выпей же чаю.Съешь ещё этих мягких французских булок, да выпей же чаю."
+                android:id="@+id/textView7"
+                android:layout_below="@+id/view2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textSize="20dp"
+                android:textColor="#000"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="6dp" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -8,19 +8,19 @@ public class WorkoutPlan {
 
     private long idPlan;
     private String name;
-    private long idWorkout;
+    private ArrayList<Workout> workout;
     private int count; //-1 means that it isn't set
 
     public WorkoutPlan (){
         this.setIdPlan(-1);
-        this.setIdWorkout(-1); //DANGER!!! NULL DETECTED
+        this.setWorkout(null); //DANGER!!! NULL DETECTED
         this.setCount(-1);
     }
 
-    public WorkoutPlan(long idPlan,long idWorkout, int count)
+    public WorkoutPlan(long idPlan, ArrayList<Workout> workout, int count)
     {
         this.setIdPlan(idPlan);
-        this.setIdWorkout(idWorkout);
+        this.setWorkout(workout);
         this.setCount(count);
     }
 
@@ -35,8 +35,8 @@ public class WorkoutPlan {
         this.name = name;
     }
 
-    public long getIdWorkout() {return idWorkout;}
-    public void setIdWorkout(long idWorkout) {this.idWorkout = idWorkout;}
+    public ArrayList<Workout> getWorkout() {return workout;}
+    public void setWorkout(ArrayList<Workout> workout) {this.workout = workout;}
 
     public int getCount() {return count;}
     public void setCount(int count) {this.count = count;}

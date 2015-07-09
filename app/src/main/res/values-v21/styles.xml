@@ -13,7 +13,7 @@
              which is used to tint widgets -->
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:colorEdgeEffect">@color/colorEdgeEffect</item>
+        <item name="android:colorEdgeEffect">@color/navigationBarColor</item>
 
         <item name="android:windowBackground">@color/windowBackground</item>
 

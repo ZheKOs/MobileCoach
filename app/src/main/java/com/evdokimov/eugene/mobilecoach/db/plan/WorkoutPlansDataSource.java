@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.evdokimov.eugene.mobilecoach.db.DBHelper;
 import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
 
+import java.util.ArrayList;
+
 public class WorkoutPlansDataSource {
 
     private SQLiteDatabase db;
@@ -44,24 +46,35 @@ public class WorkoutPlansDataSource {
         Cursor cursor = db.query(DBHelper.TABLE_PLAN_WORKOUT, allColumns, DBHelper.COLUMN_PLAN_WORKOUT_ID + " = " + insertId,
                 null,null,null,null);
         cursor.moveToFirst();
-        WorkoutPlan workoutPlan = new WorkoutPlan(idPlan,idWorkout,count);
+        WorkoutPlan workoutPlan = new WorkoutPlan(idPlan,getArrayListOfWorkouts(idPlan),count);
         return workoutPlan;
     }
 
     public void deleteWorkoutPlan(WorkoutPlan workoutPlan)
     {
         long id = workoutPlan.getIdPlan();
-        db.delete(dbHelper.TABLE_PLAN_WORKOUT,DBHelper.COLUMN_PLAN_WORKOUT_ID = "id",null);
+        db.delete(dbHelper.TABLE_PLAN_WORKOUT,DBHelper.COLUMN_PLAN_WORKOUT_ID + "=" + id,null);
     }
 
     private WorkoutPlan cursorToWorkoutPlan(Cursor c)
     {
         WorkoutPlan workoutPlan = new WorkoutPlan();
         workoutPlan.setIdPlan(c.getLong(0));
-        workoutPlan.setIdWorkout(c.getLong(1));
+        workoutPlan.setWorkout(getArrayListOfWorkouts(c.getLong(0)));
         workoutPlan.setCount(c.getInt(2));
 
         return workoutPlan;
+    }
+
+    private ArrayList<Workout> getArrayListOfWorkouts(long planId)
+    {
+        ArrayList<Workout> workoutsTmp = new ArrayList<Workout>();
+        Cursor cursor = db.query(
+                dbHelper.TABLE_PLAN_WORKOUT,
+                new String[]{dbHelper.COLUMN_PLAN_WORKOUT_WORKOUT_ID},
+                dbHelper.COLUMN_PLAN_WORKOUT_ID + " = " + planId,null,null,null,null
+        );
+        return workoutsTmp;
     }
 
 

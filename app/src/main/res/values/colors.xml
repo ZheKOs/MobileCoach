@@ -3,6 +3,7 @@
 
     <color name="colorPrimary">#4CAF50</color>
     <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorPrimaryDarker">#1b5e20</color>
     <color name="colorAccent">#536DFE</color>
 
     <color name="colorEdgeEffect">@color/colorAccent</color>

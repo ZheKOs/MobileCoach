@@ -11,13 +11,13 @@
         android:layout_width="wrap_content"
         cardview:contentPadding="0dp"
         cardview:cardPreventCornerOverlap="false"
-        cardview:cardCornerRadius="0dp"
+        cardview:cardCornerRadius="3dp"
         cardview:cardElevation="3dp"
-        cardview:cardMaxElevation="4dp">
+        cardview:cardMaxElevation="3dp">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#FFFFFF">
+            android:background="@android:color/transparent">
 
 
             <ImageView
@@ -26,7 +26,7 @@
                 android:id="@+id/imageView2"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:background="#ffcccccc"
+                android:background="#aaa"
                 android:src="@drawable/food_apple"
                 android:scaleType="center" />
 
@@ -106,7 +106,8 @@
                     app:rd_enable="true"
                     app:rd_rippleType="wave"
                     app:rd_rippleColor="#70707070"
-                    app:rd_delayClick="afterRelease"/>
+                    app:rd_delayClick="afterRelease"
+                    android:id="@+id/btn_info_nutrition_card" />
                 <!--<com.rey.material.widget.ImageButton-->
                     <!--android:layout_width="40dp"-->
                     <!--android:layout_height="40dp"-->

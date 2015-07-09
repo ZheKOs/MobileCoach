@@ -118,9 +118,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/listView"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/view"
-        android:layout_marginTop="-3dp"
-        android:padding="6dp"
-        android:clipToPadding="false"/>
+        android:clipToPadding="false"
+        android:layout_below="@+id/relativeLayout"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:paddingTop="75dp" />
 
 </RelativeLayout>

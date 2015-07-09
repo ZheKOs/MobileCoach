@@ -12,15 +12,17 @@
         android:id="@+id/lv_main_plans"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:divider="@null"
         android:listSelector="@android:color/transparent"
         android:choiceMode="singleChoice"
         android:overScrollHeader="@null"
-        android:dividerHeight="0dp"
+        android:clipToPadding="false"
+        android:dividerHeight="3dp"
         android:scrollbars="none"
-        android:clickable="true" />
+        android:clickable="true"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="3dp" />
 
     <com.rey.material.widget.FloatingActionButton
         style="@style/FloatingWaveColorActionButton"
