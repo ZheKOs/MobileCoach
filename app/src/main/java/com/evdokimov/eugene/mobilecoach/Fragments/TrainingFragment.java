@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,8 @@ import com.evdokimov.eugene.mobilecoach.Activities.MainActivity;
 import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.WatchTrainPlanActivity;
 import com.evdokimov.eugene.mobilecoach.WorkoutActivity;
+import com.evdokimov.eugene.mobilecoach.db.DBHelper;
+import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
 import com.rey.material.app.SimpleDialog;
 import com.rey.material.app.TimePickerDialog;
@@ -27,9 +30,11 @@ import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ImageButton;
 import com.rey.material.widget.SnackBar;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class TrainingFragment extends Fragment{
@@ -39,13 +44,13 @@ public class TrainingFragment extends Fragment{
     ListView lv_plan_workouts;
     WorkoutsAdapter workoutsAdapter;
     final Workout[] workoutsArray = {
-            new Workout(0,"Приседания", "", null),
-            new Workout(0,"Отжимания", "", null),
-            new Workout(0,"Подтягивание", "", null),
-            new Workout(0,"Приседания", "", null),
-            new Workout(0,"Планка", "", null),
-            new Workout(0,"Дельфин", "", null),
-            new Workout(0,"Пресс", "", null)
+            new Workout("Приседания", "", null),
+            new Workout("Отжимания", "", null),
+            new Workout("Подтягивание", "", null),
+            new Workout("Приседания", "", null),
+            new Workout("Планка", "", null),
+            new Workout("Дельфин", "", null),
+            new Workout("Пресс", "", null)
     };
     ArrayList<Workout> workouts = new ArrayList<Workout>(Arrays.asList(workoutsArray));
 
@@ -71,6 +76,21 @@ public class TrainingFragment extends Fragment{
         mainActivity = (MainActivity) getActivity();
 
         View v = inflater.inflate(R.layout.fragment_training,container,false);
+
+//        try {
+//            List<Workout> workouts = HelperFactory.getDbHelper().getWorkoutDAO().getWorkoutByName("testWorkout");
+//            if (workouts.size()>0){
+//                Workout workout = workouts.get(0);
+//                    Log.e("TAG_ERROR",
+//                    "OKAY! Test workout - "
+//                            + workout.getName() + " " + workout.getInstruction() + " " + workout.getImgPath() + " ");
+//            }else{
+//                Log.e("TAG_ERROR","can't find TEST workout");
+//            }
+//        }catch (SQLException e){
+//            Log.e(DBHelper.class.getSimpleName(),"can't read TEST workout");
+//            throw new RuntimeException(e);
+//        }
 
         scaleAnimationIn.setDuration(500);
         scaleAnimationIn.setStartOffset(150);

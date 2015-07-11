@@ -3,26 +3,36 @@ package com.evdokimov.eugene.mobilecoach.db.workout;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName = "workouts")
 public class Workout implements Parcelable { //I don't even know if I should really use Parcel  X)
 
+    @DatabaseField(generatedId = true)
     private long id;
+    @DatabaseField(canBeNull = false, dataType = DataType.STRING)
     private String name;
+    @DatabaseField(dataType = DataType.STRING)
     private String instruction;
+    @DatabaseField(dataType = DataType.STRING)
     private String imgPath;
 
-    //constructors
+    public static final String NO_IMG = "NO_IMG_TO_THE_WORKOUT";
 
+    //constructors
     public Workout()
     {
-        this.setId(-1);
-        this.setName("");
-        this.setInstruction("");
-        this.setImgPath(null);
+//        this.setId(-1);
+//        this.setName("");
+//        this.setInstruction("");
+//        this.setImgPath(null);
     }
 
 
-    public Workout(long id, String name, String instruction, String imgPath){
-        this.setId(id);
+    public Workout( String name, String instruction, String imgPath){
+        //this.setId(id);
         this.setName(name);
         this.setInstruction(instruction);
         this.setImgPath(imgPath);
@@ -42,16 +52,17 @@ public class Workout implements Parcelable { //I don't even know if I should rea
     public String getImgPath() { return imgPath; }
     public Workout setImgPath(String imgPath) { this.imgPath = imgPath; return this;}
 
-    //override for some reason... testing
+    //override for some reason... testing?
     @Override
     public String toString() {
-        return "Dish{" +
-                "fullName=\'" + name + "\'" +
+        return "Workout{" +
+                "WorkoutName=\'" + name + "\'" +
                 "instruction=\'" + instruction + "\'";
     }
 
     //Parcelling part
     //as far as I understood Parcel is like box which we can easily transport threw Activities
+    //but for current db realization it is useless x)
 
     public Workout (Parcel in){ //create class using such "box" :D
 
@@ -73,7 +84,7 @@ public class Workout implements Parcelable { //I don't even know if I should rea
         return 0;
     }
 
-    //pack my class to this "box"  	(◕‿◕) ALSO. This "box" workts like FIFO...
+    //pack my class to this "box"  	(◕‿◕) ALSO. This "box" works like FIFO...
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeLong(getId());

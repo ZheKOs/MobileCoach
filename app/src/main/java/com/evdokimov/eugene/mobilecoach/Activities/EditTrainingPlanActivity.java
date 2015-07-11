@@ -126,7 +126,7 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                workoutsAdapter.add(new Workout(0, "Test", "", ""));
+                workoutsAdapter.add(new Workout("Test", "", ""));
                 workoutsAdapter.notifyDataSetChanged();
             }
         });

@@ -3,28 +3,36 @@ package com.evdokimov.eugene.mobilecoach.db.dish;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName = "dishes")
 public class Dish implements Parcelable { //same implementation is in Workout.class, so go and check out about it there
 
     public static final String NO_IMG = "NO_IMG_TO_THE_DISH";
 
+    @DatabaseField(generatedId = true)
     private long id;
+    @DatabaseField(canBeNull = false, dataType = DataType.STRING)
     private String name;
+    @DatabaseField(dataType = DataType.STRING)
     private String receipt;
+    @DatabaseField(dataType = DataType.DOUBLE)
     private double kcal;
+    @DatabaseField(dataType = DataType.STRING)
     private String imgPath;
 
     public Dish()
     {
-        this.setId(-1);
-        this.setName("");
-        this.setReceipt("");
-        this.setKcal(0);
-        this.setImgPath(null);//this.setImgPath(NO_IMG);
+//        this.setName("");
+//        this.setReceipt("");
+//        this.setKcal(0);
+//        this.setImgPath(null);//this.setImgPath(NO_IMG);
     }
 
 
-    public Dish(long id, String name, String receipt, double kcal, String imgPath){
-        this.setId(id);
+    public Dish( String name, String receipt, double kcal, String imgPath){
         this.setName(name);
         this.setReceipt(receipt);
         this.setKcal(kcal);

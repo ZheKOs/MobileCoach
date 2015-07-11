@@ -18,6 +18,7 @@ public class WorkoutsAdapter extends ArrayAdapter<Workout>
     private Context context;
     private ArrayList<Workout> workouts;
     private boolean editMode;
+    private boolean mainWatch;
     private View rowView;
 
     public WorkoutsAdapter(Context context, ArrayList<Workout> workouts, boolean editMode) {
@@ -26,6 +27,7 @@ public class WorkoutsAdapter extends ArrayAdapter<Workout>
         this.context = context;
         this.workouts = workouts;
         this.editMode = editMode;
+        this.mainWatch = true;
 
     }
 
@@ -43,13 +45,18 @@ public class WorkoutsAdapter extends ArrayAdapter<Workout>
 
         } else {
             if (workouts.size() > position) {
-                rowView = inflater.inflate(R.layout.row_main_training, parent, false);
+                if(mainWatch) {
+                    rowView = inflater.inflate(R.layout.row_main_training, parent, false);
 
-                TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.main_row_tv_workout);
-                TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.main_row_times);
+                    TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.main_row_tv_workout);
+                    TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.main_row_times);
 
 
-                tvWorkoutName.setText(workouts.get(position).getName());
+                    tvWorkoutName.setText(workouts.get(position).getName());
+                }
+                else {
+
+                }
             }
         }
 
@@ -61,5 +68,10 @@ public class WorkoutsAdapter extends ArrayAdapter<Workout>
         return workouts;
     }
     public void setWorkouts(ArrayList<Workout> workouts) { this.workouts = workouts; }
+
+    public void setMainWatch(boolean newMainWatch)
+    {
+        this.mainWatch = newMainWatch;
+    }
 
 }

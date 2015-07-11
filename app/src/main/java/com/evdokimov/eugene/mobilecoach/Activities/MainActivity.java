@@ -14,6 +14,7 @@ import com.evdokimov.eugene.mobilecoach.Fragments.NutritionFragment;
 import com.evdokimov.eugene.mobilecoach.Fragments.StatsFragment;
 import com.evdokimov.eugene.mobilecoach.Fragments.TrainingFragment;
 import com.evdokimov.eugene.mobilecoach.R;
+import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.rey.material.widget.SnackBar;
 import com.rey.material.widget.TabPageIndicator;
 
@@ -45,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        context = this; //save context for using it in specific components
+        context = this.getApplicationContext(); //save context for using it in specific components
+
+        HelperFactory.setDbHelper(context);
 
         vp = (CustomViewPager)findViewById(R.id.main_vp);
         tpi = (TabPageIndicator)findViewById(R.id.main_tpi);
@@ -57,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
 
         vp.setCurrentItem(0);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        HelperFactory.releaseDbHelper();
+        super.onDestroy();
     }
 
     private static class PagerAdapter extends FragmentStatePagerAdapter {
