@@ -1,25 +1,34 @@
 package com.evdokimov.eugene.mobilecoach.db.plan;
 
+import com.evdokimov.eugene.mobilecoach.db.dish.Dish;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.ArrayList;
+
+@DatabaseTable(tableName = "nutrition_plans")
 public class NutritionPlan {
 
+    @DatabaseField(generatedId = true)
     private long idPlan;
-    private long idDish;
+    @ForeignCollectionField(eager = true)
+    private ArrayList<Dish> dishes;
 
     public NutritionPlan()
     {
-        this.setIdPlan(-1);
-        this.setIdDish(-1);
+
     }
-    public NutritionPlan(long idPlan, long idDish)
+    public NutritionPlan(long idPlan, ArrayList<Dish> dishes)
     {
         this.setIdPlan(idPlan);
-        this.setIdDish(idDish);
+        this.setDishes(dishes);
     }
 
 
     public long getIdPlan() {return idPlan;}
     public void setIdPlan(long idPlan) {this.idPlan = idPlan;}
 
-    public long getIdDish() {return idDish;}
-    public void setIdDish(long idDish) {this.idDish = idDish;}
+    public ArrayList<Dish> getDishes() {return dishes;}
+    public void setDishes(ArrayList<Dish> dishes) {this.dishes = dishes;}
 }
