@@ -13,7 +13,7 @@ public class Dish implements Parcelable { //same implementation is in Workout.cl
     public static final String NO_IMG = "NO_IMG_TO_THE_DISH";
 
     @DatabaseField(generatedId = true)
-    private long id;
+    private int id;
     @DatabaseField(canBeNull = false, dataType = DataType.STRING)
     private String name;
     @DatabaseField(dataType = DataType.STRING)
@@ -25,10 +25,7 @@ public class Dish implements Parcelable { //same implementation is in Workout.cl
 
     public Dish()
     {
-//        this.setName("");
-//        this.setReceipt("");
-//        this.setKcal(0);
-//        this.setImgPath(null);//this.setImgPath(NO_IMG);
+
     }
 
 
@@ -39,8 +36,8 @@ public class Dish implements Parcelable { //same implementation is in Workout.cl
         this.setImgPath(imgPath);
     }
 
-    public long getId() { return id; }
-    public Dish setId(long id) { this.id = id; return this; }
+    public int getId() { return id; }
+    public Dish setId(int id) { this.id = id; return this; }
 
     public String getName() { return name; }
     public Dish setName(String name) { this.name = name; return this; }
@@ -63,7 +60,7 @@ public class Dish implements Parcelable { //same implementation is in Workout.cl
     }
 
     public Dish (Parcel in){
-        this.setId(in.readLong());
+        this.setId(in.readInt());
         this.setName(in.readString());
         this.setReceipt(in.readString());
         this.setKcal(in.readDouble());
@@ -77,7 +74,7 @@ public class Dish implements Parcelable { //same implementation is in Workout.cl
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(getId());
+        parcel.writeInt(getId());
         parcel.writeString(getName());
         parcel.writeString(getReceipt());
         parcel.writeDouble(getKcal());

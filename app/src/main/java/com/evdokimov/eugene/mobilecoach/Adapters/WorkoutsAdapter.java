@@ -8,24 +8,26 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.evdokimov.eugene.mobilecoach.R;
+import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlan;
+import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlanItem;
 import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
 
 import java.util.ArrayList;
 
-public class WorkoutsAdapter extends ArrayAdapter<Workout>
+public class WorkoutsAdapter extends ArrayAdapter<WorkoutPlan>
 {
 
     private Context context;
-    private ArrayList<Workout> workouts;
+    private ArrayList<WorkoutPlan> workoutPlan;
     private boolean editMode;
     private boolean mainWatch;
     private View rowView;
 
-    public WorkoutsAdapter(Context context, ArrayList<Workout> workouts, boolean editMode) {
-        super(context, R.layout.row_main_training, workouts);
+    public WorkoutsAdapter(Context context, ArrayList<WorkoutPlan> workoutPlan, boolean editMode) {
+        super(context, R.layout.row_main_training, workoutPlan);
 
         this.context = context;
-        this.workouts = workouts;
+        this.workoutPlan = workoutPlan;
         this.editMode = editMode;
         this.mainWatch = true;
 
@@ -41,18 +43,19 @@ public class WorkoutsAdapter extends ArrayAdapter<Workout>
             TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.row_tv_workout_edit);
             TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.row_tv_times_todo_edit);
 
-            tvWorkoutName.setText(workouts.get(position).getName());
+            tvWorkoutName.setText(workoutPlan.get(position).getWorkout().getName());
+            tvTimesToDo.setText(String.valueOf(workoutPlan.get(position).getCount()) + " раз");
 
         } else {
-            if (workouts.size() > position) {
+            if (workoutPlan.size() > position) {
                 if(mainWatch) {
                     rowView = inflater.inflate(R.layout.row_main_training, parent, false);
 
                     TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.main_row_tv_workout);
                     TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.main_row_times);
 
-
-                    tvWorkoutName.setText(workouts.get(position).getName());
+                    tvWorkoutName.setText(workoutPlan.get(position).getWorkout().getName());
+                    tvTimesToDo.setText(String.valueOf(workoutPlan.get(position).getCount()) + " раз");
                 }
                 else {
 
@@ -63,11 +66,14 @@ public class WorkoutsAdapter extends ArrayAdapter<Workout>
         return rowView;
     }
 
-    public ArrayList<Workout> getWorkouts()
+    public ArrayList<WorkoutPlan> getWorkoutPlan()
     {
-        return workouts;
+        return workoutPlan;
     }
-    public void setWorkouts(ArrayList<Workout> workouts) { this.workouts = workouts; }
+    public void setWorkoutPlan(ArrayList<WorkoutPlan> workoutPlan) {
+        this.workoutPlan = workoutPlan;
+        notifyDataSetChanged();
+    }
 
     public void setMainWatch(boolean newMainWatch)
     {

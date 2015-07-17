@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
-    tools:context="com.evdokimov.eugene.mobilecoach.WatchTrainPlanActivity">
+    tools:context="com.evdokimov.eugene.mobilecoach.Activities.WatchTrainPlanActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             android:scaleType="fitXY"
             app:rd_enable="true"
             app:rd_rippleType="wave"
-            app:rd_rippleColor="@color/colorPrimary"
+            app:rd_rippleColor="@color/colorPrimaryDark"
             app:rd_delayClick="none"
             android:background="@color/colorPrimary"
             android:layout_centerVertical="true"

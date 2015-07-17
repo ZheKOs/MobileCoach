@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.evdokimov.eugene.mobilecoach.R;
-import com.evdokimov.eugene.mobilecoach.WatchTrainPlanActivity;
+import com.evdokimov.eugene.mobilecoach.Activities.WatchTrainPlanActivity;
 import com.rey.material.widget.Button;
 
 public class PlansAdapter extends ArrayAdapter<String>

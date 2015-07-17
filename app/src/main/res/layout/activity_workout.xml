@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.evdokimov.eugene.mobilecoach.WorkoutActivity">
+    tools:context="com.evdokimov.eugene.mobilecoach.Activities.WorkoutActivity">
 
     <android.support.v7.widget.CardView
         android:layout_height="50dp"
@@ -91,6 +91,7 @@
         android:layout_height="match_parent"
         android:text="BUTTON"
         app:rd_enable="true"
+        app:rd_rippleType="touch"
         android:layout_below="@+id/cardview2"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"

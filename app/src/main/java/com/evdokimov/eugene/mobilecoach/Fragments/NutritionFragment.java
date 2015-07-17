@@ -11,11 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.evdokimov.eugene.mobilecoach.Activities.MainActivity;
-import com.evdokimov.eugene.mobilecoach.DishActivity;
+import com.evdokimov.eugene.mobilecoach.Activities.DishActivity;
 import com.evdokimov.eugene.mobilecoach.R;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.CheckBox;

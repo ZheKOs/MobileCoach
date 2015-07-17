@@ -1,16 +1,17 @@
 package com.evdokimov.eugene.mobilecoach.db;
 
 
-import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.net.Uri;
 import android.util.Log;
 
-import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.db.dish.Dish;
 import com.evdokimov.eugene.mobilecoach.db.dish.DishDAO;
+import com.evdokimov.eugene.mobilecoach.db.plan.NutritionPlan;
+import com.evdokimov.eugene.mobilecoach.db.plan.NutritionPlanDAO;
+import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlan;
+import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlanDAO;
 import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
 import com.evdokimov.eugene.mobilecoach.db.workout.WorkoutDAO;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
@@ -18,6 +19,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class DBHelper extends OrmLiteSqliteOpenHelper {
 
@@ -29,6 +31,11 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
     private WorkoutDAO workoutDAO = null;
     private DishDAO dishDAO = null;
+
+    private WorkoutPlanDAO workoutPlanDAO = null;
+    private NutritionPlanDAO nutritionPlanDAO = null;
+
+    private SharedPreferences sharedPref;
 
     /*
     fields and commands for common creating db
@@ -99,18 +106,78 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase database,ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, Workout.class);
+            TableUtils.createTable(connectionSource, WorkoutPlan.class);
         }catch (SQLException e){
             Log.e(TAG, "error creating DB " + DB_NAME);
             throw new RuntimeException(e);
         }
 
-        Workout workout = new Workout("testWorkout","instr","path");
+        Workout squats, pushups, pullups, plank, dolphin, situps;
+
         try {
-            getWorkoutDAO().create(workout);
-        }catch (SQLException e){
-            Log.e("TAG_ERROR","can't create TEST workout");
+            squats = new Workout();
+            squats.setName("Приседания");
+            getWorkoutDAO().create(squats);
+
+            pushups = new Workout();
+            pushups.setName("Отжимания");
+            getWorkoutDAO().create(pushups);
+
+            pullups = new Workout();
+            pullups.setName("Подтягивание");
+            getWorkoutDAO().create(pullups);
+
+            plank = new Workout();
+            plank.setName("Планка");
+            getWorkoutDAO().create(plank);
+
+            dolphin = new Workout();
+            dolphin.setName("Дельфин");
+            getWorkoutDAO().create(dolphin);
+
+            situps = new Workout();
+            situps.setName("Скручивания");
+            getWorkoutDAO().create(situps);
+
+        } catch (SQLException e){
+            Log.e("TAG_ERROR", "can't create workouts");
             throw new RuntimeException(e);
         }
+
+        final ArrayList<Workout> workouts = new ArrayList<>();
+        workouts.add(squats);
+        workouts.add(pushups);
+        workouts.add(pullups);
+        workouts.add(squats);
+        workouts.add(plank);
+        workouts.add(dolphin);
+        workouts.add(situps);
+
+        ArrayList<Integer> counts = new ArrayList<>();
+        counts.add(10); counts.add(5); counts.add(5); counts.add(15); counts.add(30); counts.add(15); counts.add(25);
+        try {
+            ArrayList<WorkoutPlan> workoutPlan = new ArrayList<>();
+            WorkoutPlan wPlan;
+            for (int i = 0; i<counts.size();i++){
+                wPlan = new WorkoutPlan();
+                wPlan.setName("MainPlan");
+                wPlan.setOrder(i);
+                wPlan.setWorkout(workouts.get(i));
+                wPlan.setCount(counts.get(i));
+                getWorkoutPlanDAO().create(wPlan);
+                workoutPlan.add(wPlan);
+            }
+            sharedPref = context.getSharedPreferences("mysettings",Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("pickedplan", "MainPlan");
+            editor.commit();
+        }catch (SQLException e){
+            Log.e("TAG_ERROR","can't create TEST workoutPlan");
+            throw new RuntimeException(e);
+        }
+        /*
+            creating db using common method
+         */
 
 //        database.execSQL(CREATE_DISH_TABLE);
 //        database.execSQL(CREATE_WORKOUT_TABLE);
@@ -235,6 +302,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 //        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAN_WORKOUT);
 //        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAN_NUTRITION);
 //        onCreate(db);
+
     }
 
 //    public void reset()
@@ -261,10 +329,26 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
         return dishDAO;
     }
 
+    public WorkoutPlanDAO getWorkoutPlanDAO() throws SQLException{
+        if (workoutPlanDAO == null){
+            workoutPlanDAO = new WorkoutPlanDAO(getConnectionSource(), WorkoutPlan.class);
+        }
+        return workoutPlanDAO;
+    }
+    public NutritionPlanDAO getNutritionPlanDAO() throws SQLException{
+        if (nutritionPlanDAO == null){
+            nutritionPlanDAO = new NutritionPlanDAO(getConnectionSource(), NutritionPlan.class);
+        }
+        return nutritionPlanDAO;
+    }
+
     @Override
     public void close() {
         super.close();
         workoutDAO = null;
         dishDAO = null;
+
+        workoutPlanDAO = null;
+        nutritionPlanDAO = null;
     }
 }

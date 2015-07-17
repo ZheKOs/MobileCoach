@@ -1,4 +1,4 @@
-package com.evdokimov.eugene.mobilecoach;
+package com.evdokimov.eugene.mobilecoach.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.evdokimov.eugene.mobilecoach.R;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.ImageButton;
 

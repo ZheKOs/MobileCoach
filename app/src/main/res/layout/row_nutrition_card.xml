@@ -104,7 +104,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/empty_dgrey"
                     app:rd_enable="true"
-                    app:rd_rippleType="wave"
+                    app:rd_rippleType="touch"
                     app:rd_rippleColor="#70707070"
                     app:rd_delayClick="afterRelease"
                     android:id="@+id/btn_info_nutrition_card" />

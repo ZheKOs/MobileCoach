@@ -1,9 +1,11 @@
-package com.evdokimov.eugene.mobilecoach;
+package com.evdokimov.eugene.mobilecoach.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.evdokimov.eugene.mobilecoach.R;
 
 public class WorkoutActivity extends AppCompatActivity {
 

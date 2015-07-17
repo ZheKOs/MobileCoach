@@ -1,4 +1,4 @@
-package com.evdokimov.eugene.mobilecoach;
+package com.evdokimov.eugene.mobilecoach.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.evdokimov.eugene.mobilecoach.Adapters.WorkoutsAdapter;
+import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
 
 import java.util.ArrayList;

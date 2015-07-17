@@ -22,17 +22,17 @@
             android:label="EDIT"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".WorkoutActivity"
+            android:name=".Activities.WorkoutActivity"
             android:label="@string/title_activity_workout"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".WatchTrainPlanActivity"
+            android:name=".Activities.WatchTrainPlanActivity"
             android:label="@string/title_activity_watch_train_plan"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".DishActivity"
+            android:name=".Activities.DishActivity"
             android:label="@string/title_activity_watch_dish" >
         </activity>
     </application>

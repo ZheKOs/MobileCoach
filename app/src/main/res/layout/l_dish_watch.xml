@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#fff"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.evdokimov.eugene.mobilecoach.DishActivity">
+    tools:context="com.evdokimov.eugene.mobilecoach.Activities.DishActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             android:src="@drawable/pencil_white_24"
             android:scaleType="center"
             app:rd_enable="true"
-            app:rd_rippleType="wave"
+            app:rd_rippleType="touch"
             app:rd_rippleColor="@color/colorPrimaryDark"
             app:rd_delayClick="afterRelease"
             android:background="@color/colorPrimary"
@@ -37,8 +37,8 @@
             android:src="@drawable/arrowleft_white_36"
             android:scaleType="fitXY"
             app:rd_enable="true"
-            app:rd_rippleType="wave"
-            app:rd_rippleColor="@color/colorPrimary"
+            app:rd_rippleType="touch"
+            app:rd_rippleColor="@color/colorPrimaryDark"
             app:rd_delayClick="none"
             android:background="@color/colorPrimary"
             android:layout_centerVertical="true"
@@ -90,7 +90,7 @@
                 app:rd_delayClick="afterRelease"
                 app:rd_enable="true"
                 app:fab_iconSrc="@drawable/check_white"
-                app:rd_rippleType="wave"
+                app:rd_rippleType="touch"
                 android:layout_alignParentEnd="true"/>
 
             <TextView

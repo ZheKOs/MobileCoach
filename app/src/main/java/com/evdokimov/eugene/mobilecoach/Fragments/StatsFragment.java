@@ -66,6 +66,7 @@ public class StatsFragment extends Fragment {
         setComp1.setCircleSize(6);
         setComp1.setColor(getResources().getColor(R.color.colorAccent));
         setComp1.setCircleColor(getResources().getColor(R.color.colorAccent));
+        setComp1.setCircleColorHole(getResources().getColor(R.color.colorAccent));
         setComp1.setFillColor(Color.WHITE);
 
         ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>(); //this array contains all lines

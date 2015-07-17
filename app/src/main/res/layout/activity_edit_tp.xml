@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="ПЛАН"
+            android:singleLine="true"
             app:et_labelEnable="true"
             app:et_labelPadding="3dp"
             app:et_labelTextColor="#FFE5E0DE"
@@ -57,21 +58,21 @@
                 app:rd_delayClick="afterRelease"
                 android:background="@color/colorPrimary"
                 android:layout_marginRight="6dp" />
-            <com.rey.material.widget.ImageButton
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/btn_save_plan_etp"
-                android:src="@drawable/contentsave_white_24"
-                android:scaleType="center"
-                app:rd_enable="true"
-                app:rd_rippleType="wave"
-                app:rd_rippleColor="@color/colorPrimaryDark"
-                app:rd_delayClick="afterRelease"
-                android:background="@color/colorPrimary"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/btn_delete_plan_etp"
-                android:layout_toStartOf="@+id/btn_delete_plan_etp"
-                android:layout_marginRight="10dp" />
+            <!--<com.rey.material.widget.ImageButton-->
+                <!--android:layout_width="40dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:id="@+id/btn_save_plan_etp"-->
+                <!--android:src="@drawable/contentsave_white_24"-->
+                <!--android:scaleType="center"-->
+                <!--app:rd_enable="true"-->
+                <!--app:rd_rippleType="wave"-->
+                <!--app:rd_rippleColor="@color/colorPrimaryDark"-->
+                <!--app:rd_delayClick="afterRelease"-->
+                <!--android:background="@color/colorPrimary"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_toLeftOf="@+id/btn_delete_plan_etp"-->
+                <!--android:layout_toStartOf="@+id/btn_delete_plan_etp"-->
+                <!--android:layout_marginRight="10dp" />-->
             <com.rey.material.widget.ImageButton
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -80,7 +81,7 @@
                 android:scaleType="fitXY"
                 app:rd_enable="true"
                 app:rd_rippleType="wave"
-                app:rd_rippleColor="@color/colorPrimary"
+                app:rd_rippleColor="@color/colorPrimaryDark"
                 app:rd_delayClick="none"
                 android:background="@color/colorPrimary"
                 android:layout_centerVertical="true"
@@ -137,4 +138,5 @@
         app:rd_rippleType="wave"
         app:rd_rippleColor="@color/colorAccentDark"
         android:layout_alignParentEnd="true"/>
+
 </RelativeLayout>

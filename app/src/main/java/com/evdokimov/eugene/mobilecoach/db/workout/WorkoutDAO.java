@@ -19,12 +19,20 @@ public class WorkoutDAO extends BaseDaoImpl<Workout, Integer> {
         return this.queryForAll();
     }
 
-    public List<Workout> getWorkoutByName(String name) throws SQLException{
+    public Workout getWorkoutByName(String name) throws SQLException{
         QueryBuilder<Workout, Integer> queryBuilder = queryBuilder();
         queryBuilder.where().eq("name",name);
         PreparedQuery<Workout> preparedQuery = queryBuilder.prepare();
-        List<Workout> workoutList = query(preparedQuery);
-        return workoutList;
+        Workout workout = queryForFirst(preparedQuery);
+        return workout;
+    }
+
+    public Workout getWorkoutById(int id) throws SQLException{
+        QueryBuilder<Workout, Integer> queryBuilder = queryBuilder();
+        queryBuilder.where().eq("id",id);
+        PreparedQuery<Workout> preparedQuery = queryBuilder.prepare();
+        Workout workout = queryForFirst(preparedQuery);
+        return workout;
     }
 
 }

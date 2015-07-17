@@ -3,7 +3,9 @@ package com.evdokimov.eugene.mobilecoach.Fragments;
 import com.evdokimov.eugene.mobilecoach.Activities.EditTrainingPlanActivity;
 import com.evdokimov.eugene.mobilecoach.Adapters.*;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,17 +15,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.ScaleAnimation;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.evdokimov.eugene.mobilecoach.Activities.MainActivity;
 import com.evdokimov.eugene.mobilecoach.R;
-import com.evdokimov.eugene.mobilecoach.WatchTrainPlanActivity;
-import com.evdokimov.eugene.mobilecoach.WorkoutActivity;
-import com.evdokimov.eugene.mobilecoach.db.DBHelper;
+import com.evdokimov.eugene.mobilecoach.Activities.WorkoutActivity;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
-import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
+import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlan;
 import com.rey.material.app.SimpleDialog;
 import com.rey.material.app.TimePickerDialog;
 import com.rey.material.widget.FloatingActionButton;
@@ -33,26 +33,16 @@ import com.rey.material.widget.SnackBar;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 public class TrainingFragment extends Fragment{
 
-    static final int REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY = 1;
+    final int REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY = 1;
 
     ListView lv_plan_workouts;
     WorkoutsAdapter workoutsAdapter;
-    final Workout[] workoutsArray = {
-            new Workout("Приседания", "", null),
-            new Workout("Отжимания", "", null),
-            new Workout("Подтягивание", "", null),
-            new Workout("Приседания", "", null),
-            new Workout("Планка", "", null),
-            new Workout("Дельфин", "", null),
-            new Workout("Пресс", "", null)
-    };
-    ArrayList<Workout> workouts = new ArrayList<Workout>(Arrays.asList(workoutsArray));
+
+    ArrayList<WorkoutPlan> workoutPlan;
 
     final String[] plans = {"ПЛАН1", "ПЛАН2", "ПЛАН3", "ПЛАН4", "ПЛАН5", "ПЛАН6", "ПЛАН7", "ПЛАН8"};
 
@@ -70,6 +60,8 @@ public class TrainingFragment extends Fragment{
 
     private SnackBar snackBar;
 
+    TextView tvPlanNamePicked;
+
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -77,27 +69,15 @@ public class TrainingFragment extends Fragment{
 
         View v = inflater.inflate(R.layout.fragment_training,container,false);
 
-//        try {
-//            List<Workout> workouts = HelperFactory.getDbHelper().getWorkoutDAO().getWorkoutByName("testWorkout");
-//            if (workouts.size()>0){
-//                Workout workout = workouts.get(0);
-//                    Log.e("TAG_ERROR",
-//                    "OKAY! Test workout - "
-//                            + workout.getName() + " " + workout.getInstruction() + " " + workout.getImgPath() + " ");
-//            }else{
-//                Log.e("TAG_ERROR","can't find TEST workout");
-//            }
-//        }catch (SQLException e){
-//            Log.e(DBHelper.class.getSimpleName(),"can't read TEST workout");
-//            throw new RuntimeException(e);
-//        }
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+        String workoutPlanName = sharedPref.getString("pickedplan", "MainPlan");
+        getWorkoutPlan(workoutPlanName);
 
-        scaleAnimationIn.setDuration(500);
-        scaleAnimationIn.setStartOffset(150);
-        scaleAnimationOut.setDuration(500);
-        scaleAnimationOut.setStartOffset(150);
+        setAnimation();
 
         View mTop = inflater.inflate(R.layout.row_main_plan_t_main,null);
+        tvPlanNamePicked = (TextView) mTop.findViewById(R.id.textViewPlanNamePicked);
+        tvPlanNamePicked.setText(workoutPlanName);
         ImageButton editPlan = (ImageButton) mTop.findViewById(R.id.main_btn_edit_plan);
         editPlan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,14 +86,14 @@ public class TrainingFragment extends Fragment{
                 {
                     case R.id.main_btn_edit_plan:
                         Intent intent = new Intent(getActivity(), EditTrainingPlanActivity.class);
-                        intent.putExtra("workouts", workouts);
+                        intent.putExtra("planName", workoutsAdapter.getWorkoutPlan().get(0).getName());
                         startActivityForResult(intent, REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY);
                         break;
                 }
             }
         });
         lv_plan_workouts = (ListView) mTop.findViewById(R.id.lv_main_workouts);
-        workoutsAdapter = new WorkoutsAdapter(getActivity(), workouts, false);
+        workoutsAdapter = new WorkoutsAdapter(getActivity(), workoutPlan, false);
         lv_plan_workouts.setAdapter(workoutsAdapter);
         lv_plan_workouts.setOnTouchListener(new ListView.OnTouchListener() {
             @Override
@@ -225,6 +205,22 @@ public class TrainingFragment extends Fragment{
         return v;
     }
 
+    private void getWorkoutPlan(String name){
+        try {
+            workoutPlan = new ArrayList<>(HelperFactory.getDbHelper().getWorkoutPlanDAO().getWorkoutPlanByName(name));
+        } catch (SQLException e){
+            Log.e("TAG_ERROR","can't get workouts");
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void setAnimation(){
+        scaleAnimationIn.setDuration(500);
+        scaleAnimationIn.setStartOffset(150);
+        scaleAnimationOut.setDuration(500);
+        scaleAnimationOut.setStartOffset(150);
+    }
+
     private void animateFAB(int which, boolean in)
     {
         switch (which) {
@@ -287,13 +283,26 @@ public class TrainingFragment extends Fragment{
         if (requestCode == REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY)
             switch (resultCode)
             {
-                case EditTrainingPlanActivity.RESULT_SAVE:
-                    workoutsAdapter = new WorkoutsAdapter(getActivity(), data.<Workout>getParcelableArrayListExtra("workouts_back"),false);
-                    lv_plan_workouts.setAdapter(workoutsAdapter);
-                    break;
                 case EditTrainingPlanActivity.RESULT_DELETE:
                     //TODO delete plan
                     break;
+                default:
+                    try {
+                        SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings",Context.MODE_PRIVATE);
+                        String pickedPlan = sharedPref.getString("pickedplan", "MainPlan");
+                        tvPlanNamePicked.setText(pickedPlan);
+                        workoutsAdapter = new WorkoutsAdapter(
+                                getActivity(),
+                                new ArrayList<>(HelperFactory.getDbHelper().getWorkoutPlanDAO()
+                                        .getWorkoutPlanByName(pickedPlan)),
+                                false
+                        );
+                        lv_plan_workouts.setAdapter(workoutsAdapter);
+                        workoutsAdapter.notifyDataSetChanged();
+                    }catch (SQLException e){
+                        Log.e("TAG_ERROR","can't get workoutPlan");
+                        throw new RuntimeException(e);
+                    }
             }
     }
 }

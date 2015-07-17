@@ -1,67 +1,113 @@
 package com.evdokimov.eugene.mobilecoach.db.plan;
 
-import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 @DatabaseTable(tableName = "workout_plans")
-public class WorkoutPlan {
+public class WorkoutPlan implements Parcelable {
 
     @DatabaseField(generatedId = true)
-    private long idPlan;
-    @DatabaseField(canBeNull = false, dataType = DataType.STRING)
+    private int idPlan;
+    @DatabaseField(canBeNull = false, dataType = DataType.STRING, columnName = "planName")
     private String name;
-    @ForeignCollectionField(eager = true)
-    private ArrayList<Workout> workouts;
-    @DatabaseField()
-    private ArrayList<Integer> counts; //-1 means that it isn't set
+    @DatabaseField(canBeNull = true, dataType = DataType.INTEGER)
+    private int order;
+    @DatabaseField(foreign = true, canBeNull = false)
+    private Workout workout;
+    @DatabaseField(dataType = DataType.INTEGER)
+    private int count; //-1 means that it isn't set
 
     public WorkoutPlan (){
-//        this.setIdPlan(-1);
-//        this.setWorkout(null); //DANGER!!! NULL DETECTED
-//        this.setCount(-1);
+
     }
 
-    public WorkoutPlan(long idPlan, ArrayList<Workout> workouts, ArrayList<Integer> counts)
+    public WorkoutPlan(String name, int order, Workout workouts, int count)
     {
-        this.setIdPlan(idPlan);
-        this.setWorkout(workouts);
-        this.setCount(counts);
+        this.setName(name);
+        this.setOrder(order);
+        this.setWorkout(workout);
+        this.setCount(count);
     }
 
-    public void addWorkout(Workout value){
-        //value.setPlan(this);
-        try {
-            HelperFactory.getDbHelper().getWorkoutDAO().create(value);
-            workouts.add(value);
-        }catch (SQLException e){}
-    }
-    public void removeWorkout(Workout value){
-        try {
-            workouts.remove(value);
-            HelperFactory.getDbHelper().getWorkoutDAO().delete(value);
-        }catch (SQLException e){}
+    public int getIdPlan() {return idPlan;}
+    public void setIdPlan(int idPlan) {this.idPlan = idPlan;}
+
+    public String getName() {return name;}
+    public void setName(String name) {this.name = name;}
+
+    public int getOrder() {return order;}
+    public void setOrder(int order) {this.order = order;}
+
+    public Workout getWorkout() {return workout;}
+    public void setWorkout(Workout workout) {this.workout = workout;}
+
+    public int getCount() {return count;}
+    public void setCount(int count) {this.count = count;}
+
+
+//    @Override
+//    public int describeContents() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void writeToParcel(Parcel dest, int flags) {
+//        dest.writeInt(this.idPlan);
+//        dest.writeString(this.name);
+//        dest.writeParcelable(this.workout, 0);
+//        dest.writeInt(this.count);
+//    }
+//
+//    protected WorkoutPlan(Parcel in) {
+//        this.idPlan = in.readInt();
+//        this.name = in.readString();
+//        this.workout = in.readParcelable(Workout.class.getClassLoader());
+//        this.count = in.readInt();
+//    }
+//
+//    public static final Creator<WorkoutPlan> CREATOR = new Creator<WorkoutPlan>() {
+//        public WorkoutPlan createFromParcel(Parcel source) {
+//            return new WorkoutPlan(source);
+//        }
+//
+//        public WorkoutPlan[] newArray(int size) {
+//            return new WorkoutPlan[size];
+//        }
+//    };
+
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public long getIdPlan() {return idPlan;}
-    public void setIdPlan(long idPlan) {this.idPlan = idPlan;}
-
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.idPlan);
+        dest.writeString(this.name);
+        dest.writeParcelable(this.workout, 0);
+        dest.writeInt(this.count);
     }
 
-    public ArrayList<Workout> getWorkout() {return workouts;}
-    public void setWorkout(ArrayList<Workout> workouts) {this.workouts = workouts;}
+    protected WorkoutPlan(Parcel in) {
+        this.idPlan = in.readInt();
+        this.name = in.readString();
+        this.workout = in.readParcelable(Workout.class.getClassLoader());
+        this.count = in.readInt();
+    }
 
-    public ArrayList<Integer> getCount() {return counts;}
-    public void setCount(ArrayList<Integer> counts) {this.counts = counts;}
+    public static final Creator<WorkoutPlan> CREATOR = new Creator<WorkoutPlan>() {
+        public WorkoutPlan createFromParcel(Parcel source) {
+            return new WorkoutPlan(source);
+        }
+
+        public WorkoutPlan[] newArray(int size) {
+            return new WorkoutPlan[size];
+        }
+    };
 }
