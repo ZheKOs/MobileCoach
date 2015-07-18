@@ -8,7 +8,8 @@
     android:layout_marginTop="0dp"
     android:layout_alignParentLeft="true"
     android:layout_marginLeft="0dp"
-    android:layout_alignParentTop="true">
+    android:layout_alignParentTop="true"
+    android:id="@+id/rl_workout_edit_tp">
 
     <ImageView
         android:layout_width="50dp"
@@ -42,7 +43,8 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp">
+        android:layout_marginRight="16dp"
+        android:id="@+id/fl_times_edit_tp">
 
         <TextView
             android:layout_width="wrap_content"

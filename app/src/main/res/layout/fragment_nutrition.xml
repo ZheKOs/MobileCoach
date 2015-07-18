@@ -21,7 +21,7 @@
         android:dividerHeight="0dp"
         android:scrollbars="none"
         android:clipToPadding="false"
-        android:paddingTop="75dp"
+        android:paddingTop="80dp"
         android:paddingLeft="6dp"
         android:paddingRight="6dp"
         android:paddingBottom="6dp" />

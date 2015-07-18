@@ -46,6 +46,29 @@
         <item name="rd_padding">0dp</item>
     </style>
 
+    <!-- AppBar Style -->
+
+    <style name="AppBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="selectableItemBackground">@null</item>
+    </style>
+
+    <!-- Navigator Drawable -->
+
+    <style name="NavigatorDrawableIcon" parent="Material.Drawable.NavigationDrawerIcon">
+        <item name="lmd_strokeSize">3dp</item>
+        <item name="lmd_padding">18dp</item>
+    </style>
+
+    <style name="NavigationDrawerDrawable">
+        <item name="nd_ripple">@style/ToolbarRippleStyle</item>
+        <item name="nd_icon">@style/NavigatorDrawableIcon</item>
+    </style>
+
+    <style name="ToolbarRippleStyle" parent="Material.Drawable.Ripple.Touch.MatchView.Light">
+        <item name="rd_backgroundColor">@android:color/transparent</item>
+        <item name="rd_rippleColor">#33FFFFFF</item>
+    </style>
+
 
     <!-- SnackBar Style -->
 
@@ -69,6 +92,8 @@
         <item name="fab_elevation">4dp</item>
         <item name="rd_delayClick">afterRelease</item>
     </style>
+
+
 
 
 </resources>

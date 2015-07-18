@@ -44,7 +44,7 @@ public class TrainingFragment extends Fragment{
 
     ArrayList<WorkoutPlan> workoutPlan;
 
-    final String[] plans = {"ПЛАН1", "ПЛАН2", "ПЛАН3", "ПЛАН4", "ПЛАН5", "ПЛАН6", "ПЛАН7", "ПЛАН8"};
+    String[] plans;
 
     private FloatingActionButton mainFAB, secondFAB, thirdFAB;
 
@@ -74,6 +74,8 @@ public class TrainingFragment extends Fragment{
         getWorkoutPlan(workoutPlanName);
 
         setAnimation();
+
+        getAllPlans();
 
         View mTop = inflater.inflate(R.layout.row_main_plan_t_main,null);
         tvPlanNamePicked = (TextView) mTop.findViewById(R.id.textViewPlanNamePicked);
@@ -203,6 +205,21 @@ public class TrainingFragment extends Fragment{
         animateFAB(-1, true);
 
         return v;
+    }
+
+    private void getAllPlans(){
+        try {
+            ArrayList<WorkoutPlan> workoutPlans = new ArrayList<>(
+                    HelperFactory.getDbHelper().getWorkoutPlanDAO().getUniquePlans());
+            plans = new String[workoutPlans.size()];
+            int i = 0;
+            for (WorkoutPlan workoutPlan : workoutPlans){
+                plans[i++] = workoutPlan.getName();
+            }
+        }catch (SQLException e){
+            Log.e("TAG_ERROR","can't get all plans");
+            throw new RuntimeException(e);
+        }
     }
 
     private void getWorkoutPlan(String name){

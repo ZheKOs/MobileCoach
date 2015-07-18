@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e7e7e6">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="115dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorPrimary"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/app_name"
+            android:id="@+id/tv_nav_mc"
+            android:textSize="35sp"
+            android:textColor="#fff"
+            android:typeface="monospace" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="12dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/imageView4"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/whistle_only_icon_grey"
+            android:padding="11dp"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Тренировка"
+            android:id="@+id/textView"
+            android:layout_toRightOf="@+id/imageView4"
+            android:layout_toEndOf="@+id/imageView4"
+            android:layout_centerVertical="true"
+            android:textColor="#000"
+            android:layout_marginLeft="13dp" />
+        <com.rey.material.widget.Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/empty_dgrey"
+            app:rd_enable="true"
+            app:rd_rippleType="wave"
+            app:rd_rippleColor="#70707070"
+            app:rd_delayClick="afterRelease"
+            android:id="@+id/btn_nav_train" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="6dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/imageView5"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/food_apple_grey"
+            android:padding="11dp"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Питание"
+            android:id="@+id/textView8"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/imageView5"
+            android:layout_toEndOf="@+id/imageView5"
+            android:textColor="#000"
+            android:layout_marginLeft="13dp" />
+        <com.rey.material.widget.Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/empty_dgrey"
+            app:rd_enable="true"
+            app:rd_rippleType="wave"
+            app:rd_rippleColor="#70707070"
+            app:rd_delayClick="afterRelease"
+            android:id="@+id/btn_nav_nutr" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="6dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/imageView6"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/chart_areaspline_grey"
+            android:padding="11dp"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Статистика"
+            android:id="@+id/textView9"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/imageView6"
+            android:layout_toEndOf="@+id/imageView6"
+            android:textColor="#000"
+            android:layout_marginLeft="13dp" />
+        <com.rey.material.widget.Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/empty_dgrey"
+            app:rd_enable="true"
+            app:rd_rippleType="wave"
+            app:rd_rippleColor="#70707070"
+            app:rd_delayClick="afterRelease"
+            android:id="@+id/btn_nav_stats" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/textView6"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#d0d0cf"
+        android:layout_marginTop="6dp"
+        android:id="@+id/view"
+        android:layout_marginBottom="6dp" />
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="6dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/imageView7"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/dumbbell_grey"
+            android:padding="11dp"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Упражнения"
+            android:id="@+id/textView10"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/imageView7"
+            android:layout_toEndOf="@+id/imageView7"
+            android:textColor="#000"
+            android:layout_marginLeft="13dp" />
+        <com.rey.material.widget.Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/empty_dgrey"
+            app:rd_enable="true"
+            app:rd_rippleType="wave"
+            app:rd_rippleColor="#70707070"
+            app:rd_delayClick="afterRelease"
+            android:id="@+id/btn_nav_workouts" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="6dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/imageView8"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/food_variant_grey"
+            android:padding="11dp"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Блюда"
+            android:id="@+id/textView11"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/imageView8"
+            android:layout_toEndOf="@+id/imageView8"
+            android:textColor="#000"
+            android:layout_marginLeft="13dp" />
+        <com.rey.material.widget.Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/empty_dgrey"
+            app:rd_enable="true"
+            app:rd_rippleType="wave"
+            app:rd_rippleColor="#70707070"
+            app:rd_delayClick="afterRelease"
+            android:id="@+id/btn_nav_dishes" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/textView6"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#d0d0cf"
+        android:layout_marginTop="6dp"
+        android:id="@+id/view2"
+        android:layout_marginBottom="6dp" />
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="6dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/imageView9"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/settings_grey"
+            android:padding="11dp"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Настройки"
+            android:id="@+id/textView12"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/imageView9"
+            android:layout_toEndOf="@+id/imageView9"
+            android:textColor="#000"
+            android:layout_marginLeft="13dp" />
+        <com.rey.material.widget.Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/empty_dgrey"
+            app:rd_enable="true"
+            app:rd_rippleType="wave"
+            app:rd_rippleColor="#70707070"
+            app:rd_delayClick="afterRelease"
+            android:id="@+id/btn_nav_settings" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="6dp" >
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/imageView10"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/help_circle_grey"
+            android:padding="11dp"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Справка/отзыв"
+            android:id="@+id/textView13"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/imageView10"
+            android:layout_toEndOf="@+id/imageView10"
+            android:textColor="#000"
+            android:layout_marginLeft="13dp" />
+        <com.rey.material.widget.Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/empty_dgrey"
+            app:rd_enable="true"
+            app:rd_rippleType="wave"
+            app:rd_rippleColor="#70707070"
+            app:rd_delayClick="afterRelease"
+            android:id="@+id/btn_nav_help" />
+    </RelativeLayout>
+</LinearLayout>

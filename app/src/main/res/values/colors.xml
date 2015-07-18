@@ -7,7 +7,7 @@
     <color name="colorAccent">#536DFE</color>
 
     <color name="colorEdgeEffect">@color/colorAccent</color>
-    <color name="windowBackground">#CFD8DC</color>
+    <color name="windowBackground">#ECECED</color>
     <color name="navigationBarColor">#263238</color>
 
     <color name="colorAccentDark">#3F51B5</color>
@@ -15,5 +15,22 @@
 
     <color name="empty_dgrey">#00707070</color>
     <color name="half_dgrey">#70707070</color>
+
+    <color name="icon_enabled">#FFFFFFFF</color>
+    <color name="icon_disabled">#FF63727B</color>
+
+    <color name="light_blue_500">#03A9F4</color>
+    <color name="cyan_500">#00BCD4</color>
+    <color name="teal_500">#009688</color>
+    <color name="green_500">#4CAF50</color>
+    <color name="light_green_500">#8BC34A</color>
+
+    <integer-array name="custom_tab_colors">
+        <item>@color/light_blue_500</item>
+        <item>@color/cyan_500</item>
+        <item>@color/teal_500</item>
+        <item>@color/green_500</item>
+        <item>@color/light_green_500</item>
+    </integer-array>
 
 </resources>

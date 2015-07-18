@@ -28,12 +28,20 @@ public class WorkoutPlanDAO extends BaseDaoImpl<WorkoutPlan, Integer> {
         queryBuilder.orderBy("order", true);
         PreparedQuery<WorkoutPlan> preparedQuery = queryBuilder.prepare();
         List<WorkoutPlan> workoutPlanList = query(preparedQuery);
-        List<Workout> workouts = new ArrayList<>();
+        //List<Workout> workouts = new ArrayList<>();
         for (int i = 0; i < workoutPlanList.size(); i++)
         {
             workoutPlanList.get(i)
                     .setWorkout(HelperFactory.getDbHelper().getWorkoutDAO().getWorkoutById(workoutPlanList.get(i).getWorkout().getId()));
         }
+        return workoutPlanList;
+    }
+
+    public List<WorkoutPlan> getUniquePlans() throws SQLException{
+        QueryBuilder<WorkoutPlan, Integer> queryBuilder = queryBuilder();
+        queryBuilder.distinct().selectColumns("planName");
+        PreparedQuery<WorkoutPlan> preparedQuery = queryBuilder.prepare();
+        List<WorkoutPlan> workoutPlanList = query(preparedQuery);
         return workoutPlanList;
     }
 

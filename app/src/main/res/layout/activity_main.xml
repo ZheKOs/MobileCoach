@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,20 +16,64 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.rey.material.widget.TabPageIndicator
-                style="@style/TabPageIndicator"
-                android:id="@+id/main_tpi"
-                android:layout_height="48dp"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/main_toolbar"
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:paddingLeft="0dp"
-                android:clipToPadding="false"
-                android:background="?attr/colorPrimary"/>
+                android:minHeight="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:theme="@style/AppBar"/>
+
+            <!--<com.evdokimov.eugene.mobilecoach.TabPageIndicator-->
+                <!--style="@style/TabPageIndicator"-->
+                <!--android:id="@+id/main_tpi"-->
+                <!--android:layout_height="48dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:paddingLeft="0dp"-->
+                <!--android:clipToPadding="false"-->
+                <!--android:background="?attr/colorPrimary"-->
+                <!--android:layout_alignParentTop="true"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:layout_alignBottom="@+id/main_toolbar"-->
+                <!--android:layout_marginLeft="50dp"-->
+                <!--android:layout_marginRight="50dp" />-->
+
+            <com.ogaclejapan.smarttablayout.SmartTabLayout
+                android:id="@+id/viewpagertab"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                app:stl_indicatorAlwaysInCenter="false"
+                app:stl_indicatorWithoutPadding="false"
+                app:stl_indicatorInFront="false"
+                app:stl_indicatorInterpolation="smart"
+                app:stl_indicatorGravity="bottom"
+                app:stl_indicatorColor="@color/colorAccent"
+                app:stl_indicatorThickness="4dp"
+                app:stl_indicatorCornerRadius="2dp"
+                app:stl_overlineColor="@color/colorPrimary"
+                app:stl_overlineThickness="0dp"
+                app:stl_underlineColor="@color/colorPrimary"
+                app:stl_underlineThickness="1dp"
+                app:stl_dividerColor="@color/colorPrimary"
+                app:stl_dividerThickness="6dp"
+                app:stl_defaultTabBackground="?attr/selectableItemBackground"
+                app:stl_defaultTabTextAllCaps="true"
+                app:stl_defaultTabTextColor="#fff"
+                app:stl_defaultTabTextSize="12sp"
+                app:stl_defaultTabTextHorizontalPadding="16dp"
+                app:stl_defaultTabTextMinWidth="16dp"
+                app:stl_distributeEvenly="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@+id/main_toolbar"
+                android:layout_marginLeft="70dp"
+                android:layout_centerHorizontal="true" />
 
             <com.evdokimov.eugene.mobilecoach.Activities.CustomViewPager
                 android:id="@+id/main_vp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/main_tpi"
+                android:layout_below="@+id/viewpagertab"
                 android:visibility="visible" />
 
             <!--<com.rey.material.widget.SnackBar-->
@@ -43,6 +88,21 @@
             <!--</com.rey.material.widget.SnackBar>-->
 
         </RelativeLayout>
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/main_fl_drawer"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        >
+
+        <include
+            layout="@layout/drawer_content"
+            android:id="@+id/drawer_content"
+            />
 
     </FrameLayout>
 
