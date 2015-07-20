@@ -6,18 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlan;
-import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlanItem;
-import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
+
 import com.rey.material.app.Dialog;
-import com.rey.material.app.SimpleDialog;
+import com.rey.material.widget.EditText;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,23 +38,54 @@ public class WorkoutsAdapter extends ArrayAdapter<WorkoutPlan>
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (editMode){
             rowView = inflater.inflate(R.layout.row_edit_tp,parent,false);
-            TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.row_tv_workout_edit);
-            TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.row_tv_times_todo_edit);
+            final TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.row_tv_workout_edit);
+            final TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.row_tv_times_todo_edit);
 
             tvWorkoutName.setText(workoutPlan.get(position).getWorkout().getName());
 
-            tvTimesToDo.setText(String.valueOf(workoutPlan.get(position).getCount()) + " раз");
+            tvTimesToDo.setText(String.valueOf(workoutPlan.get(position).getCount()) + " " + "раз");
             tvTimesToDo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    final Dialog dialog = new Dialog(getContext());
+                    dialog.title("Количество для упражнения")
+                            .positiveAction("Ввести")
+                            .negativeAction("Отмена");
+                    View contentView = View.inflate(getContext(),R.layout.dialog_edit_workout_count,null);
+                    EditText etCount = (EditText) contentView.findViewById(R.id.et_dialog_edit_workout_count);
+                    etCount.setText(String.valueOf(workoutPlan.get(position).getCount()));
+                    dialog.setContentView(contentView);
+                    dialog.positiveActionClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            EditText etCountReady = (EditText) dialog.findViewById(R.id.et_dialog_edit_workout_count);
+                            if (etCountReady.getText().length() > 0 && !etCountReady.getText().toString().equals("0")) {
+                                int count = Integer.valueOf(etCountReady.getText().toString());
+                                try {
+                                    WorkoutPlan wPlan = HelperFactory.getDbHelper().getWorkoutPlanDAO()
+                                            .getWorkoutPlanByOrder(position);
+                                    wPlan.setCount(count);
+                                    HelperFactory.getDbHelper().getWorkoutPlanDAO().update(wPlan);
+                                    workoutPlan.get(position).setCount(count);
+                                    notifyDataSetChanged();
+                                    dialog.dismiss();
 
-                    Toast.makeText(context,"count",Toast.LENGTH_SHORT).show();
+                                } catch (SQLException e) {
+                                    Log.e("TAG_ERROR", "can't get workout");
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        }
+                    });
+
+                    dialog.show();
+
                 }
             });
 

@@ -45,6 +45,14 @@ public class WorkoutPlanDAO extends BaseDaoImpl<WorkoutPlan, Integer> {
         return workoutPlanList;
     }
 
+    public WorkoutPlan getWorkoutPlanByOrder(int order) throws SQLException{
+        QueryBuilder<WorkoutPlan, Integer> queryBuilder = queryBuilder();
+        queryBuilder.where().eq("order", order);
+        PreparedQuery<WorkoutPlan> preparedQuery = queryBuilder.prepare();
+        WorkoutPlan workoutPlan = queryForFirst(preparedQuery);
+        return workoutPlan;
+    }
+
 //    public ArrayList<WorkoutPlanItem> getWorkoutsFromPlanByName(String name) throws SQLException{
 //        List<WorkoutPlan> workoutPlanList = getWorkoutPlanByName(name);
 //        ArrayList<WorkoutPlanItem> workouts = new ArrayList<>();

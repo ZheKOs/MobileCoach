@@ -261,13 +261,13 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
                     Workout plank = HelperFactory.getDbHelper().getWorkoutDAO().getWorkoutByName("Планка");
                     WorkoutPlan wPlan = new WorkoutPlan();
                     wPlan.setName(planName);
-                    wPlan.setOrder(workoutsAdapter.getWorkoutPlan().size() + 1);
+                    wPlan.setOrder(workoutsAdapter.getWorkoutPlan().size());
                     wPlan.setWorkout(plank);
                     wPlan.setCount(0);
-
                     HelperFactory.getDbHelper().getWorkoutPlanDAO().create(wPlan);
+
                     workouts.add(wPlan);
-                    workoutsAdapter.setWorkoutPlan(workouts);
+                    workoutsAdapter.notifyDataSetChanged();
                 } catch (SQLException e) {
                     Log.e("TAG_ERROR", "can't add test workout");
                     throw new RuntimeException(e);

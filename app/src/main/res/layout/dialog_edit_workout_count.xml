@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.rey.material.widget.EditText
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="6dp"
+        android:digits="0123456789"
+        android:inputType="number"
+        android:hint="Количество"
+        android:text="001"
+        android:textSize="18sp"
+        app:et_labelEnable="true"
+        app:et_labelPadding="3dp"
+        app:et_dividerColor="@color/colorAccent"
+        app:et_dividerHeight="3dp"
+        android:id="@+id/et_dialog_edit_workout_count" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Только положительные числа."
+        android:id="@+id/textView14"
+        android:layout_gravity="right"
+        android:layout_marginRight="6dp" />
+
+</LinearLayout>
