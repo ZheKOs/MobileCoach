@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
@@ -51,29 +52,13 @@ public class WorkoutsAdapter extends ArrayAdapter<WorkoutPlan>
             TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.row_tv_times_todo_edit);
 
             tvWorkoutName.setText(workoutPlan.get(position).getWorkout().getName());
+
             tvTimesToDo.setText(String.valueOf(workoutPlan.get(position).getCount()) + " раз");
-
-            RelativeLayout editWorkout = (RelativeLayout) rowView.findViewById(R.id.rl_workout_edit_tp);
-            editWorkout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SimpleDialog pickWorkout = new SimpleDialog(getContext());
-                    pickWorkout.title("Выберите упражнение");
-                    try {
-                        ArrayList<Workout> workouts = new ArrayList<Workout>(
-                                HelperFactory.getDbHelper().getWorkoutDAO().getAllWorkouts()
-                        );
-                    }catch (SQLException e){
-                        Log.e("TAG_ERROR","can't get all workouts");
-                        throw new RuntimeException(e);
-                    }
-                }
-            });
-            FrameLayout editCount = (FrameLayout) rowView.findViewById(R.id.fl_times_edit_tp);
-            editCount.setOnClickListener(new View.OnClickListener() {
+            tvTimesToDo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
+                    Toast.makeText(context,"count",Toast.LENGTH_SHORT).show();
                 }
             });
 

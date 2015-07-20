@@ -4,6 +4,6 @@
 
     <item android:id="@+id/action_add" android:title="Добавить"
         android:orderInCategory="100" app:showAsAction="always"
-        android:icon="@drawable/plus_white" />
+        android:icon="@drawable/plus_darkgreen_48" />
 
 </menu>

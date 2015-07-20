@@ -57,6 +57,7 @@
     <style name="NavigatorDrawableIcon" parent="Material.Drawable.NavigationDrawerIcon">
         <item name="lmd_strokeSize">3dp</item>
         <item name="lmd_padding">18dp</item>
+        <item name="lmd_strokeColor">#1B5E20</item>
     </style>
 
     <style name="NavigationDrawerDrawable">
@@ -66,7 +67,7 @@
 
     <style name="ToolbarRippleStyle" parent="Material.Drawable.Ripple.Touch.MatchView.Light">
         <item name="rd_backgroundColor">@android:color/transparent</item>
-        <item name="rd_rippleColor">#33FFFFFF</item>
+        <item name="rd_rippleColor">#331B5E20 </item>
     </style>
 
 

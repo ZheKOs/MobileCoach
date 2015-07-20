@@ -1,54 +1,47 @@
 package com.evdokimov.eugene.mobilecoach.Activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.AdapterView;
 
 import com.evdokimov.eugene.mobilecoach.Adapters.WorkoutsAdapter;
 import com.evdokimov.eugene.mobilecoach.R;
+import com.evdokimov.eugene.mobilecoach.db.DBHelper;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlan;
 import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
+
 import com.mobeta.android.dslv.DragSortListView;
+
+import com.rey.material.app.SimpleDialog;
 import com.rey.material.widget.EditText;
 import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ImageButton;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class EditTrainingPlanActivity extends AppCompatActivity {
 
-    public static final int RESULT_SAVE = 3;
+    //public static final int RESULT_SAVE = 3;
     public static final int RESULT_DELETE = 4;
 
 
-    private int mode; //define situation: edit or create
+    //private int mode; //define situation: edit or create
+
+    private Context context;
 
     private WorkoutsAdapter workoutsAdapter;
     private ArrayList<WorkoutPlan> workouts;
     String planName;
 
     String tmpName;
-
-    private FloatingActionButton btnAdd;
 
     //private RelativeLayout instruction; //layout is instruction for empty list
 
@@ -135,6 +128,8 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_tp);
 
+        context = this;
+
         planName = getIntent().getStringExtra("planName");
         tmpName = planName;
         getWorkoutPlan(planName);
@@ -152,6 +147,62 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
 
         workoutsAdapter = new WorkoutsAdapter(this,workouts,true);
         lv.setAdapter(workoutsAdapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                try {
+                    ArrayList<Workout> workouts = new ArrayList<>(HelperFactory.getDbHelper().getWorkoutDAO().getAllWorkouts());
+
+                    CharSequence[] items = new CharSequence[workouts.size()];
+                    int i = 0;
+                    for (Workout workout : workouts){
+                        items[i++] = workout.getName();
+                    }
+
+                    final SimpleDialog dialog = new SimpleDialog(context);
+                    dialog.title("Выберите упражнение");
+                    dialog.positiveAction("Выбрать");
+                    dialog.negativeAction("Отменить");
+                    dialog.items(items, -1);
+
+                    dialog.show();
+
+                    dialog.positiveActionClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                WorkoutPlan workoutPlan;
+                                workoutPlan = workoutsAdapter.getWorkoutPlan().get(position);
+                                int i = dialog.getSelectedIndex();
+                                if (i >= 0) {
+                                    DBHelper dbHelper = HelperFactory.getDbHelper();
+                                    Workout workout = dbHelper.getWorkoutDAO()
+                                            .getWorkoutByName(dialog.getSelectedValue().toString());
+                                    workoutPlan.setWorkout(workout);
+                                    dbHelper.getWorkoutPlanDAO().update(workoutPlan);
+                                    workoutsAdapter.notifyDataSetChanged();
+                                    dialog.dismiss();
+                                }
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    });
+                    dialog.negativeActionClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+
+                } catch (SQLException e){
+                    Log.e("TAG_ERROR","can't get all workouts");
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
 //        if (workoutsAdapter.getCount()>0)
 //            instruction.setVisibility(View.GONE);
@@ -201,7 +252,7 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
             }
         });
 
-        btnAdd = (FloatingActionButton) findViewById(R.id.btn_edit_tp_add);
+        FloatingActionButton btnAdd = (FloatingActionButton) findViewById(R.id.btn_edit_tp_add);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,7 +268,7 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
                     HelperFactory.getDbHelper().getWorkoutPlanDAO().create(wPlan);
                     workouts.add(wPlan);
                     workoutsAdapter.setWorkoutPlan(workouts);
-                } catch (SQLException e){
+                } catch (SQLException e) {
                     Log.e("TAG_ERROR", "can't add test workout");
                     throw new RuntimeException(e);
                 }

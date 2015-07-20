@@ -25,37 +25,35 @@
         android:scaleType="fitXY" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="УПРАЖНЕНИЕ"
         android:id="@+id/row_tv_workout_edit"
         android:layout_centerVertical="true"
         android:textColor="#000"
         android:layout_toRightOf="@+id/drag_handle"
-        android:layout_toEndOf="@+id/drag_handle"
-        android:textSize="15dp" />
+        android:textSize="15dp"
+        android:gravity="center_vertical|left"
+        android:singleLine="true"
+        android:layout_toLeftOf="@+id/row_tv_times_todo_edit"
+        android:layout_toStartOf="@+id/row_tv_times_todo_edit" />
 
-    <FrameLayout
+    <TextView
         android:layout_width="70dp"
         android:layout_height="25dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="000 раз"
+        android:id="@+id/row_tv_times_todo_edit"
+        android:layout_gravity="center"
+        android:textColor="#fff"
+        android:textIsSelectable="false"
+        android:textSize="13dp"
         android:background="#727272"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="16dp"
-        android:id="@+id/fl_times_edit_tp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="000 раз"
-            android:id="@+id/row_tv_times_todo_edit"
-            android:layout_gravity="center"
-            android:textColor="#fff"
-            android:textIsSelectable="false"
-            android:textSize="13dp" />
-    </FrameLayout>
+        android:gravity="center" />
 
 </RelativeLayout>
