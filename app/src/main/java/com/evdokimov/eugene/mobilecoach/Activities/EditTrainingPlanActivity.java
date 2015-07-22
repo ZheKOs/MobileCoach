@@ -260,7 +260,7 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 final Dialog dialog = new Dialog(context);
-                dialog.title("Добавление упражнения");
+                //dialog.title("Добавление упражнения");
                 final ArrayList<Workout> workoutArrayList;
                 try {
                     workoutArrayList = new ArrayList<>(

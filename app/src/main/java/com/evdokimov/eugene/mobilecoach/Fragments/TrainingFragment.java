@@ -317,6 +317,7 @@ public class TrainingFragment extends Fragment{
                         );
                         lv_plan_workouts.setAdapter(workoutsAdapter);
                         workoutsAdapter.notifyDataSetChanged();
+
                     }catch (SQLException e){
                         Log.e("TAG_ERROR","can't get workoutPlan");
                         throw new RuntimeException(e);
