@@ -58,15 +58,15 @@ public class WorkoutsAdapter extends ArrayAdapter<WorkoutPlan>
                             .positiveAction("Ввести")
                             .negativeAction("Отмена");
                     View contentView = View.inflate(getContext(),R.layout.dialog_edit_workout_count,null);
-                    EditText etCount = (EditText) contentView.findViewById(R.id.et_dialog_edit_workout_count);
+                    final EditText etCount = (EditText) contentView.findViewById(R.id.et_dialog_edit_workout_count);
                     etCount.setText(String.valueOf(workoutPlan.get(position).getCount()));
                     dialog.setContentView(contentView);
                     dialog.positiveActionClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            EditText etCountReady = (EditText) dialog.findViewById(R.id.et_dialog_edit_workout_count);
-                            if (etCountReady.getText().length() > 0 && !etCountReady.getText().toString().equals("0")) {
-                                int count = Integer.valueOf(etCountReady.getText().toString());
+
+                            if (etCount.getText().length() > 0 && !etCount.getText().toString().equals("0")) {
+                                int count = Integer.valueOf(etCount.getText().toString());
                                 try {
                                     WorkoutPlan wPlan = HelperFactory.getDbHelper().getWorkoutPlanDAO()
                                             .getWorkoutPlanByOrder(position);
@@ -81,6 +81,12 @@ public class WorkoutsAdapter extends ArrayAdapter<WorkoutPlan>
                                     throw new RuntimeException(e);
                                 }
                             }
+                        }
+                    });
+                    dialog.negativeActionClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
                         }
                     });
 
@@ -99,8 +105,7 @@ public class WorkoutsAdapter extends ArrayAdapter<WorkoutPlan>
 
                     tvWorkoutName.setText(workoutPlan.get(position).getWorkout().getName());
                     tvTimesToDo.setText(String.valueOf(workoutPlan.get(position).getCount()) + " раз");
-                }
-                else {
+                }else{
 
                 }
             }

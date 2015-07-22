@@ -143,7 +143,7 @@ public class TrainingFragment extends Fragment{
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.btn_float_third:
-                        final TimePickerDialog dialog = (TimePickerDialog) new TimePickerDialog(mainActivity)
+                        final TimePickerDialog dialog = (TimePickerDialog) new TimePickerDialog(mainActivity,R.style.TimePickerDialog)
                                 //.title("Поставить напоминание?")
                                 .positiveAction("Поставить").negativeAction("Отмена");
                         dialog.positiveActionClickListener(new View.OnClickListener() {
@@ -161,6 +161,7 @@ public class TrainingFragment extends Fragment{
                                 dialog.dismiss();
                             }
                         });
+
                         dialog.show();
                         break;
                     case R.id.btn_float_second:

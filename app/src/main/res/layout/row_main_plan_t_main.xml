@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
+
     <android.support.v7.widget.CardView
         android:layout_height="340dp"
         android:layout_width="match_parent"
@@ -13,9 +14,10 @@
         android:layout_marginBottom="20dp"
         cardview:contentPadding="0dp"
         cardview:cardPreventCornerOverlap="false">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -68,20 +70,19 @@
                 <!--android:layout_alignParentRight="true"-->
                 <!--android:layout_marginTop="56dp" />-->
 
+
             <ListView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:id="@+id/lv_main_workouts"
-                android:layout_centerHorizontal="true"
                 android:clipToPadding="false"
                 android:choiceMode="none"
                 android:listSelector="@android:color/transparent"
                 android:smoothScrollbar="false"
                 android:scrollbars="none"
-                android:layout_below="@+id/relativeLayout2"
                 android:layout_margin="6dp" />
 
-        </RelativeLayout>
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 
 </LinearLayout>

@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.evdokimov.eugene.mobilecoach.Adapters.WorkoutsAdapter;
 import com.evdokimov.eugene.mobilecoach.R;
@@ -19,10 +20,12 @@ import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
 
 import com.mobeta.android.dslv.DragSortListView;
 
+import com.rey.material.app.Dialog;
 import com.rey.material.app.SimpleDialog;
 import com.rey.material.widget.EditText;
 import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ImageButton;
+import com.rey.material.widget.Spinner;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -239,12 +242,10 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
         planNameEditText.setText(planName);
         planNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -257,21 +258,70 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    Workout plank = HelperFactory.getDbHelper().getWorkoutDAO().getWorkoutByName("Планка");
-                    WorkoutPlan wPlan = new WorkoutPlan();
-                    wPlan.setName(planName);
-                    wPlan.setOrder(workoutsAdapter.getWorkoutPlan().size());
-                    wPlan.setWorkout(plank);
-                    wPlan.setCount(0);
-                    HelperFactory.getDbHelper().getWorkoutPlanDAO().create(wPlan);
 
-                    workouts.add(wPlan);
-                    workoutsAdapter.notifyDataSetChanged();
-                } catch (SQLException e) {
-                    Log.e("TAG_ERROR", "can't add test workout");
+                final Dialog dialog = new Dialog(context);
+                dialog.title("Добавление упражнения");
+                final ArrayList<Workout> workoutArrayList;
+                try {
+                    workoutArrayList = new ArrayList<>(
+                            HelperFactory.getDbHelper().getWorkoutDAO().getAllWorkouts());
+                }catch (SQLException e){
+                    Log.e("TAG_ERROR","Can't get all workouts");
                     throw new RuntimeException(e);
                 }
+
+                String[] items = new String[workoutArrayList.size()];
+                int i = 0;
+                for (Workout workout : workoutArrayList) { items[i++] = workout.getName(); }
+                //Workout plank = HelperFactory.getDbHelper().getWorkoutDAO().getWorkoutByName("Планка");
+                View contentView = View.inflate(context, R.layout.dialog_workout_plan_add_new_item, null);
+
+                final Spinner spinner = (Spinner) contentView.findViewById(R.id.dialog_add_workout_plan_spinner);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,R.layout.row_spn, items);
+                adapter.setDropDownViewResource(R.layout.row_spn_dropdown);
+                spinner.setAdapter(adapter);
+
+                final EditText etCount = (EditText) contentView.findViewById(R.id.dialog_add_workout_plan_et);
+                etCount.setText("1");
+
+                dialog.setContentView(contentView);
+
+                dialog.positiveAction("Добавить");
+                dialog.positiveActionClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (etCount.getText().length() > 0 && !etCount.getText().toString().equals("0")) {
+                            int count = Integer.valueOf(etCount.getText().toString());
+                            try {
+                                int item = spinner.getSelectedItemPosition();
+                                Workout workout = workoutArrayList.get(item);
+                                WorkoutPlan wPlan = new WorkoutPlan();
+                                wPlan.setName(planName);
+                                wPlan.setOrder(workoutsAdapter.getWorkoutPlan().size() + 1);
+                                wPlan.setWorkout(workout);
+                                wPlan.setCount(count);
+                                HelperFactory.getDbHelper().getWorkoutPlanDAO().create(wPlan);
+
+                                workouts.add(wPlan);
+                                workoutsAdapter.notifyDataSetChanged();
+                                dialog.dismiss();
+                            } catch (SQLException e) {
+                                Log.e("TAG_ERROR", "can't add test workout");
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+                });
+                dialog.negativeAction("Отменить");
+                dialog.negativeActionClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+
             }
         });
 
