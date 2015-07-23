@@ -35,6 +35,8 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
     //public static final int RESULT_SAVE = 3;
     public static final int RESULT_DELETE = 4;
 
+    private final String EMPTY_PICKED_PLAN = "_empty_";
+
 
     //private int mode; //define situation: edit or create
 
@@ -227,7 +229,9 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
 //                        finish();
 //                        break;
                     case R.id.btn_delete_plan_etp:
+                        tmpName = EMPTY_PICKED_PLAN;
                         setResult(RESULT_DELETE);
+                        finish();
                         break;
                 }
             }
@@ -235,6 +239,10 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
 
         ImageButton btnBack = (ImageButton) findViewById(R.id.btn_back_etp);
         btnBack.setOnClickListener(listener);
+
+        ImageButton btnDeletePlan = (ImageButton) findViewById(R.id.btn_delete_plan_etp);
+        btnDeletePlan.setOnClickListener(listener);
+
 //        ImageButton btnSave = (ImageButton) findViewById(R.id.btn_save_plan_etp);
 //        btnSave.setOnClickListener(listener);
 
@@ -348,7 +356,7 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
                 try {
                     HelperFactory.getDbHelper().getWorkoutPlanDAO().update(workoutPlan);
                     SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
-                    String pickedPlan = sharedPref.getString("pickedplan", "");
+                    String pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
                     if (planName.equals(pickedPlan)) {
 
                         SharedPreferences.Editor editor = sharedPref.edit();

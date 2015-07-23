@@ -38,9 +38,20 @@ import java.util.ArrayList;
 public class TrainingFragment extends Fragment{
 
     final int REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY = 1;
+    private final String EMPTY_PICKED_PLAN = "_empty_";
+
+    LayoutInflater mInflater;
+    ViewGroup mContainer;
+
+    View mView;
 
     ListView lv_plan_workouts;
     WorkoutsAdapter workoutsAdapter;
+
+    ListView lv_plans;
+    PlansAdapter plansAdapter;
+
+    View mTop;
 
     ArrayList<WorkoutPlan> workoutPlan;
 
@@ -66,77 +77,22 @@ public class TrainingFragment extends Fragment{
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         mainActivity = (MainActivity) getActivity();
+        mInflater = inflater;
+        mContainer = container;
 
-        View v = inflater.inflate(R.layout.fragment_training,container,false);
+        mView = mInflater.inflate(R.layout.fragment_training, mContainer, false);
 
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings", Context.MODE_PRIVATE);
-        String workoutPlanName = sharedPref.getString("pickedplan", "MainPlan");
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings",Context.MODE_PRIVATE);
+        String workoutPlanName = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
         getWorkoutPlan(workoutPlanName);
 
         setAnimation();
 
         getAllPlans();
 
-        View mTop = inflater.inflate(R.layout.row_main_plan_t_main,null);
-        tvPlanNamePicked = (TextView) mTop.findViewById(R.id.textViewPlanNamePicked);
-        tvPlanNamePicked.setText(workoutPlanName);
-        ImageButton editPlan = (ImageButton) mTop.findViewById(R.id.main_btn_edit_plan);
-        editPlan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId())
-                {
-                    case R.id.main_btn_edit_plan:
-                        Intent intent = new Intent(getActivity(), EditTrainingPlanActivity.class);
-                        intent.putExtra("planName", workoutsAdapter.getWorkoutPlan().get(0).getName());
-                        startActivityForResult(intent, REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY);
-                        break;
-                }
-            }
-        });
-        lv_plan_workouts = (ListView) mTop.findViewById(R.id.lv_main_workouts);
-        workoutsAdapter = new WorkoutsAdapter(getActivity(), workoutPlan, false);
-        lv_plan_workouts.setAdapter(workoutsAdapter);
-        lv_plan_workouts.setOnTouchListener(new ListView.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Disallow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        break;
+        initializeAllList(workoutPlanName);
 
-                    case MotionEvent.ACTION_UP:
-                        // Allow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                        break;
-                }
-
-                // Handle ListView touch events.
-                v.onTouchEvent(event);
-                return true;
-            }
-        });
-
-        ListView lv_plans = (ListView) v.findViewById(R.id.lv_main_plans);
-        lv_plans.addHeaderView(mTop);
-        PlansAdapter plansAdapter = new PlansAdapter(getActivity(),plans);
-        lv_plans.setAdapter(plansAdapter);
-
-        snackBar = new SnackBar(mainActivity);
-        snackBar.applyStyle(R.style.SnackBarSingleLine)
-                .singleLine(false) //to be sure :D
-                .actionText("Отмена")
-                .actionClickListener(new SnackBar.OnActionClickListener() {
-                    @Override
-                    public void onActionClick(SnackBar snackBar, int i) {
-                        Toast.makeText(mainActivity, "Отменено", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .duration(3500)
-                .actionTextColor(getResources().getColor(R.color.colorAccent))
-                .textColor(Color.WHITE);
+        initSnackBar();
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -194,18 +150,90 @@ public class TrainingFragment extends Fragment{
             }
         };
 
-        mainFAB = (FloatingActionButton) v.findViewById(R.id.btn_float_main);
+        mainFAB = (FloatingActionButton) mView.findViewById(R.id.btn_float_main);
         mainFAB.setOnClickListener(listener);
 
-        secondFAB = (FloatingActionButton) v.findViewById(R.id.btn_float_second);
+        secondFAB = (FloatingActionButton) mView.findViewById(R.id.btn_float_second);
         secondFAB.setOnClickListener(listener);
 
-        thirdFAB = (FloatingActionButton) v.findViewById(R.id.btn_float_third);
+        thirdFAB = (FloatingActionButton) mView.findViewById(R.id.btn_float_third);
         thirdFAB.setOnClickListener(listener);
 
         animateFAB(-1, true);
 
-        return v;
+        return mView;
+    }
+
+    //This method init header and whole body of list
+    //can handle empty top
+    private void initializeAllList(final String workoutPlanName){
+        if (mTop != null) lv_plans.removeHeaderView(mTop);
+        if (!workoutPlanName.equals(EMPTY_PICKED_PLAN)) {
+
+            mTop = mInflater.inflate(R.layout.row_main_plan_t_main, null);
+            tvPlanNamePicked = (TextView) mTop.findViewById(R.id.textViewPlanNamePicked);
+            tvPlanNamePicked.setText(workoutPlanName);
+            ImageButton editPlan = (ImageButton) mTop.findViewById(R.id.main_btn_edit_plan);
+            editPlan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    switch (view.getId()) {
+                        case R.id.main_btn_edit_plan:
+                            Intent intent = new Intent(getActivity(), EditTrainingPlanActivity.class);
+                            intent.putExtra("planName", workoutPlanName);
+                            startActivityForResult(intent, REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY);
+                            break;
+                    }
+                }
+            });
+            lv_plan_workouts = (ListView) mTop.findViewById(R.id.lv_main_workouts);
+            workoutsAdapter = new WorkoutsAdapter(getActivity(), workoutPlan, false);
+            lv_plan_workouts.setAdapter(workoutsAdapter);
+            lv_plan_workouts.setOnTouchListener(new ListView.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    int action = event.getAction();
+                    switch (action) {
+                        case MotionEvent.ACTION_DOWN:
+                            // Disallow ScrollView to intercept touch events.
+                            v.getParent().requestDisallowInterceptTouchEvent(true);
+                            break;
+
+                        case MotionEvent.ACTION_UP:
+                            // Allow ScrollView to intercept touch events.
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
+
+                    // Handle ListView touch events.
+                    v.onTouchEvent(event);
+                    return true;
+                }
+            });
+
+        } else {
+            mTop = mInflater.inflate(R.layout.row_main_plan_t_main_empty,null);
+        }
+        lv_plans = (ListView) mView.findViewById(R.id.lv_main_plans);
+        lv_plans.addHeaderView(mTop);
+        plansAdapter = new PlansAdapter(getActivity(),plans);
+        lv_plans.setAdapter(plansAdapter);
+    }
+
+    private void initSnackBar(){
+        snackBar = new SnackBar(mainActivity);
+        snackBar.applyStyle(R.style.SnackBarSingleLine)
+                .singleLine(false) //to be sure :D
+                .actionText("Отмена")
+                .actionClickListener(new SnackBar.OnActionClickListener() {
+                    @Override
+                    public void onActionClick(SnackBar snackBar, int i) {
+                        Toast.makeText(mainActivity, "Отменено", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .duration(3500)
+                .actionTextColor(getResources().getColor(R.color.colorAccent))
+                .textColor(Color.WHITE);
     }
 
     private void getAllPlans(){
@@ -224,11 +252,15 @@ public class TrainingFragment extends Fragment{
     }
 
     private void getWorkoutPlan(String name){
-        try {
-            workoutPlan = new ArrayList<>(HelperFactory.getDbHelper().getWorkoutPlanDAO().getWorkoutPlanByName(name));
-        } catch (SQLException e){
-            Log.e("TAG_ERROR","can't get workouts");
-            throw new RuntimeException(e);
+        if (!name.equals(EMPTY_PICKED_PLAN)) {
+            try {
+                workoutPlan = new ArrayList<>(HelperFactory.getDbHelper().getWorkoutPlanDAO().getWorkoutPlanByName(name));
+            } catch (SQLException e) {
+                Log.e("TAG_ERROR", "can't get workouts");
+                throw new RuntimeException(e);
+            }
+        }else{
+            workoutPlan = null;
         }
     }
 
@@ -303,20 +335,44 @@ public class TrainingFragment extends Fragment{
             {
                 case EditTrainingPlanActivity.RESULT_DELETE:
                     //TODO delete plan
+
+                    try {
+                        HelperFactory.getDbHelper().getWorkoutPlanDAO().delete(workoutPlan);
+                        if (workoutPlan.size() > 0){
+                            workoutPlan.clear();
+                        }
+                        workoutsAdapter.notifyDataSetInvalidated();
+                    }catch (SQLException e){
+                        Log.e("TAG_ERROR","can't delete picked plan");
+                        throw new RuntimeException(e);
+                    }
+
+                    getAllPlans();
+                    initializeAllList(EMPTY_PICKED_PLAN);
+                    plansAdapter.notifyDataSetChanged();
+
                     break;
                 default:
                     try {
                         SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings",Context.MODE_PRIVATE);
-                        String pickedPlan = sharedPref.getString("pickedplan", "MainPlan");
-                        tvPlanNamePicked.setText(pickedPlan);
-                        workoutsAdapter = new WorkoutsAdapter(
-                                getActivity(),
-                                new ArrayList<>(HelperFactory.getDbHelper().getWorkoutPlanDAO()
-                                        .getWorkoutPlanByName(pickedPlan)),
-                                false
-                        );
-                        lv_plan_workouts.setAdapter(workoutsAdapter);
-                        workoutsAdapter.notifyDataSetChanged();
+                        String pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
+                        if (!pickedPlan.equals(EMPTY_PICKED_PLAN)) {
+                            tvPlanNamePicked.setText(pickedPlan);
+                            workoutsAdapter = new WorkoutsAdapter(
+                                    getActivity(),
+                                    new ArrayList<>(HelperFactory.getDbHelper().getWorkoutPlanDAO()
+                                            .getWorkoutPlanByName(pickedPlan)),
+                                    false
+                            );
+                            lv_plan_workouts.setAdapter(workoutsAdapter);
+                            workoutsAdapter.notifyDataSetChanged();
+
+                            getAllPlans();
+                            initializeAllList(pickedPlan);
+                            plansAdapter.notifyDataSetChanged();
+                        } else {
+
+                        }
 
                     }catch (SQLException e){
                         Log.e("TAG_ERROR","can't get workoutPlan");

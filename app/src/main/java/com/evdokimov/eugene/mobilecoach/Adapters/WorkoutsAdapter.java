@@ -42,71 +42,73 @@ public class WorkoutsAdapter extends ArrayAdapter<WorkoutPlan>
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (editMode){
-            rowView = inflater.inflate(R.layout.row_edit_tp,parent,false);
-            final TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.row_tv_workout_edit);
-            final TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.row_tv_times_todo_edit);
+        if (!workoutPlan.isEmpty()) {
+            if (editMode) {
+                rowView = inflater.inflate(R.layout.row_edit_tp, parent, false);
+                final TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.row_tv_workout_edit);
+                final TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.row_tv_times_todo_edit);
 
-            tvWorkoutName.setText(workoutPlan.get(position).getWorkout().getName());
+                tvWorkoutName.setText(workoutPlan.get(position).getWorkout().getName());
 
-            tvTimesToDo.setText(String.valueOf(workoutPlan.get(position).getCount()) + " " + "раз");
-            tvTimesToDo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final Dialog dialog = new Dialog(getContext());
-                    dialog.title("Количество для упражнения")
-                            .positiveAction("Ввести")
-                            .negativeAction("Отмена");
-                    View contentView = View.inflate(getContext(),R.layout.dialog_edit_workout_count,null);
-                    final EditText etCount = (EditText) contentView.findViewById(R.id.et_dialog_edit_workout_count);
-                    etCount.setText(String.valueOf(workoutPlan.get(position).getCount()));
-                    dialog.setContentView(contentView);
-                    dialog.positiveActionClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                tvTimesToDo.setText(String.valueOf(workoutPlan.get(position).getCount()) + " " + "раз");
+                tvTimesToDo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Dialog dialog = new Dialog(getContext());
+                        dialog.title("Количество для упражнения")
+                                .positiveAction("Ввести")
+                                .negativeAction("Отмена");
+                        View contentView = View.inflate(getContext(), R.layout.dialog_edit_workout_count, null);
+                        final EditText etCount = (EditText) contentView.findViewById(R.id.et_dialog_edit_workout_count);
+                        etCount.setText(String.valueOf(workoutPlan.get(position).getCount()));
+                        dialog.setContentView(contentView);
+                        dialog.positiveActionClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
-                            if (etCount.getText().length() > 0 && !etCount.getText().toString().equals("0")) {
-                                int count = Integer.valueOf(etCount.getText().toString());
-                                try {
-                                    WorkoutPlan wPlan = HelperFactory.getDbHelper().getWorkoutPlanDAO()
-                                            .getWorkoutPlanByOrder(position);
-                                    wPlan.setCount(count);
-                                    HelperFactory.getDbHelper().getWorkoutPlanDAO().update(wPlan);
-                                    workoutPlan.get(position).setCount(count);
-                                    notifyDataSetChanged();
-                                    dialog.dismiss();
+                                if (etCount.getText().length() > 0 && !etCount.getText().toString().equals("0")) {
+                                    int count = Integer.valueOf(etCount.getText().toString());
+                                    try {
+                                        WorkoutPlan wPlan = HelperFactory.getDbHelper().getWorkoutPlanDAO()
+                                                .getWorkoutPlanByOrder(position);
+                                        wPlan.setCount(count);
+                                        HelperFactory.getDbHelper().getWorkoutPlanDAO().update(wPlan);
+                                        workoutPlan.get(position).setCount(count);
+                                        notifyDataSetChanged();
+                                        dialog.dismiss();
 
-                                } catch (SQLException e) {
-                                    Log.e("TAG_ERROR", "can't get workout");
-                                    throw new RuntimeException(e);
+                                    } catch (SQLException e) {
+                                        Log.e("TAG_ERROR", "can't get workout");
+                                        throw new RuntimeException(e);
+                                    }
                                 }
                             }
-                        }
-                    });
-                    dialog.negativeActionClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
+                        });
+                        dialog.negativeActionClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
 
-                    dialog.show();
+                        dialog.show();
 
-                }
-            });
+                    }
+                });
 
-        } else {
-            if (workoutPlan.size() > position) {
-                if(mainWatch) {
-                    rowView = inflater.inflate(R.layout.row_main_training, parent, false);
+            } else {
+                if (workoutPlan.size() > position) {
+                    if (mainWatch) {
+                        rowView = inflater.inflate(R.layout.row_main_training, parent, false);
 
-                    TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.main_row_tv_workout);
-                    TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.main_row_times);
+                        TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.main_row_tv_workout);
+                        TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.main_row_times);
 
-                    tvWorkoutName.setText(workoutPlan.get(position).getWorkout().getName());
-                    tvTimesToDo.setText(String.valueOf(workoutPlan.get(position).getCount()) + " раз");
-                }else{
+                        tvWorkoutName.setText(workoutPlan.get(position).getWorkout().getName());
+                        tvTimesToDo.setText(String.valueOf(workoutPlan.get(position).getCount()) + " раз");
+                    } else {
 
+                    }
                 }
             }
         }
@@ -120,7 +122,6 @@ public class WorkoutsAdapter extends ArrayAdapter<WorkoutPlan>
     }
     public void setWorkoutPlan(ArrayList<WorkoutPlan> workoutPlan) {
         this.workoutPlan = workoutPlan;
-        notifyDataSetChanged();
     }
 
     public void setMainWatch(boolean newMainWatch)
