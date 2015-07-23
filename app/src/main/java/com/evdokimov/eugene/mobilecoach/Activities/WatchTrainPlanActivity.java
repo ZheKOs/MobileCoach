@@ -15,6 +15,8 @@ import java.util.Arrays;
 
 public class WatchTrainPlanActivity extends AppCompatActivity {
 
+    private String planName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

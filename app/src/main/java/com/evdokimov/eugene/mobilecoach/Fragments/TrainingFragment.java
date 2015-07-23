@@ -84,6 +84,7 @@ public class TrainingFragment extends Fragment{
 
         SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings",Context.MODE_PRIVATE);
         String workoutPlanName = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
+
         getWorkoutPlan(workoutPlanName);
 
         setAnimation();
@@ -330,20 +331,19 @@ public class TrainingFragment extends Fragment{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY)
-            switch (resultCode)
-            {
+        if (requestCode == REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY) {
+            switch (resultCode) {
                 case EditTrainingPlanActivity.RESULT_DELETE:
-                    //TODO delete plan
+                    //here deletes PICKED plan
 
                     try {
                         HelperFactory.getDbHelper().getWorkoutPlanDAO().delete(workoutPlan);
-                        if (workoutPlan.size() > 0){
+                        if (workoutPlan.size() > 0) {
                             workoutPlan.clear();
                         }
                         workoutsAdapter.notifyDataSetInvalidated();
-                    }catch (SQLException e){
-                        Log.e("TAG_ERROR","can't delete picked plan");
+                    } catch (SQLException e) {
+                        Log.e("TAG_ERROR", "can't delete picked plan");
                         throw new RuntimeException(e);
                     }
 
@@ -353,31 +353,25 @@ public class TrainingFragment extends Fragment{
 
                     break;
                 default:
-                    try {
-                        SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings",Context.MODE_PRIVATE);
-                        String pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
-                        if (!pickedPlan.equals(EMPTY_PICKED_PLAN)) {
-                            tvPlanNamePicked.setText(pickedPlan);
-                            workoutsAdapter = new WorkoutsAdapter(
-                                    getActivity(),
-                                    new ArrayList<>(HelperFactory.getDbHelper().getWorkoutPlanDAO()
-                                            .getWorkoutPlanByName(pickedPlan)),
-                                    false
-                            );
-                            lv_plan_workouts.setAdapter(workoutsAdapter);
-                            workoutsAdapter.notifyDataSetChanged();
+                    //refreshing list after changing plan
+                    SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+                    String pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
+                    if (!pickedPlan.equals(EMPTY_PICKED_PLAN)) {
 
-                            getAllPlans();
-                            initializeAllList(pickedPlan);
-                            plansAdapter.notifyDataSetChanged();
-                        } else {
+                        getWorkoutPlan(pickedPlan);
 
-                        }
+                        tvPlanNamePicked.setText(pickedPlan);
+                        workoutsAdapter = new WorkoutsAdapter(getActivity(), workoutPlan, false);
+                        lv_plan_workouts.setAdapter(workoutsAdapter);
+                        workoutsAdapter.notifyDataSetChanged();
 
-                    }catch (SQLException e){
-                        Log.e("TAG_ERROR","can't get workoutPlan");
-                        throw new RuntimeException(e);
+                        getAllPlans();
+                        initializeAllList(pickedPlan);
+                        plansAdapter.notifyDataSetChanged();
+                    } else {
+                        //TODO here is instruction
                     }
             }
+        }
     }
 }
