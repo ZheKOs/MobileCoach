@@ -1,6 +1,7 @@
 package com.evdokimov.eugene.mobilecoach.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,12 +29,22 @@ public class WorkoutsAdapter extends ArrayAdapter<WorkoutPlan>
     private View rowView;
 
     public WorkoutsAdapter(Context context, ArrayList<WorkoutPlan> workoutPlan, boolean editMode) {
-        super(context, R.layout.row_main_training, workoutPlan);
+        super(context, R.layout.row_workout_plan, workoutPlan);
 
         this.context = context;
         this.workoutPlan = workoutPlan;
         this.editMode = editMode;
         this.mainWatch = true;
+
+    }
+
+    public WorkoutsAdapter(Context context, ArrayList<WorkoutPlan> workoutPlan, boolean editMode, boolean mainWatch) {
+        super(context, R.layout.row_workout_plan, workoutPlan);
+
+        this.context = context;
+        this.workoutPlan = workoutPlan;
+        this.editMode = editMode;
+        this.mainWatch = mainWatch;
 
     }
 
@@ -45,13 +56,17 @@ public class WorkoutsAdapter extends ArrayAdapter<WorkoutPlan>
         if (!workoutPlan.isEmpty()) {
             if (editMode) {
                 rowView = inflater.inflate(R.layout.row_edit_tp, parent, false);
-                final TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.row_tv_workout_edit);
-                final TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.row_tv_times_todo_edit);
+                final TextView tvWorkoutNameEdit = (TextView) rowView.findViewById(R.id.row_tv_workout_edit);
+                final TextView tvTimesToDoEdit = (TextView) rowView.findViewById(R.id.row_tv_times_todo_edit);
 
-                tvWorkoutName.setText(workoutPlan.get(position).getWorkout().getName());
+                rowView.setBackgroundColor(Color.WHITE);
+                tvWorkoutNameEdit.setTextColor(Color.BLACK);
+                tvTimesToDoEdit.setBackgroundColor(context.getResources().getColor(R.color.dgrey));
 
-                tvTimesToDo.setText(String.valueOf(workoutPlan.get(position).getCount()) + " " + "раз");
-                tvTimesToDo.setOnClickListener(new View.OnClickListener() {
+                tvWorkoutNameEdit.setText(workoutPlan.get(position).getWorkout().getName());
+
+                tvTimesToDoEdit.setText(String.valueOf(workoutPlan.get(position).getCount()) + " " + "раз");
+                tvTimesToDoEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         final Dialog dialog = new Dialog(getContext());
@@ -98,16 +113,22 @@ public class WorkoutsAdapter extends ArrayAdapter<WorkoutPlan>
 
             } else {
                 if (workoutPlan.size() > position) {
+                    rowView = inflater.inflate(R.layout.row_workout_plan, parent, false);
+
+                    TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.row_tv_workout);
+                    TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.row_tv_times_todo);
+
+                    tvWorkoutName.setText(workoutPlan.get(position).getWorkout().getName());
+                    tvTimesToDo.setText(String.valueOf(workoutPlan.get(position).getCount()) + " раз");
+
+                    rowView.setBackgroundColor(Color.WHITE);
+                    tvWorkoutName.setTextColor(Color.BLACK);
+                    tvTimesToDo.setBackgroundColor(context.getResources().getColor(R.color.dgrey));
+
                     if (mainWatch) {
-                        rowView = inflater.inflate(R.layout.row_main_training, parent, false);
-
-                        TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.main_row_tv_workout);
-                        TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.main_row_times);
-
-                        tvWorkoutName.setText(workoutPlan.get(position).getWorkout().getName());
-                        tvTimesToDo.setText(String.valueOf(workoutPlan.get(position).getCount()) + " раз");
-                    } else {
-
+                        rowView.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+                        tvWorkoutName.setTextColor(Color.WHITE);
+                        tvTimesToDo.setBackgroundColor(context.getResources().getColor(R.color.colorAccentDark));
                     }
                 }
             }

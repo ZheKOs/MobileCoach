@@ -68,7 +68,7 @@ public class NutritionFragment extends Fragment {
         private boolean[] checks;
 
         public NutritionAdapter(Context context, String[] objects) {
-            super(context, R.layout.row_main_training, objects);
+            super(context, R.layout.row_nutrition_card, objects);
 
             this.context = context;
             this.strings = objects;

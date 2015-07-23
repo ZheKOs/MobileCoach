@@ -9,33 +9,20 @@
     android:layout_alignParentTop="true"
     android:id="@+id/rl_workout_edit_tp">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/drag_handle"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="1dp"
-        android:src="@drawable/drag_grey_48"
-        android:background="@color/empty_dgrey"
-        android:layout_marginRight="6dp"
-        android:padding="8dp"
-        android:clipToPadding="false"
-        android:scaleType="fitXY" />
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="УПРАЖНЕНИЕ"
-        android:id="@+id/row_tv_workout_edit"
+        android:id="@+id/row_tv_workout"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
         android:textColor="#000"
-        android:layout_toRightOf="@+id/drag_handle"
         android:textSize="15dp"
         android:gravity="center_vertical|left"
         android:singleLine="true"
-        android:layout_toLeftOf="@+id/row_tv_times_todo_edit"
-        android:layout_toStartOf="@+id/row_tv_times_todo_edit" />
+        android:layout_toLeftOf="@+id/row_tv_times_todo"
+        android:layout_toStartOf="@+id/row_tv_times_todo" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -43,12 +30,12 @@
         android:layout_height="25dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="000 раз"
-        android:id="@+id/row_tv_times_todo_edit"
+        android:id="@+id/row_tv_times_todo"
         android:layout_gravity="center"
         android:textColor="#fff"
         android:textIsSelectable="false"
         android:textSize="13dp"
-        android:background="#727272"
+        android:background="@color/dgrey"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
