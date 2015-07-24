@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 
 import com.evdokimov.eugene.mobilecoach.Adapters.WorkoutsAdapter;
 import com.evdokimov.eugene.mobilecoach.R;
-import com.evdokimov.eugene.mobilecoach.db.DBHelper;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlan;
 import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
@@ -32,7 +31,7 @@ import java.util.ArrayList;
 
 public class EditTrainingPlanActivity extends AppCompatActivity {
 
-    //public static final int RESULT_SAVE = 3;
+    public static final int RESULT_SAVE = 3;
     public static final int RESULT_DELETE = 4;
 
     private final String EMPTY_PICKED_PLAN = "_empty_";
@@ -42,10 +41,14 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
 
     private Context context;
 
+    private boolean addingMode = false;
+
     private WorkoutsAdapter workoutsAdapter;
     private ArrayList<WorkoutPlan> workouts;
     String planName;
 
+    private ArrayList<WorkoutPlan> newWorkouts;
+    private ArrayList<WorkoutPlan> deletedWorkouts;
     String tmpName;
 
     //private RelativeLayout instruction; //layout is instruction for empty list
@@ -90,41 +93,23 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
             };
     private void onDropForWorkoutPlan(int from, int to){
         if (from!=to) {
-            try {
-
-//            WorkoutPlan fromWP = HelperFactory.getDbHelper().getWorkoutPlanDAO().getWorkoutPlanByName("MainPlan").get(from);
-//            WorkoutPlan toWP = HelperFactory.getDbHelper().getWorkoutPlanDAO().getWorkoutPlanByName("MainPlan").get(to);
-//
-//            int tmp = fromWP.getIdPlan();
-//
-//            fromWP.setIdPlan(toWP.getIdPlan());
-//            HelperFactory.getDbHelper().getWorkoutPlanDAO().update(fromWP);
-//
-//            toWP.setIdPlan(tmp);
-//            HelperFactory.getDbHelper().getWorkoutPlanDAO().update(toWP);
-
+//            try {
                 int i = 0;
                 for (WorkoutPlan workoutPlan : workoutsAdapter.getWorkoutPlan())
                 {
-                    workoutPlan.setOrder(i);
-                    HelperFactory.getDbHelper().getWorkoutPlanDAO().update(workoutPlan);
-                    i++;
+                    workoutPlan.setOrder(i++);
+//                    HelperFactory.getDbHelper().getWorkoutPlanDAO().update(workoutPlan);
+//                    i++;
                 }
-//                WorkoutPlan fromWP = HelperFactory.getDbHelper().getWorkoutPlanDAO().getWorkoutPlanByName(planName).get(from);
-//                HelperFactory.getDbHelper().getWorkoutPlanDAO().updateId(fromWP, to);
-
-            } catch (SQLException e) {
-                Log.e("TAG_ERROR", "can't swipe ids of workoutPlan");
-                throw new RuntimeException(e);
-            }
+//            } catch (SQLException e) {
+//                Log.e("TAG_ERROR", "can't swipe ids of workoutPlan");
+//                throw new RuntimeException(e);
+//            }
         }
     }
     private void onRemoveForWorkoutPlan(int which){
-        try {
-            HelperFactory.getDbHelper().getWorkoutPlanDAO().delete(workoutsAdapter.getItem(which));
-        }catch (SQLException e){
-            Log.e("TAG_ERROR", "can't delete workout plan");
-            throw new RuntimeException(e);
+        if(!addingMode){
+            deletedWorkouts.add(workouts.get(which));
         }
     }
 
@@ -135,13 +120,22 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
 
         context = this;
 
-        planName = getIntent().getStringExtra("planName");
-        tmpName = planName;
-        getWorkoutPlan(planName);
+        addingMode = getIntent().getBooleanExtra("addingMode", false);
 
-        //Now let's grab ArrayList which should be "packed" and send using Parcel
-                //new ArrayList<>(getIntent().<WorkoutPlan>getParcelableArrayListExtra("workoutPlan")); //yeap, this is how it "unpacks" in real code. See Workout.class
+        if (addingMode){
 
+            planName = "Новый план";
+            tmpName = planName;
+            workouts =  new ArrayList<>();
+
+        }else {
+
+            planName = getIntent().getStringExtra("planName");
+            tmpName = planName;
+            getWorkoutPlan(planName);
+            newWorkouts = new ArrayList<>();
+            deletedWorkouts = new ArrayList<>();
+        }
         //instruction = (RelativeLayout) findViewById(R.id.instruction); //TODO Instruction what to do if list is empty
 
         DragSortListView lv = (DragSortListView) findViewById(R.id.dslv_edit_tp);
@@ -155,13 +149,13 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-
                 try {
-                    ArrayList<Workout> workouts = new ArrayList<>(HelperFactory.getDbHelper().getWorkoutDAO().getAllWorkouts());
+                    final ArrayList<Workout> workoutArrayList = new ArrayList<>(
+                            HelperFactory.getDbHelper().getWorkoutDAO().getAllWorkouts());
 
                     CharSequence[] items = new CharSequence[workouts.size()];
                     int i = 0;
-                    for (Workout workout : workouts){
+                    for (Workout workout : workoutArrayList){
                         items[i++] = workout.getName();
                     }
 
@@ -176,22 +170,20 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
                     dialog.positiveActionClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            try {
+                            //try {
                                 WorkoutPlan workoutPlan;
                                 workoutPlan = workoutsAdapter.getWorkoutPlan().get(position);
                                 int i = dialog.getSelectedIndex();
                                 if (i >= 0) {
-                                    DBHelper dbHelper = HelperFactory.getDbHelper();
-                                    Workout workout = dbHelper.getWorkoutDAO()
-                                            .getWorkoutByName(dialog.getSelectedValue().toString());
+                                    //DBHelper dbHelper = HelperFactory.getDbHelper();
+                                    Workout workout = workoutArrayList.get(dialog.getSelectedIndex());
                                     workoutPlan.setWorkout(workout);
-                                    dbHelper.getWorkoutPlanDAO().update(workoutPlan);
                                     workoutsAdapter.notifyDataSetChanged();
                                     dialog.dismiss();
                                 }
-                            } catch (SQLException e) {
-                                throw new RuntimeException(e);
-                            }
+//                            } catch (SQLException e) {
+//                                throw new RuntimeException(e);
+//                            }
                         }
                     });
                     dialog.negativeActionClickListener(new View.OnClickListener() {
@@ -221,15 +213,13 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
                         setResult(RESULT_CANCELED);
                         finish();
                         break;
-//                    case R.id.btn_save_plan_etp:
-//
-//                        resultIntent = new Intent();
-//                        resultIntent.putExtra("workouts_back",workoutsAdapter.getWorkoutPlan());
-//                        setResult(RESULT_SAVE, resultIntent);
-//                        finish();
-//                        break;
+                    case R.id.btn_save_plan_etp:
+                        savePlan();
+                        setResult(RESULT_SAVE);
+                        finish();
+                        break;
                     case R.id.btn_delete_plan_etp:
-                        tmpName = EMPTY_PICKED_PLAN;
+                        deletePlan();
                         setResult(RESULT_DELETE);
                         finish();
                         break;
@@ -239,12 +229,10 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
 
         ImageButton btnBack = (ImageButton) findViewById(R.id.btn_back_etp);
         btnBack.setOnClickListener(listener);
-
         ImageButton btnDeletePlan = (ImageButton) findViewById(R.id.btn_delete_plan_etp);
         btnDeletePlan.setOnClickListener(listener);
-
-//        ImageButton btnSave = (ImageButton) findViewById(R.id.btn_save_plan_etp);
-//        btnSave.setOnClickListener(listener);
+        ImageButton btnSave = (ImageButton) findViewById(R.id.btn_save_plan_etp);
+        btnSave.setOnClickListener(listener);
 
         EditText planNameEditText = (EditText) findViewById(R.id.et_edit_name_tp);
         planNameEditText.setText(planName);
@@ -262,13 +250,11 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
         });
 
         FloatingActionButton btnAdd = (FloatingActionButton) findViewById(R.id.btn_edit_tp_add);
-
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 final Dialog dialog = new Dialog(context);
-                //dialog.title("Добавление упражнения");
                 final ArrayList<Workout> workoutArrayList;
                 try {
                     workoutArrayList = new ArrayList<>(
@@ -278,14 +264,14 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
                     throw new RuntimeException(e);
                 }
 
-                String[] items = new String[workoutArrayList.size()];
+                String[]items  = new String[workoutArrayList.size()];
                 int i = 0;
                 for (Workout workout : workoutArrayList) { items[i++] = workout.getName(); }
                 //Workout plank = HelperFactory.getDbHelper().getWorkoutDAO().getWorkoutByName("Планка");
                 View contentView = View.inflate(context, R.layout.dialog_workout_plan_add_new_item, null);
 
                 final Spinner spinner = (Spinner) contentView.findViewById(R.id.dialog_add_workout_plan_spinner);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,R.layout.row_spn, items);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context,R.layout.row_spn, items);
                 adapter.setDropDownViewResource(R.layout.row_spn_dropdown);
                 spinner.setAdapter(adapter);
 
@@ -298,25 +284,30 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
                 dialog.positiveActionClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (etCount.getText().length() > 0 && !etCount.getText().toString().equals("0")) {
+                        if (etCount.getText().length() > 0
+                                && !Integer.valueOf(etCount.getText().toString()).equals(0)) {
                             int count = Integer.valueOf(etCount.getText().toString());
-                            try {
-                                int item = spinner.getSelectedItemPosition();
-                                Workout workout = workoutArrayList.get(item);
-                                WorkoutPlan wPlan = new WorkoutPlan();
-                                wPlan.setName(planName);
-                                wPlan.setOrder(workoutsAdapter.getWorkoutPlan().size() + 1);
-                                wPlan.setWorkout(workout);
-                                wPlan.setCount(count);
-                                HelperFactory.getDbHelper().getWorkoutPlanDAO().create(wPlan);
+                            //try {
+                            int item = spinner.getSelectedItemPosition();
+                            Workout workout = workoutArrayList.get(item);
+                            WorkoutPlan wPlan = new WorkoutPlan();
+                            wPlan.setName(planName);
+                            wPlan.setOrder(workoutsAdapter.getWorkoutPlan().size() + 1);
+                            wPlan.setWorkout(workout);
+                            wPlan.setCount(count);
 
-                                workouts.add(wPlan);
-                                workoutsAdapter.notifyDataSetChanged();
-                                dialog.dismiss();
-                            } catch (SQLException e) {
-                                Log.e("TAG_ERROR", "can't add test workout");
-                                throw new RuntimeException(e);
+                            if (!addingMode) {
+                                //HelperFactory.getDbHelper().getWorkoutPlanDAO().create(wPlan);
+                                newWorkouts.add(wPlan);
                             }
+
+                            workouts.add(wPlan);
+                            workoutsAdapter.notifyDataSetChanged();
+                            dialog.dismiss();
+//                            } catch (SQLException e) {
+//                                Log.e("TAG_ERROR", "can't add test workout");
+//                                throw new RuntimeException(e);
+//                            }
                         }
                     }
                 });
@@ -348,28 +339,111 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onPause() {
-        if (!tmpName.equals(planName)) {
-            for (WorkoutPlan workoutPlan : workoutsAdapter.getWorkoutPlan()) {
-                workoutPlan.setName(tmpName);
-                try {
-                    HelperFactory.getDbHelper().getWorkoutPlanDAO().update(workoutPlan);
-                    SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
-                    String pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
-                    if (planName.equals(pickedPlan)) {
+//    @Override
+//    protected void onPause() {
+//        if (!tmpName.equals(planName)) {
+//            if (addingMode){
+//                try {
+//                    HelperFactory.getDbHelper().getWorkoutPlanDAO().create(workouts);
+//                }catch (SQLException e){
+//                    Log.e("TAG_ERROR","can't create new plan");
+//                    throw new RuntimeException(e);
+//                }
+//            }else {
+//                for (WorkoutPlan workoutPlan : workoutsAdapter.getWorkoutPlan()) {
+//                    workoutPlan.setName(tmpName);
+//                    try {
+//                        HelperFactory.getDbHelper().getWorkoutPlanDAO().update(workoutPlan);
+//                        SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+//                        String pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
+//                        if (planName.equals(pickedPlan)) {
+//
+//                            SharedPreferences.Editor editor = sharedPref.edit();
+//                            editor.putString("pickedplan", tmpName);
+//                            editor.commit();
+//                        }
+//                    } catch (SQLException e) {
+//                        Log.e("TAG_ERROR", "can't update name of WorkoutPlan");
+//                        throw new RuntimeException(e);
+//                    }
+//                }
+//            }
+//        }
+//        super.onPause();
+//    }
 
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("pickedplan", tmpName);
-                        editor.commit();
-                    }
-                } catch (SQLException e) {
-                    Log.e("TAG_ERROR", "can't update name of WorkoutPlan");
-                    throw new RuntimeException(e);
+    private void savePlan(){
+        if (addingMode){
+            try {
+                HelperFactory.getDbHelper().getWorkoutPlanDAO().create(workouts);
+            }catch (SQLException e){
+                Log.e("TAG_ERROR","can't create new plan");
+                throw new RuntimeException(e);
+            }
+        }else {
+            if (!tmpName.equals(planName)) {
+                for (WorkoutPlan workoutPlan : workoutsAdapter.getWorkoutPlan()) {
+                    workoutPlan.setName(tmpName);
+                }
+
+                SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+                String pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
+                if (planName.equals(pickedPlan)) {
+
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("pickedplan", tmpName);
+                    editor.apply();
+                }
+            }
+            try {
+                for (WorkoutPlan workoutPlan : workouts) {
+                    HelperFactory.getDbHelper().getWorkoutPlanDAO().update(workoutPlan);
+                }
+                if (!newWorkouts.isEmpty()){
+                    HelperFactory.getDbHelper().getWorkoutPlanDAO().create(newWorkouts);
+                }
+                if (!deletedWorkouts.isEmpty()){
+                    HelperFactory.getDbHelper().getWorkoutPlanDAO().delete(deletedWorkouts);
+                }
+            } catch (SQLException e) {
+                Log.e("TAG_ERROR", "can't update WorkoutPlan");
+                throw new RuntimeException(e);
+            }
+            if (!tmpName.equals(planName)) {
+
+                SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+                String pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
+                if (planName.equals(pickedPlan)) {
+
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("pickedplan", tmpName);
+                    editor.apply();
                 }
             }
         }
-        super.onPause();
+    }
+    private void deletePlan(){
+        tmpName = EMPTY_PICKED_PLAN;
+        try {
+            HelperFactory.getDbHelper().getWorkoutPlanDAO().delete(workouts);
+            if (workouts.size() > 0) {
+                workouts.clear();
+            }
+            workoutsAdapter.notifyDataSetInvalidated();
+        } catch (SQLException e) {
+            Log.e("TAG_ERROR", "can't delete picked plan");
+            throw new RuntimeException(e);
+        }
+
+        SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+        String pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
+        if (planName.equals(pickedPlan)) {
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("pickedplan", tmpName);
+            editor.apply();
+        }
+
     }
 
 }

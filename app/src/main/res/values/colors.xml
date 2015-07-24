@@ -6,6 +6,8 @@
     <color name="colorPrimaryDarker">#1b5e20</color>
     <color name="colorAccent">#536DFE</color>
 
+    <color name="halfColorAccent">#50536DFE</color>
+
     <color name="colorEdgeEffect">@color/colorAccent</color>
     <color name="windowBackground">#ECECED</color>
     <color name="navigationBarColor">#263238</color>
@@ -14,7 +16,7 @@
     <color name="colorAccentDarker">#303F9F</color>
 
     <color name="empty_dgrey">#00707070</color>
-    <color name="half_dgrey">#70707070</color>
+    <color name="half_dgrey">#30707070</color>
 
     <color name="dgrey">#727272</color>
 

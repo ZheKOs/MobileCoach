@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="55dp"
+    android:layout_width="match_parent"
+    android:background="@color/colorAccent"
+    android:layout_marginTop="0dp"
+    android:layout_alignParentLeft="true"
+    android:layout_marginLeft="0dp"
+    android:layout_alignParentTop="true"
+    android:id="@+id/rl_workout_edit_tp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="УПРАЖНЕНИЕ"
+        android:id="@+id/row_tv_workout_main"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:textColor="#fff"
+        android:textSize="15dp"
+        android:gravity="center_vertical|left"
+        android:singleLine="true"
+        android:layout_toLeftOf="@+id/row_tv_times_todo_main"
+        android:layout_toStartOf="@+id/row_tv_times_todo_main" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:minWidth="70dp"
+        android:layout_height="25dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="000 раз"
+        android:id="@+id/row_tv_times_todo_main"
+        android:layout_gravity="center"
+        android:textColor="#fff"
+        android:textIsSelectable="false"
+        android:textSize="13dp"
+        android:background="@color/colorAccentDark"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="16dp"
+        android:gravity="center" />
+
+</RelativeLayout>

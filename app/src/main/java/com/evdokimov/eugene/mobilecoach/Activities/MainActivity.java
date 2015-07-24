@@ -1,7 +1,9 @@
 package com.evdokimov.eugene.mobilecoach.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -40,6 +42,8 @@ public class MainActivity extends ActionBarActivity {
 
     private Context context;
 
+    private int REQUEST_ADD_NEW_PLAN = 1;
+
     private Toolbar mToolbar;
     private ToolbarManager mToolbarManager;
 
@@ -71,6 +75,7 @@ public class MainActivity extends ActionBarActivity {
         HelperFactory.setDbHelper(context);
 
         dl_navigator = (DrawerLayout)findViewById(R.id.main_dl);
+        fl_drawer = (FrameLayout) findViewById(R.id.main_fl_drawer);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mToolbar.setTitle("");
         mToolbarManager = new ToolbarManager(this, mToolbar, 0, R.style.ToolbarRippleStyle, R.anim.abc_fade_in, R.anim.abc_fade_out);
@@ -129,47 +134,122 @@ public class MainActivity extends ActionBarActivity {
 
         vp.setAdapter(mPagerAdapter);
         viewPagerTab.setViewPager(vp);
+        viewPagerTab.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                setSelectedDrawerItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
         //tpi.setViewPager(vp);
 
         vp.setCurrentItem(0);
+        setSelectedDrawerItem(0);
 
         draweContent = findViewById(R.id.drawer_content);
         TextView mc = (TextView) draweContent.findViewById(R.id.tv_nav_mc);
         Typeface nrkis = Typeface.createFromAsset(getAssets(),
                 "fonts/nrkis.ttf");
         mc.setTypeface(nrkis);
-        draweContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()){
-                    case 0:
-                        Toast.makeText(context,"Тренировка",Toast.LENGTH_SHORT).show();
-                        break;
-                    case 1:
-                        Toast.makeText(context,"Питание",Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2:
-                        Toast.makeText(context,"Статистика",Toast.LENGTH_SHORT).show();
-                        break;
-                    case 3:
-                        Toast.makeText(context,"Упражнения",Toast.LENGTH_SHORT).show();
-                        break;
-                    case 4:
-                        Toast.makeText(context,"Блюда",Toast.LENGTH_SHORT).show();
-                        break;
-                    case 5:
-                        Toast.makeText(context,"Настройки",Toast.LENGTH_SHORT).show();
-                        break;
-                    case 6:
-                        Toast.makeText(context,"Справка/отзыв",Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        });
+        //draweContent.setOnClickListener();
+
 
 
     }
 
+    private void setSelectedDrawerItem(int position){
+        View v;
+        switch (position){
+            case 0:
+                v = findViewById(R.id.btn_nav_train);
+                v.setBackgroundColor(getResources().getColor(R.color.half_dgrey));
+                v.setEnabled(false);
+
+                v = findViewById(R.id.btn_nav_nutr);
+                v.setBackgroundColor(Color.TRANSPARENT);
+                v.setEnabled(true);
+
+                v = findViewById(R.id.btn_nav_stats);
+                v.setBackgroundColor(Color.TRANSPARENT);
+                v.setEnabled(true);
+                break;
+            case 1:
+
+                v = findViewById(R.id.btn_nav_train);
+                v.setBackgroundColor(Color.TRANSPARENT);
+                v.setEnabled(true);
+
+                v = findViewById(R.id.btn_nav_nutr);
+                v.setBackgroundColor(getResources().getColor(R.color.half_dgrey));
+                v.setEnabled(false);
+
+                v = findViewById(R.id.btn_nav_stats);
+                v.setBackgroundColor(Color.TRANSPARENT);
+                v.setEnabled(true);
+
+                break;
+            case 2:
+
+                v = findViewById(R.id.btn_nav_train);
+                v.setBackgroundColor(Color.TRANSPARENT);
+                v.setEnabled(true);
+
+                v = findViewById(R.id.btn_nav_nutr);
+                v.setBackgroundColor(Color.TRANSPARENT);
+                v.setEnabled(true);
+
+                v = findViewById(R.id.btn_nav_stats);
+                v.setBackgroundColor(getResources().getColor(R.color.half_dgrey));
+                v.setEnabled(false);
+
+                break;
+        }
+    }
+
+    public void drawerListener(View v){ //it uses in xml code for
+
+        switch (v.getId()){
+            case R.id.btn_nav_train:
+                Toast.makeText(context,"Тренировка",Toast.LENGTH_SHORT).show();
+                vp.setCurrentItem(0);
+                setSelectedDrawerItem(0);
+                dl_navigator.closeDrawer(fl_drawer);
+                break;
+            case R.id.btn_nav_nutr:
+                Toast.makeText(context,"Питание",Toast.LENGTH_SHORT).show();
+                vp.setCurrentItem(1);
+                setSelectedDrawerItem(1);
+                dl_navigator.closeDrawer(fl_drawer);
+                break;
+            case R.id.btn_nav_stats:
+                Toast.makeText(context,"Статистика",Toast.LENGTH_SHORT).show();
+                vp.setCurrentItem(2);
+                setSelectedDrawerItem(2);
+                dl_navigator.closeDrawer(fl_drawer);
+                break;
+            case R.id.btn_nav_workouts:
+                Toast.makeText(context,"Упражнения",Toast.LENGTH_SHORT).show();
+                dl_navigator.closeDrawer(fl_drawer);
+                break;
+            case R.id.btn_nav_dishes:
+                Toast.makeText(context,"Блюда",Toast.LENGTH_SHORT).show();
+                dl_navigator.closeDrawer(fl_drawer);
+                break;
+            case R.id.btn_nav_settings:
+                Toast.makeText(context,"Настройки",Toast.LENGTH_SHORT).show();
+                dl_navigator.closeDrawer(fl_drawer);
+                break;
+            case R.id.btn_nav_help:
+                Toast.makeText(context,"Справка/отзыв",Toast.LENGTH_SHORT).show();
+                dl_navigator.closeDrawer(fl_drawer);
+                break;
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -296,9 +376,37 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_add:
-                Toast.makeText(context,"adding",Toast.LENGTH_SHORT).show();
+                int currentItem = vp.getCurrentItem();
+                switch (currentItem){
+                    case 0:
+//                        Intent intent = new Intent(context, EditTrainingPlanActivity.class);
+//                        intent.putExtra("addingMode",true);
+//                        startActivityForResult(intent, REQUEST_ADD_NEW_PLAN);
+                        Toast.makeText(context,"добавление нового плана",Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1:
+                        Toast.makeText(context,"добавление в план блюло",Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        Toast.makeText(context,"добавление статистики",Toast.LENGTH_SHORT).show();
+                        break;
+                }
+
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (REQUEST_ADD_NEW_PLAN == requestCode){
+            switch (resultCode){
+                case RESULT_OK:
+                    break;
+                default:
+
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

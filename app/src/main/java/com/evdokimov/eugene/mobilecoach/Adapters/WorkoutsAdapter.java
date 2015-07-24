@@ -59,10 +59,6 @@ public class WorkoutsAdapter extends ArrayAdapter<WorkoutPlan>
                 final TextView tvWorkoutNameEdit = (TextView) rowView.findViewById(R.id.row_tv_workout_edit);
                 final TextView tvTimesToDoEdit = (TextView) rowView.findViewById(R.id.row_tv_times_todo_edit);
 
-                rowView.setBackgroundColor(Color.WHITE);
-                tvWorkoutNameEdit.setTextColor(Color.BLACK);
-                tvTimesToDoEdit.setBackgroundColor(context.getResources().getColor(R.color.dgrey));
-
                 tvWorkoutNameEdit.setText(workoutPlan.get(position).getWorkout().getName());
 
                 tvTimesToDoEdit.setText(String.valueOf(workoutPlan.get(position).getCount()) + " " + "раз");
@@ -84,8 +80,7 @@ public class WorkoutsAdapter extends ArrayAdapter<WorkoutPlan>
                                 if (etCount.getText().length() > 0 && !etCount.getText().toString().equals("0")) {
                                     int count = Integer.valueOf(etCount.getText().toString());
                                     try {
-                                        WorkoutPlan wPlan = HelperFactory.getDbHelper().getWorkoutPlanDAO()
-                                                .getWorkoutPlanByOrder(position);
+                                        WorkoutPlan wPlan = workoutPlan.get(position);
                                         wPlan.setCount(count);
                                         HelperFactory.getDbHelper().getWorkoutPlanDAO().update(wPlan);
                                         workoutPlan.get(position).setCount(count);
@@ -115,21 +110,24 @@ public class WorkoutsAdapter extends ArrayAdapter<WorkoutPlan>
                 if (workoutPlan.size() > position) {
                     rowView = inflater.inflate(R.layout.row_workout_plan, parent, false);
 
-                    TextView tvWorkoutName = (TextView) rowView.findViewById(R.id.row_tv_workout);
-                    TextView tvTimesToDo = (TextView) rowView.findViewById(R.id.row_tv_times_todo);
+                    TextView tvWorkoutName;
+                    TextView tvTimesToDo;
+
+                    if (mainWatch) {
+                        rowView = inflater.inflate(R.layout.row_workout_plan_main, parent, false);
+                        tvWorkoutName = (TextView) rowView.findViewById(R.id.row_tv_workout_main);
+                        tvTimesToDo = (TextView) rowView.findViewById(R.id.row_tv_times_todo_main);
+                    }else{
+                        rowView = inflater.inflate(R.layout.row_workout_plan, parent, false);
+                        tvWorkoutName = (TextView) rowView.findViewById(R.id.row_tv_workout);
+                        tvTimesToDo = (TextView) rowView.findViewById(R.id.row_tv_times_todo);
+                    }
 
                     tvWorkoutName.setText(workoutPlan.get(position).getWorkout().getName());
                     tvTimesToDo.setText(String.valueOf(workoutPlan.get(position).getCount()) + " раз");
 
-                    rowView.setBackgroundColor(Color.WHITE);
-                    tvWorkoutName.setTextColor(Color.BLACK);
-                    tvTimesToDo.setBackgroundColor(context.getResources().getColor(R.color.dgrey));
 
-                    if (mainWatch) {
-                        rowView.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
-                        tvWorkoutName.setTextColor(Color.WHITE);
-                        tvTimesToDo.setBackgroundColor(context.getResources().getColor(R.color.colorAccentDark));
-                    }
+
                 }
             }
         }

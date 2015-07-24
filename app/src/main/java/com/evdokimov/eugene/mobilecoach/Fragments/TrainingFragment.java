@@ -37,7 +37,7 @@ import java.util.ArrayList;
 
 public class TrainingFragment extends Fragment{
 
-    final int REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY = 1;
+    final int REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY = 600;
     private final String EMPTY_PICKED_PLAN = "_empty_";
 
     LayoutInflater mInflater;
@@ -271,7 +271,6 @@ public class TrainingFragment extends Fragment{
         scaleAnimationOut.setDuration(500);
         scaleAnimationOut.setStartOffset(150);
     }
-
     private void animateFAB(int which, boolean in)
     {
         switch (which) {
@@ -331,28 +330,23 @@ public class TrainingFragment extends Fragment{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY) {
             switch (resultCode) {
                 case EditTrainingPlanActivity.RESULT_DELETE:
                     //here deletes PICKED plan
 
-                    try {
-                        HelperFactory.getDbHelper().getWorkoutPlanDAO().delete(workoutPlan);
-                        if (workoutPlan.size() > 0) {
-                            workoutPlan.clear();
-                        }
-                        workoutsAdapter.notifyDataSetInvalidated();
-                    } catch (SQLException e) {
-                        Log.e("TAG_ERROR", "can't delete picked plan");
-                        throw new RuntimeException(e);
+                    if (workoutPlan.size() > 0) {
+                        workoutPlan.clear();
                     }
+                    workoutsAdapter.notifyDataSetInvalidated();
 
                     getAllPlans();
                     initializeAllList(EMPTY_PICKED_PLAN);
                     plansAdapter.notifyDataSetChanged();
 
                     break;
-                default:
+                case EditTrainingPlanActivity.RESULT_SAVE:
                     //refreshing list after changing plan
                     SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings", Context.MODE_PRIVATE);
                     String pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
@@ -368,9 +362,11 @@ public class TrainingFragment extends Fragment{
                         getAllPlans();
                         initializeAllList(pickedPlan);
                         plansAdapter.notifyDataSetChanged();
+
                     } else {
                         //TODO here is instruction
                     }
+                    break;
             }
         }
     }
