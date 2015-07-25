@@ -1,6 +1,7 @@
 package com.evdokimov.eugene.mobilecoach.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 
 public class EditTrainingPlanActivity extends AppCompatActivity {
 
+    public static final int RESULT_CREATED = 2;
     public static final int RESULT_SAVE = 3;
     public static final int RESULT_DELETE = 4;
 
@@ -42,6 +44,9 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
     private Context context;
 
     private boolean addingMode = false;
+    private boolean editingCommonPlan = false;
+
+    ArrayList<Workout> workoutArrayList;
 
     private WorkoutsAdapter workoutsAdapter;
     private ArrayList<WorkoutPlan> workouts;
@@ -121,6 +126,7 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
         context = this;
 
         addingMode = getIntent().getBooleanExtra("addingMode", false);
+        editingCommonPlan = getIntent().getBooleanExtra("editingCommonPlan", false);
 
         if (addingMode){
 
@@ -150,10 +156,10 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 try {
-                    final ArrayList<Workout> workoutArrayList = new ArrayList<>(
+                    workoutArrayList = new ArrayList<>(
                             HelperFactory.getDbHelper().getWorkoutDAO().getAllWorkouts());
 
-                    CharSequence[] items = new CharSequence[workouts.size()];
+                    CharSequence[] items = new CharSequence[workoutArrayList.size()];
                     int i = 0;
                     for (Workout workout : workoutArrayList){
                         items[i++] = workout.getName();
@@ -215,7 +221,7 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
                         break;
                     case R.id.btn_save_plan_etp:
                         savePlan();
-                        setResult(RESULT_SAVE);
+
                         finish();
                         break;
                     case R.id.btn_delete_plan_etp:
@@ -374,6 +380,12 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
 
     private void savePlan(){
         if (addingMode){
+            setResult(RESULT_CREATED);
+            if (!tmpName.equals(planName)) {
+                for (WorkoutPlan workoutPlan : workoutsAdapter.getWorkoutPlan()) {
+                    workoutPlan.setName(tmpName);
+                }
+            }
             try {
                 HelperFactory.getDbHelper().getWorkoutPlanDAO().create(workouts);
             }catch (SQLException e){
@@ -381,6 +393,13 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
         }else {
+
+            if(editingCommonPlan){
+                Intent dataBack = new Intent();
+                dataBack.putExtra("planNameBack", tmpName);
+                setResult(RESULT_SAVE, dataBack);
+            } else { setResult(RESULT_SAVE); }
+
             if (!tmpName.equals(planName)) {
                 for (WorkoutPlan workoutPlan : workoutsAdapter.getWorkoutPlan()) {
                     workoutPlan.setName(tmpName);
@@ -409,17 +428,7 @@ public class EditTrainingPlanActivity extends AppCompatActivity {
                 Log.e("TAG_ERROR", "can't update WorkoutPlan");
                 throw new RuntimeException(e);
             }
-            if (!tmpName.equals(planName)) {
 
-                SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
-                String pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
-                if (planName.equals(pickedPlan)) {
-
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("pickedplan", tmpName);
-                    editor.apply();
-                }
-            }
         }
     }
     private void deletePlan(){

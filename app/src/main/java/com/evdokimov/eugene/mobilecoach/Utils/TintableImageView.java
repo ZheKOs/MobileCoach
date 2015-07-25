@@ -1,10 +1,12 @@
-package com.evdokimov.eugene.mobilecoach;
+package com.evdokimov.eugene.mobilecoach.Utils;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import com.evdokimov.eugene.mobilecoach.R;
 
 public class TintableImageView extends ImageView {
 

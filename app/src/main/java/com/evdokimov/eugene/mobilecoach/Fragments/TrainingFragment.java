@@ -1,6 +1,7 @@
 package com.evdokimov.eugene.mobilecoach.Fragments;
 
 import com.evdokimov.eugene.mobilecoach.Activities.EditTrainingPlanActivity;
+import com.evdokimov.eugene.mobilecoach.Activities.WatchTrainPlanActivity;
 import com.evdokimov.eugene.mobilecoach.Adapters.*;
 
 import android.content.Context;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.evdokimov.eugene.mobilecoach.Activities.MainActivity;
 import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.Activities.WorkoutActivity;
+import com.evdokimov.eugene.mobilecoach.Utils.OnWorkoutPlanSelectedListener;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlan;
 import com.rey.material.app.SimpleDialog;
@@ -35,9 +37,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
-public class TrainingFragment extends Fragment{
+public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedListener {
+
+
 
     final int REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY = 600;
+    final int REQUEST_WATCH_WORKOUT_PLAN = 900;
+
     private final String EMPTY_PICKED_PLAN = "_empty_";
 
     LayoutInflater mInflater;
@@ -165,6 +171,22 @@ public class TrainingFragment extends Fragment{
         return mView;
     }
 
+    private void initSnackBar(){
+        snackBar = new SnackBar(mainActivity);
+        snackBar.applyStyle(R.style.SnackBarSingleLine)
+                .singleLine(false) //to be sure :D
+                .actionText("Отмена")
+                .actionClickListener(new SnackBar.OnActionClickListener() {
+                    @Override
+                    public void onActionClick(SnackBar snackBar, int i) {
+                        Toast.makeText(mainActivity, "Отменено", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .duration(3500)
+                .actionTextColor(getResources().getColor(R.color.colorAccent))
+                .textColor(Color.WHITE);
+    }
+
     //This method init header and whole body of list
     //can handle empty top
     private void initializeAllList(final String workoutPlanName){
@@ -217,24 +239,8 @@ public class TrainingFragment extends Fragment{
         }
         lv_plans = (ListView) mView.findViewById(R.id.lv_main_plans);
         lv_plans.addHeaderView(mTop);
-        plansAdapter = new PlansAdapter(getActivity(),plans);
+        plansAdapter = new PlansAdapter(getActivity(), this, plans);
         lv_plans.setAdapter(plansAdapter);
-    }
-
-    private void initSnackBar(){
-        snackBar = new SnackBar(mainActivity);
-        snackBar.applyStyle(R.style.SnackBarSingleLine)
-                .singleLine(false) //to be sure :D
-                .actionText("Отмена")
-                .actionClickListener(new SnackBar.OnActionClickListener() {
-                    @Override
-                    public void onActionClick(SnackBar snackBar, int i) {
-                        Toast.makeText(mainActivity, "Отменено", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .duration(3500)
-                .actionTextColor(getResources().getColor(R.color.colorAccent))
-                .textColor(Color.WHITE);
     }
 
     private void getAllPlans(){
@@ -271,8 +277,7 @@ public class TrainingFragment extends Fragment{
         scaleAnimationOut.setDuration(500);
         scaleAnimationOut.setStartOffset(150);
     }
-    private void animateFAB(int which, boolean in)
-    {
+    private void animateFAB(int which, boolean in){
         switch (which) {
             case 0: //mainFAB
                 if (in){
@@ -328,6 +333,8 @@ public class TrainingFragment extends Fragment{
         }
     }
 
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -368,6 +375,49 @@ public class TrainingFragment extends Fragment{
                     }
                     break;
             }
+        } else if(requestCode == REQUEST_WATCH_WORKOUT_PLAN){
+            SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+            String pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
+            switch (resultCode) {
+                case EditTrainingPlanActivity.RESULT_DELETE:
+                    if (pickedPlan.equals(EMPTY_PICKED_PLAN))
+                    {
+                        if (workoutPlan.size() > 0) {
+                            workoutPlan.clear();
+                        }
+                        workoutsAdapter.notifyDataSetInvalidated();
+
+                        getAllPlans();
+                        initializeAllList(EMPTY_PICKED_PLAN);
+                        plansAdapter.notifyDataSetChanged();
+                        break;
+                    }
+                    //ELSE do the same as in RESULT_SAVE. just continue moving...
+
+                case EditTrainingPlanActivity.RESULT_SAVE:
+
+                    if (!pickedPlan.equals(EMPTY_PICKED_PLAN)) {
+
+                        getWorkoutPlan(pickedPlan);
+
+                        workoutsAdapter = new WorkoutsAdapter(getActivity(), workoutPlan, false);
+                        lv_plan_workouts.setAdapter(workoutsAdapter);
+                        workoutsAdapter.notifyDataSetChanged();
+
+                        getAllPlans();
+                        initializeAllList(pickedPlan);
+                        plansAdapter.notifyDataSetChanged();
+                    }
+                    break;
+            }
+
         }
+    }
+
+    @Override
+    public void onWorkoutPlanSelected(int position) {
+        Intent intent = new Intent(mainActivity, WatchTrainPlanActivity.class);
+        intent.putExtra("planName",plans[position]);
+        startActivityForResult(intent, REQUEST_WATCH_WORKOUT_PLAN);
     }
 }

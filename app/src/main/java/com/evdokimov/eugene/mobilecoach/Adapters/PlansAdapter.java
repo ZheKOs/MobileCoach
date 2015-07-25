@@ -3,14 +3,17 @@ package com.evdokimov.eugene.mobilecoach.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.evdokimov.eugene.mobilecoach.Fragments.TrainingFragment;
 import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.Activities.WatchTrainPlanActivity;
+import com.evdokimov.eugene.mobilecoach.Utils.OnWorkoutPlanSelectedListener;
 import com.rey.material.widget.Button;
 
 public class PlansAdapter extends ArrayAdapter<String>
@@ -18,11 +21,22 @@ public class PlansAdapter extends ArrayAdapter<String>
     private Context context;
     private String[] strings;
 
-    public PlansAdapter(Context context, String[] objects) {
+    private OnWorkoutPlanSelectedListener mCallback;
+
+    public PlansAdapter(Context context, Fragment fragment, String[] objects) {
         super(context, R.layout.row_main_plan_t_other, objects);
 
         this.context = context;
         this.strings = objects;
+
+        // This makes sure that the container fragment has implemented
+        // the callback interface. If not, it throws an exception
+        try{
+            mCallback = (OnWorkoutPlanSelectedListener) fragment;
+        }catch (ClassCastException e){
+            throw new ClassCastException(context.toString()
+                                        + " must implement OnWorkoutPlanSelectedListener");
+        }
 
     }
 
@@ -41,9 +55,10 @@ public class PlansAdapter extends ArrayAdapter<String>
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, WatchTrainPlanActivity.class);
-                intent.putExtra("planName",strings[position]);
-                context.startActivity(intent);
+//                Intent intent = new Intent(context, WatchTrainPlanActivity.class);
+//                intent.putExtra("planName",strings[position]);
+//                context.startActivity(intent);
+                mCallback.onWorkoutPlanSelected(position);
             }
         });
 //            }else {
@@ -56,4 +71,5 @@ public class PlansAdapter extends ArrayAdapter<String>
 
         return rowView;
     }
+
 }

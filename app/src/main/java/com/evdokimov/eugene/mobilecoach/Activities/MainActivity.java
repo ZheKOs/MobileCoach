@@ -29,6 +29,7 @@ import com.evdokimov.eugene.mobilecoach.Fragments.NutritionFragment;
 import com.evdokimov.eugene.mobilecoach.Fragments.StatsFragment;
 import com.evdokimov.eugene.mobilecoach.Fragments.TrainingFragment;
 import com.evdokimov.eugene.mobilecoach.R;
+import com.evdokimov.eugene.mobilecoach.Utils.OnWorkoutPlanSelectedListener;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.rey.material.app.ToolbarManager;
@@ -38,7 +39,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity{
 
     private Context context;
 
@@ -379,9 +380,9 @@ public class MainActivity extends ActionBarActivity {
                 int currentItem = vp.getCurrentItem();
                 switch (currentItem){
                     case 0:
-//                        Intent intent = new Intent(context, EditTrainingPlanActivity.class);
-//                        intent.putExtra("addingMode",true);
-//                        startActivityForResult(intent, REQUEST_ADD_NEW_PLAN);
+                        Intent intent = new Intent(context, EditTrainingPlanActivity.class);
+                        intent.putExtra("addingMode",true);
+                        startActivityForResult(intent, REQUEST_ADD_NEW_PLAN);
                         Toast.makeText(context,"добавление нового плана",Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
@@ -401,12 +402,20 @@ public class MainActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (REQUEST_ADD_NEW_PLAN == requestCode){
             switch (resultCode){
-                case RESULT_OK:
-                    break;
-                default:
+                case EditTrainingPlanActivity.RESULT_CREATED:
+                    //this works but it is dirty way to realize refreshing viewPager TODO in proper way
+                    mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), mItems,this);
+                    vp.setAdapter(mPagerAdapter);
+                    viewPagerTab.setViewPager(vp);
+                    vp.setCurrentItem(0);
+                    setSelectedDrawerItem(0);
 
+                    //mPagerAdapter.notifyDataSetChanged(); //not working :(
+
+                    break;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 }

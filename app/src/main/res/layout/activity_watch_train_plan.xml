@@ -14,7 +14,7 @@
         <com.rey.material.widget.ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/btn_delete_plan_etp"
+            android:id="@+id/btn_edit_plan_wtp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -29,7 +29,7 @@
         <com.rey.material.widget.ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/btn_back_etp"
+            android:id="@+id/btn_back_wtp"
             android:src="@drawable/arrowleft_white_36"
             android:scaleType="fitXY"
             app:rd_enable="true"
