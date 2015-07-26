@@ -72,6 +72,7 @@
         <com.rey.material.widget.Button
             android:layout_width="100dp"
             android:layout_height="40dp"
+            android:id="@+id/btn_choose_wtp"
             android:background="@drawable/btn"
             android:text="ВЫБРАТЬ"
             android:textColor="#fff"

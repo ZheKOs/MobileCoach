@@ -2,6 +2,7 @@ package com.evdokimov.eugene.mobilecoach.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlan;
 import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
+import com.rey.material.widget.Button;
 import com.rey.material.widget.ImageButton;
 
 import java.sql.SQLException;
@@ -24,9 +26,14 @@ import java.util.Arrays;
 
 public class WatchTrainPlanActivity extends AppCompatActivity {
 
+    private final String EMPTY_PICKED_PLAN = "_empty_";
+
     private final int REQUEST_EDIT_PLAN = 700;
 
     private Context context;
+
+    private SharedPreferences sharedPref;
+    private String pickedPlan;
 
     private String planName;
     private ArrayList<WorkoutPlan> workoutPlan;
@@ -54,10 +61,36 @@ public class WatchTrainPlanActivity extends AppCompatActivity {
         adapter = new WorkoutsAdapter(this,workoutPlan,false,false);
         lv.setAdapter(adapter);
 
+        sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+        pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
+
+        final Button btnChoose = (Button) findViewById(R.id.btn_choose_wtp);
+        if(planName.equals(pickedPlan)){
+            btnChoose.setText("ВЫБРАНО");
+        }
+
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()){
+                    case R.id.btn_choose_wtp:
+                        //refresh data
+                        sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+                        pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
+                        if (planName.equals(pickedPlan)){
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("pickedplan", EMPTY_PICKED_PLAN);
+                            editor.apply();
+                            btnChoose.setText("ВЫБРАТЬ");
+                            setResult(EditTrainingPlanActivity.RESULT_SAVE);
+                        }else {
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("pickedplan", planName);
+                            editor.apply();
+                            btnChoose.setText("ВЫБРАНО");
+                            setResult(EditTrainingPlanActivity.RESULT_SAVE);
+                        }
+                        break;
                     case R.id.btn_back_wtp:
                         finish();
                         break;
@@ -74,6 +107,8 @@ public class WatchTrainPlanActivity extends AppCompatActivity {
         btnBack.setOnClickListener(listener);
         ImageButton btnEdit = (ImageButton) findViewById(R.id.btn_edit_plan_wtp);
         btnEdit.setOnClickListener(listener);
+
+        btnChoose.setOnClickListener(listener);
 
     }
 
@@ -120,7 +155,7 @@ public class WatchTrainPlanActivity extends AppCompatActivity {
                     setResult(EditTrainingPlanActivity.RESULT_SAVE);
                     String pName = data.getStringExtra("planNameBack");
                     tvPlanName.setText(pName);
-
+                    planName = pName;
                     //also dirty way TODO in proper way
                     getWorkoutPlan(pName);
                     adapter = new WorkoutsAdapter(this,workoutPlan,false,false);

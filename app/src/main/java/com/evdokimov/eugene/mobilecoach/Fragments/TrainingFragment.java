@@ -407,6 +407,10 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
                         getAllPlans();
                         initializeAllList(pickedPlan);
                         plansAdapter.notifyDataSetChanged();
+                    } else {
+                        getAllPlans();
+                        initializeAllList(EMPTY_PICKED_PLAN);
+                        plansAdapter.notifyDataSetChanged();
                     }
                     break;
             }
