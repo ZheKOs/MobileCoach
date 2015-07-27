@@ -59,13 +59,6 @@ public class Dish implements Parcelable { //same implementation is in Workout.cl
                 "kcal = \'" + getKcal() + "\'";
     }
 
-    public Dish (Parcel in){
-        this.setId(in.readInt());
-        this.setName(in.readString());
-        this.setReceipt(in.readString());
-        this.setKcal(in.readDouble());
-        this.setImgPath(in.readString());
-    }
 
     @Override
     public int describeContents() {
@@ -73,24 +66,28 @@ public class Dish implements Parcelable { //same implementation is in Workout.cl
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(getId());
-        parcel.writeString(getName());
-        parcel.writeString(getReceipt());
-        parcel.writeDouble(getKcal());
-        parcel.writeString(getImgPath());
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.receipt);
+        dest.writeDouble(this.kcal);
+        dest.writeString(this.imgPath);
     }
 
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        @Override
-        public Dish createFromParcel(Parcel in) {
-            return new Dish(in);
-        }
+    protected Dish(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.receipt = in.readString();
+        this.kcal = in.readDouble();
+        this.imgPath = in.readString();
+    }
 
-        @Override
+    public static final Creator<Dish> CREATOR = new Creator<Dish>() {
+        public Dish createFromParcel(Parcel source) {
+            return new Dish(source);
+        }
         public Dish[] newArray(int size) {
             return new Dish[size];
         }
     };
-
 }

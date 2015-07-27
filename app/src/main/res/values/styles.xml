@@ -31,6 +31,18 @@
         <item name="rd_cornerRadius">0dp</item>
     </style>
 
+    <!--BUTTON TIMER-->
+    <style name="ButtonTimerGreen" parent="Material.Drawable.Ripple.Wave.Light">
+        <item name="rd_rippleColor">#F44336</item>
+        <item name="rd_rippleAnimDuration">250</item>
+        <item name="rd_delayClick">none</item>
+    </style>
+    <style name="ButtonTimerRed" parent="Material.Drawable.Ripple.Wave.Light">
+        <item name="rd_rippleColor">@color/colorPrimary</item>
+        <item name="rd_rippleAnimDuration">250</item>
+        <item name="rd_delayClick">none</item>
+    </style>
+
     <!--TAB-->
 
     <style  name="TabPageIndicator"  parent="Material.Widget.TabPageIndicator.Light">

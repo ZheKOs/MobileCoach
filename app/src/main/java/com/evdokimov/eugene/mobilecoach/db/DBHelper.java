@@ -4,8 +4,10 @@ package com.evdokimov.eugene.mobilecoach.db;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.util.Log;
 
+import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.db.dish.Dish;
 import com.evdokimov.eugene.mobilecoach.db.dish.DishDAO;
 import com.evdokimov.eugene.mobilecoach.db.plan.NutritionPlan;
@@ -107,6 +109,9 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTable(connectionSource, Workout.class);
             TableUtils.createTable(connectionSource, WorkoutPlan.class);
+
+            TableUtils.createTable(connectionSource, Dish.class);
+            TableUtils.createTable(connectionSource, NutritionPlan.class);
         }catch (SQLException e){
             Log.e(TAG, "error creating DB " + DB_NAME);
             throw new RuntimeException(e);
@@ -173,6 +178,134 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
             editor.commit();
         }catch (SQLException e){
             Log.e("TAG_ERROR","can't create TEST workoutPlan");
+            throw new RuntimeException(e);
+        }
+
+        Dish cauliflowerBakedWithEggsAndSoySauce, chickenBreastWithLemonAndChili,
+                chickenCutletsWithCheese,chickenFilletWithTomatoesAndOlives,eggsBakedWithChickenAndVegetables,
+                fishStewWithOnionsAndSourCream,fruitPizza,lahanorizo,ricePilafWithTomatoesAndBasil,
+                saladShopski,saladSpring;
+
+        Uri uri;
+        try {
+
+            cauliflowerBakedWithEggsAndSoySauce = new Dish();
+            cauliflowerBakedWithEggsAndSoySauce.setName("Цветная капуста запеченная с яйцами и соевом соусе");
+            cauliflowerBakedWithEggsAndSoySauce.setReceipt("");
+            cauliflowerBakedWithEggsAndSoySauce.setKcal(0.0);
+            uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.cauliflower_baked_with_eggs_and_soy_sauce);
+            cauliflowerBakedWithEggsAndSoySauce.setImgPath(uri.toString());
+            getDishDAO().create(cauliflowerBakedWithEggsAndSoySauce);
+
+
+            chickenBreastWithLemonAndChili = new Dish();
+            chickenBreastWithLemonAndChili.setName("Куриная грудка с лимоном и перцем чили");
+            chickenBreastWithLemonAndChili.setReceipt("");
+            chickenBreastWithLemonAndChili.setKcal(0.0);
+            uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.chicken_breast_with_lemon_and_chilli);
+            chickenBreastWithLemonAndChili.setImgPath(uri.toString());
+            getDishDAO().create(chickenBreastWithLemonAndChili);
+
+            chickenCutletsWithCheese = new Dish();
+            chickenCutletsWithCheese.setName("Куриные котлеты с сыром");
+            chickenCutletsWithCheese.setReceipt("");
+            chickenCutletsWithCheese.setKcal(0.0);
+            uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.chicken_cutlets_with_cheese);
+            chickenCutletsWithCheese.setImgPath(uri.toString());
+            getDishDAO().create(chickenCutletsWithCheese);
+
+            chickenFilletWithTomatoesAndOlives = new Dish();
+            chickenFilletWithTomatoesAndOlives.setName("Куриное филе с помидорами и маслинами");
+            chickenFilletWithTomatoesAndOlives.setReceipt("");
+            chickenFilletWithTomatoesAndOlives.setKcal(0.0);
+            uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.chicken_fillet_with_tomatoes_and_olives);
+            chickenFilletWithTomatoesAndOlives.setImgPath(uri.toString());
+            getDishDAO().create(chickenFilletWithTomatoesAndOlives);
+
+            eggsBakedWithChickenAndVegetables = new Dish();
+            eggsBakedWithChickenAndVegetables.setName("Яйца, запеченные с курицей и овощами");
+            eggsBakedWithChickenAndVegetables.setReceipt("");
+            eggsBakedWithChickenAndVegetables.setKcal(0.0);
+            uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.eggs_baked_with_chicken_and_vegetables);
+            eggsBakedWithChickenAndVegetables.setImgPath(uri.toString());
+            getDishDAO().create(eggsBakedWithChickenAndVegetables);
+
+            fishStewWithOnionsAndSourCream = new Dish();
+            fishStewWithOnionsAndSourCream.setName("Рыба тушеная с луком и сметаной");
+            fishStewWithOnionsAndSourCream.setReceipt("");
+            fishStewWithOnionsAndSourCream.setKcal(0.0);
+            uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.fish_stew_with_onions_and_sour_cream);
+            fishStewWithOnionsAndSourCream.setImgPath(uri.toString());
+            getDishDAO().create(fishStewWithOnionsAndSourCream);
+
+            fruitPizza = new Dish();
+            fruitPizza.setName("Фруктовая пицца");
+            fruitPizza.setReceipt("");
+            fruitPizza.setKcal(0.0);
+            uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.fruit_pizza);
+            fruitPizza.setImgPath(uri.toString());
+            getDishDAO().create(fruitPizza);
+
+            lahanorizo = new Dish();
+            lahanorizo.setName("Лаханоризо");
+            lahanorizo.setReceipt("");
+            lahanorizo.setKcal(0.0);
+            uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.lahanorizo);
+            lahanorizo.setImgPath(uri.toString());
+            getDishDAO().create(lahanorizo);
+
+            ricePilafWithTomatoesAndBasil = new Dish();
+            ricePilafWithTomatoesAndBasil.setName("Плов с рисом, помидорами и базиликом");
+            ricePilafWithTomatoesAndBasil.setReceipt("");
+            ricePilafWithTomatoesAndBasil.setKcal(0.0);
+            uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.rice_pilaf_with_tomatoes_and_basil);
+            ricePilafWithTomatoesAndBasil.setImgPath(uri.toString());
+            getDishDAO().create(ricePilafWithTomatoesAndBasil);
+
+            saladShopski = new Dish();
+            saladShopski.setName("Салат по шопски");
+            saladShopski.setReceipt("");
+            saladShopski.setKcal(0.0);
+            uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.salad_in_shopski);
+            saladShopski.setImgPath(uri.toString());
+            getDishDAO().create(saladShopski);
+
+            saladSpring = new Dish();
+            saladSpring.setName("Салат \"Весенний\"");
+            saladSpring.setReceipt("");
+            saladSpring.setKcal(41.19);
+            uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.salad_spring);
+            saladSpring.setImgPath(uri.toString());
+            getDishDAO().create(saladSpring);
+
+        }catch (SQLException e){
+            Log.e("TAG_ERROR","can't create test dish");
+            throw new RuntimeException(e);
+        }
+
+        ArrayList<Dish> dishes = new ArrayList<>();
+        dishes.add(cauliflowerBakedWithEggsAndSoySauce);
+        dishes.add(chickenBreastWithLemonAndChili);
+        dishes.add(chickenCutletsWithCheese);
+        dishes.add(chickenFilletWithTomatoesAndOlives);
+        dishes.add(eggsBakedWithChickenAndVegetables);
+        dishes.add(fishStewWithOnionsAndSourCream);
+        dishes.add(fruitPizza);
+        dishes.add(lahanorizo);
+        dishes.add(ricePilafWithTomatoesAndBasil);
+        dishes.add(saladShopski);
+        dishes.add(saladSpring);
+
+        NutritionPlan nPlan;
+        try {
+            for (int i = 0; i < dishes.size(); i++){
+                nPlan = new NutritionPlan();
+                nPlan.setName("MainNutritionPlan");
+                nPlan.setDish(dishes.get(i));
+                getNutritionPlanDAO().create(nPlan);
+            }
+        }catch (SQLException e){
+            Log.e("TAG_ERROR","can't create test nutrition plan");
             throw new RuntimeException(e);
         }
         /*

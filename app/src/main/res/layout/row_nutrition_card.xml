@@ -23,12 +23,12 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="125dp"
-                android:id="@+id/imageView2"
+                android:id="@+id/iv_nutrition_card"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:background="#aaa"
                 android:src="@drawable/food_apple"
-                android:scaleType="center" />
+                android:scaleType="centerCrop" />
 
             <com.rey.material.widget.CheckBox
                 style="@style/Material.Drawable.CheckBox"
@@ -45,25 +45,26 @@
                 android:id="@+id/checkbox_nc"
                 android:layout_gravity="left|top"
                 android:background="@drawable/dgrey_bg_to_empty"
-                android:layout_alignBottom="@+id/imageView2" />
+                android:layout_alignBottom="@+id/iv_nutrition_card" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/imageView2"
+                android:layout_below="@+id/iv_nutrition_card"
                 android:layout_centerHorizontal="true"
                 >
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_marginLeft="16dp"
                     android:gravity="center_vertical"
-                    android:id="@+id/linearLayout">
+                    android:id="@+id/linearLayout"
+                    android:layout_marginRight="40dp">
 
                     <TextView
                         android:layout_width="wrap_content"

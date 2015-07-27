@@ -3,6 +3,7 @@ package com.evdokimov.eugene.mobilecoach.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.TransitionDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,15 +12,22 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.evdokimov.eugene.mobilecoach.Activities.MainActivity;
 import com.evdokimov.eugene.mobilecoach.Activities.DishActivity;
 import com.evdokimov.eugene.mobilecoach.R;
+import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
+import com.evdokimov.eugene.mobilecoach.db.plan.NutritionPlan;
+import com.j256.ormlite.logger.Log;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.CheckBox;
 import com.rey.material.widget.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -27,6 +35,8 @@ public class NutritionFragment extends Fragment {
 
     private Context context;
     private FloatingActionButton fabMain;
+
+    private ArrayList<NutritionPlan> nPlan;
 
     public static NutritionFragment newInstance(){
         NutritionFragment fragment = new NutritionFragment();
@@ -41,11 +51,17 @@ public class NutritionFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_nutrition,container,false);
 
         mainActivity = (MainActivity) getActivity();
+        try {
 
-        String[] dishes = {"БЛЮДО","БЛЮДО","БЛЮДО","БЛЮДО","БЛЮДО","БЛЮДО","БЛЮДО"};
+            nPlan = new ArrayList<>(
+                    HelperFactory.getDbHelper().getNutritionPlanDAO().getNutritionPlanByName("MainNutritionPlan")
+            );
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
 
         GridView lv_nutrition = (GridView) v.findViewById(R.id.lv_nutrition);
-        final NutritionAdapter nutritionAdapter = new NutritionAdapter(getActivity(), dishes);
+        final NutritionAdapter nutritionAdapter = new NutritionAdapter(getActivity(), nPlan);
         lv_nutrition.setAdapter(nutritionAdapter);
 
         fabMain = (FloatingActionButton) v.findViewById(R.id.btn_float_main);
@@ -60,19 +76,19 @@ public class NutritionFragment extends Fragment {
         return v;
     }
 
-    class NutritionAdapter extends ArrayAdapter<String>
+    class NutritionAdapter extends ArrayAdapter<NutritionPlan>
     {
 
         private Context context;
-        private String[] strings;
+        private ArrayList<NutritionPlan> nutritionPlan;
         private boolean[] checks;
 
-        public NutritionAdapter(Context context, String[] objects) {
-            super(context, R.layout.row_nutrition_card, objects);
+        public NutritionAdapter(Context context, ArrayList<NutritionPlan> nPlan) {
+            super(context, R.layout.row_nutrition_card, nPlan);
 
             this.context = context;
-            this.strings = objects;
-            this.checks = new boolean[strings.length];
+            this.nutritionPlan = nPlan;
+            this.checks = new boolean[nPlan.size()];
 
         }
 
@@ -83,6 +99,7 @@ public class NutritionFragment extends Fragment {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.row_nutrition_card,parent,false);
 
+            ImageView iv = (ImageView) rowView.findViewById(R.id.iv_nutrition_card);
             TextView tvDishName = (TextView) rowView.findViewById(R.id.tv_dish_name);
             TextView tvKcal = (TextView) rowView.findViewById(R.id.tv_kcal_dish);
             final CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkbox_nc);
@@ -113,7 +130,10 @@ public class NutritionFragment extends Fragment {
             checkBox.setChecked(checks[position]);
             if (checkBox.isChecked())
                 transition.startTransition(150);
-            tvDishName.setText(strings[position]);
+            tvDishName.setText(nutritionPlan.get(position).getDish().getName());
+            tvKcal.setText(String.valueOf(nutritionPlan.get(position).getDish().getKcal()));
+
+            Picasso.with(context).load(nutritionPlan.get(position).getDish().getImgPath()).into(iv);
 
             return rowView;
         }
