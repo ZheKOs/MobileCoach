@@ -3,6 +3,7 @@ package com.evdokimov.eugene.mobilecoach.db;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
@@ -187,11 +188,12 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
                 saladShopski,saladSpring;
 
         Uri uri;
+        Resources res = context.getResources();
         try {
 
             cauliflowerBakedWithEggsAndSoySauce = new Dish();
             cauliflowerBakedWithEggsAndSoySauce.setName("Цветная капуста запеченная с яйцами и соевом соусе");
-            cauliflowerBakedWithEggsAndSoySauce.setReceipt("");
+            cauliflowerBakedWithEggsAndSoySauce.setReceipt(res.getString(R.string.cauliflower_baked_with_eggs_and_soy_sauce_recipe));
             cauliflowerBakedWithEggsAndSoySauce.setKcal(0.0);
             uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.cauliflower_baked_with_eggs_and_soy_sauce);
             cauliflowerBakedWithEggsAndSoySauce.setImgPath(uri.toString());
@@ -200,7 +202,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
             chickenBreastWithLemonAndChili = new Dish();
             chickenBreastWithLemonAndChili.setName("Куриная грудка с лимоном и перцем чили");
-            chickenBreastWithLemonAndChili.setReceipt("");
+            chickenBreastWithLemonAndChili.setReceipt(res.getString(R.string.chicken_breast_with_lemon_and_chilli_recipe));
             chickenBreastWithLemonAndChili.setKcal(0.0);
             uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.chicken_breast_with_lemon_and_chilli);
             chickenBreastWithLemonAndChili.setImgPath(uri.toString());
@@ -208,63 +210,63 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
             chickenCutletsWithCheese = new Dish();
             chickenCutletsWithCheese.setName("Куриные котлеты с сыром");
-            chickenCutletsWithCheese.setReceipt("");
-            chickenCutletsWithCheese.setKcal(0.0);
+            chickenCutletsWithCheese.setReceipt(res.getString(R.string.chicken_cutlets_with_cheese_recipe));
+            chickenCutletsWithCheese.setKcal(193.0);
             uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.chicken_cutlets_with_cheese);
             chickenCutletsWithCheese.setImgPath(uri.toString());
             getDishDAO().create(chickenCutletsWithCheese);
 
             chickenFilletWithTomatoesAndOlives = new Dish();
-            chickenFilletWithTomatoesAndOlives.setName("Куриное филе с помидорами и маслинами");
-            chickenFilletWithTomatoesAndOlives.setReceipt("");
-            chickenFilletWithTomatoesAndOlives.setKcal(0.0);
+            chickenFilletWithTomatoesAndOlives.setName("Куриное филе с томатами и оливками");
+            chickenFilletWithTomatoesAndOlives.setReceipt(res.getString(R.string.chicken_fillet_with_tomatoes_and_olives_recipe));
+            chickenFilletWithTomatoesAndOlives.setKcal(110.0);
             uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.chicken_fillet_with_tomatoes_and_olives);
             chickenFilletWithTomatoesAndOlives.setImgPath(uri.toString());
             getDishDAO().create(chickenFilletWithTomatoesAndOlives);
 
             eggsBakedWithChickenAndVegetables = new Dish();
             eggsBakedWithChickenAndVegetables.setName("Яйца, запеченные с курицей и овощами");
-            eggsBakedWithChickenAndVegetables.setReceipt("");
-            eggsBakedWithChickenAndVegetables.setKcal(0.0);
+            eggsBakedWithChickenAndVegetables.setReceipt(res.getString(R.string.eggs_baked_with_chicken_and_vegetables_recipe));
+            eggsBakedWithChickenAndVegetables.setKcal(107.0);
             uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.eggs_baked_with_chicken_and_vegetables);
             eggsBakedWithChickenAndVegetables.setImgPath(uri.toString());
             getDishDAO().create(eggsBakedWithChickenAndVegetables);
 
             fishStewWithOnionsAndSourCream = new Dish();
             fishStewWithOnionsAndSourCream.setName("Рыба тушеная с луком и сметаной");
-            fishStewWithOnionsAndSourCream.setReceipt("");
-            fishStewWithOnionsAndSourCream.setKcal(0.0);
+            fishStewWithOnionsAndSourCream.setReceipt(res.getString(R.string.fish_stew_with_onions_and_sour_cream_recipe));
+            fishStewWithOnionsAndSourCream.setKcal(150.0);
             uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.fish_stew_with_onions_and_sour_cream);
             fishStewWithOnionsAndSourCream.setImgPath(uri.toString());
             getDishDAO().create(fishStewWithOnionsAndSourCream);
 
             fruitPizza = new Dish();
             fruitPizza.setName("Фруктовая пицца");
-            fruitPizza.setReceipt("");
-            fruitPizza.setKcal(0.0);
+            fruitPizza.setReceipt(res.getString(R.string.fruit_pizza_recipe));
+            fruitPizza.setKcal(200.0);
             uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.fruit_pizza);
             fruitPizza.setImgPath(uri.toString());
             getDishDAO().create(fruitPizza);
 
             lahanorizo = new Dish();
             lahanorizo.setName("Лаханоризо");
-            lahanorizo.setReceipt("");
-            lahanorizo.setKcal(0.0);
+            lahanorizo.setReceipt(res.getString(R.string.lahanorizo_recipe));
+            lahanorizo.setKcal(65.0);
             uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.lahanorizo);
             lahanorizo.setImgPath(uri.toString());
             getDishDAO().create(lahanorizo);
 
             ricePilafWithTomatoesAndBasil = new Dish();
-            ricePilafWithTomatoesAndBasil.setName("Плов с рисом, помидорами и базиликом");
-            ricePilafWithTomatoesAndBasil.setReceipt("");
-            ricePilafWithTomatoesAndBasil.setKcal(0.0);
+            ricePilafWithTomatoesAndBasil.setName("Рисовый пилав с помидорами и базиликом");
+            ricePilafWithTomatoesAndBasil.setReceipt(res.getString(R.string.rice_pilaf_with_tomatoes_and_basil_recipe));
+            ricePilafWithTomatoesAndBasil.setKcal(79.0);
             uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.rice_pilaf_with_tomatoes_and_basil);
             ricePilafWithTomatoesAndBasil.setImgPath(uri.toString());
             getDishDAO().create(ricePilafWithTomatoesAndBasil);
 
             saladShopski = new Dish();
             saladShopski.setName("Салат по шопски");
-            saladShopski.setReceipt("");
+            saladShopski.setReceipt(res.getString(R.string.salad_in_shopski_recipe));
             saladShopski.setKcal(0.0);
             uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.salad_in_shopski);
             saladShopski.setImgPath(uri.toString());
@@ -272,7 +274,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
             saladSpring = new Dish();
             saladSpring.setName("Салат \"Весенний\"");
-            saladSpring.setReceipt("");
+            saladSpring.setReceipt(res.getString(R.string.sspring_recipe));
             saladSpring.setKcal(41.19);
             uri = Uri.parse("android.resource://com.evdokimov.eugene.mobilecoach/" + R.drawable.salad_spring);
             saladSpring.setImgPath(uri.toString());

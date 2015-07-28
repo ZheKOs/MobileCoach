@@ -2,20 +2,50 @@ package com.evdokimov.eugene.mobilecoach.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.evdokimov.eugene.mobilecoach.R;
+import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
+import com.evdokimov.eugene.mobilecoach.db.dish.Dish;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.ImageButton;
+import com.squareup.picasso.Picasso;
+
+import java.sql.SQLException;
 
 public class DishActivity extends AppCompatActivity {
+
+    Dish dish;
+
+    ImageView iv;
+    TextView dName, kcal, receipt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.l_dish_watch);
+
+        String dishName = getIntent().getStringExtra("dishName");
+
+        try{
+            dish = HelperFactory.getDbHelper().getDishDAO().getDishByName(dishName);
+        }catch (SQLException e){
+            Log.e("TAG_ERROR","can't get dish");
+        }
+
+        iv = (ImageView) findViewById(R.id.iv_w_dish);
+        Picasso.with(getBaseContext()).load(dish.getImgPath()).into(iv);
+        dName = (TextView) findViewById(R.id.tv_dish_name_watch);
+        dName.setText(dishName);
+        kcal = (TextView) findViewById(R.id.tv_kcal_dish_watch);
+        kcal.setText(String.valueOf(dish.getKcal()) + " ккал на 100 грамм");
+        receipt = (TextView) findViewById(R.id.tv_dish_receipt_watch);
+        receipt.setText(dish.getReceipt());
 
         ImageButton btnEdit = (ImageButton) findViewById(R.id.btn_edit_dish);
         btnEdit.setOnClickListener(new View.OnClickListener() {
