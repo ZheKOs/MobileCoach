@@ -37,4 +37,6 @@ dependencies {
 
     compile 'asia.ivity.android:drag-sort-listview:1.0'
 
+    compile 'com.github.nirhart:parallaxscroll:1.0'
+
 }

@@ -17,7 +17,7 @@
         android:id="@+id/header_etp">
 
         <com.rey.material.widget.EditText
-            android:layout_width="240dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="ПЛАН"
@@ -34,7 +34,8 @@
             android:layout_marginLeft="16dp"
             android:textColor="#fff"
             android:layout_marginBottom="16dp"
-            android:hint="Имя плана" />
+            android:hint="Имя плана"
+            android:layout_marginRight="96dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -128,7 +129,7 @@
         android:layout_height="64dp"
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@id/header_etp"
-        android:layout_marginBottom="-32dp"
+        android:layout_marginBottom="-34dp"
         android:layout_marginRight="16dp"
         android:id="@+id/btn_edit_tp_add"
         app:rd_enable="true"
