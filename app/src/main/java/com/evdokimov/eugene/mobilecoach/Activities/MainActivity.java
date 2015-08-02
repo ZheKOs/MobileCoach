@@ -212,8 +212,11 @@ public class MainActivity extends ActionBarActivity{
         }
     }
 
+    /*
+       * This method is for Drawer and it handle clicks on its items
+     */
     public void drawerListener(View v){ //it uses in xml code for
-
+        Intent intent;
         switch (v.getId()){
             case R.id.btn_nav_train:
                 Toast.makeText(context,"Тренировка",Toast.LENGTH_SHORT).show();
@@ -236,10 +239,16 @@ public class MainActivity extends ActionBarActivity{
             case R.id.btn_nav_workouts:
                 Toast.makeText(context,"Упражнения",Toast.LENGTH_SHORT).show();
                 dl_navigator.closeDrawer(fl_drawer);
+                intent = new Intent(context, AllItemsActivity.class);
+                intent.putExtra("isWorkoutMode",true);
+                startActivity(intent);
                 break;
             case R.id.btn_nav_dishes:
                 Toast.makeText(context,"Блюда",Toast.LENGTH_SHORT).show();
                 dl_navigator.closeDrawer(fl_drawer);
+                intent = new Intent(context, AllItemsActivity.class);
+                intent.putExtra("isWorkoutMode", false);
+                startActivity(intent);
                 break;
             case R.id.btn_nav_settings:
                 Toast.makeText(context,"Настройки",Toast.LENGTH_SHORT).show();

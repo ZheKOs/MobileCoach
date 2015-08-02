@@ -33,12 +33,14 @@ public class NutritionAdapter extends RecyclerView.Adapter<NutritionAdapter.View
 
     private FloatingActionButton fabMain;
 
+    int resizeTargetWidth, resizeTargetHeight;
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView mTextView;
+
         public ImageView iv;
         public TextView tvDishName;
         public TextView tvKcal;
@@ -71,6 +73,10 @@ public class NutritionAdapter extends RecyclerView.Adapter<NutritionAdapter.View
                 fabMain.setVisibility(View.GONE);
             }
         });
+
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        resizeTargetWidth = metrics.widthPixels / 2 - 30;
+        resizeTargetHeight = resizeTargetWidth;
 
     }
 
@@ -122,10 +128,6 @@ public class NutritionAdapter extends RecyclerView.Adapter<NutritionAdapter.View
             transition.startTransition(150);
         holder.tvDishName.setText(nutritionPlan.get(position).getDish().getName());
         holder.tvKcal.setText(String.valueOf(nutritionPlan.get(position).getDish().getKcal()));
-
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        int resizeTargetWidth = metrics.widthPixels / 2 - 30;
-        int resizeTargetHeight = resizeTargetWidth;
 
         Picasso.with(context)
                 .load(nutritionPlan.get(position).getDish().getImgPath())

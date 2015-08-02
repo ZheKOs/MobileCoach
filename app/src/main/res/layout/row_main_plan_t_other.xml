@@ -54,7 +54,9 @@
                     android:layout_alignWithParentIfMissing="false"
                     android:layout_centerVertical="true"
                     android:textSize="20dp" />
+
             </RelativeLayout>
+
             <com.rey.material.widget.Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -63,7 +65,23 @@
                 app:rd_rippleType="touch"
                 app:rd_rippleColor="#70707070"
                 app:rd_delayClick="afterRelease"
-                android:id="@+id/btn_main_plan" />
+                android:id="@+id/btn_main_plan"
+                android:layout_toStartOf="@+id/ib_more_plan_item"
+                android:layout_toLeftOf="@+id/ib_more_plan_item" />
+
+            <com.rey.material.widget.ImageButton
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/dots_vertical_black"
+                android:background="@color/empty_dgrey"
+                app:rd_enable="true"
+                app:rd_rippleType="wave"
+                app:rd_rippleColor="#70707070"
+                app:rd_delayClick="afterRelease"
+                android:id="@+id/ib_more_plan_item"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

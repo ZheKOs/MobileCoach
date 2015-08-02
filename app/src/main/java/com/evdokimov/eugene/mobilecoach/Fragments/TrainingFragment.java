@@ -10,8 +10,11 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.internal.view.ContextThemeWrapper;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +31,7 @@ import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlan;
 import com.rey.material.app.SimpleDialog;
 import com.rey.material.app.TimePickerDialog;
+import com.rey.material.widget.Button;
 import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ImageButton;
 import com.rey.material.widget.SnackBar;
@@ -93,7 +97,7 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
 
         getWorkoutPlan(workoutPlanName);
 
-        setAnimation();
+//        setAnimation();
 
         getAllPlans();
 
@@ -101,72 +105,72 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
 
         initSnackBar();
 
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.btn_float_third:
-                        final TimePickerDialog dialog = (TimePickerDialog) new TimePickerDialog(mainActivity,R.style.TimePickerDialog)
-                                //.title("Поставить напоминание?")
-                                .positiveAction("Поставить").negativeAction("Отмена");
-                        dialog.positiveActionClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                snackBar.text("Напоминание в " + dialog.getFormattedTime(new SimpleDateFormat("H:mm")));
-                                dialog.dismiss();
-                                snackBar.show(mainActivity);
-                            }
-                        });
-                        dialog.negativeActionClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Toast.makeText(mainActivity, "Отменено", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                            }
-                        });
+//        View.OnClickListener listener = new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                switch (view.getId()) {
+//                    case R.id.btn_float_third:
+//                        final TimePickerDialog dialog = (TimePickerDialog) new TimePickerDialog(mainActivity,R.style.TimePickerDialog)
+//                                //.title("Поставить напоминание?")
+//                                .positiveAction("Поставить").negativeAction("Отмена");
+//                        dialog.positiveActionClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                snackBar.text("Напоминание в " + dialog.getFormattedTime(new SimpleDateFormat("H:mm")));
+//                                dialog.dismiss();
+//                                snackBar.show(mainActivity);
+//                            }
+//                        });
+//                        dialog.negativeActionClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                Toast.makeText(mainActivity, "Отменено", Toast.LENGTH_SHORT).show();
+//                                dialog.dismiss();
+//                            }
+//                        });
+//
+//                        dialog.show();
+//                        break;
+//                    case R.id.btn_float_second:
+//                        final SimpleDialog simpleDialog = new SimpleDialog(mainActivity);
+//                        simpleDialog.title("Выберите план");
+//                        final String[] plans = new String[]{"ПЛАН1", "ПЛАН2", "ПЛАН3", "ПЛАН4", "ПЛАН5", "ПЛАН6", "ПЛАН7", "ПЛАН8"};
+//                        simpleDialog.items(plans, -1);
+//                        simpleDialog.positiveAction("Выбрать").positiveActionClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                Toast.makeText(mainActivity,
+//                                        "Выбран план - " + plans[simpleDialog.getSelectedIndex()],
+//                                        Toast.LENGTH_SHORT).show();
+//                                simpleDialog.dismiss();
+//                            }
+//                        });
+//                        simpleDialog.negativeAction("Отмена").negativeActionClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                simpleDialog.dismiss();
+//                            }
+//                        });
+//                        simpleDialog.show();
+//                        break;
+//                    case R.id.btn_float_main:
+//                        Intent intent = new Intent(getActivity(), WorkoutActivity.class);
+//                        startActivity(intent);
+//                        break;
+//                }
+//            }
+//        };
 
-                        dialog.show();
-                        break;
-                    case R.id.btn_float_second:
-                        final SimpleDialog simpleDialog = new SimpleDialog(mainActivity);
-                        simpleDialog.title("Выберите план");
-                        final String[] plans = new String[]{"ПЛАН1", "ПЛАН2", "ПЛАН3", "ПЛАН4", "ПЛАН5", "ПЛАН6", "ПЛАН7", "ПЛАН8"};
-                        simpleDialog.items(plans, -1);
-                        simpleDialog.positiveAction("Выбрать").positiveActionClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Toast.makeText(mainActivity,
-                                        "Выбран план - " + plans[simpleDialog.getSelectedIndex()],
-                                        Toast.LENGTH_SHORT).show();
-                                simpleDialog.dismiss();
-                            }
-                        });
-                        simpleDialog.negativeAction("Отмена").negativeActionClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                simpleDialog.dismiss();
-                            }
-                        });
-                        simpleDialog.show();
-                        break;
-                    case R.id.btn_float_main:
-                        Intent intent = new Intent(getActivity(), WorkoutActivity.class);
-                        startActivity(intent);
-                        break;
-                }
-            }
-        };
+//        mainFAB = (FloatingActionButton) mView.findViewById(R.id.btn_float_main);
+//        mainFAB.setOnClickListener(listener);
 
-        mainFAB = (FloatingActionButton) mView.findViewById(R.id.btn_float_main);
-        mainFAB.setOnClickListener(listener);
+//        secondFAB = (FloatingActionButton) mView.findViewById(R.id.btn_float_second);
+//        secondFAB.setOnClickListener(listener);
+//
+//        thirdFAB = (FloatingActionButton) mView.findViewById(R.id.btn_float_third);
+//        thirdFAB.setOnClickListener(listener);
 
-        secondFAB = (FloatingActionButton) mView.findViewById(R.id.btn_float_second);
-        secondFAB.setOnClickListener(listener);
-
-        thirdFAB = (FloatingActionButton) mView.findViewById(R.id.btn_float_third);
-        thirdFAB.setOnClickListener(listener);
-
-        animateFAB(-1, true);
+//        animateFAB(-1, true);
 
         return mView;
     }
@@ -196,19 +200,90 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
             mTop = mInflater.inflate(R.layout.row_main_plan_t_main, null);
             tvPlanNamePicked = (TextView) mTop.findViewById(R.id.textViewPlanNamePicked);
             tvPlanNamePicked.setText(workoutPlanName);
-            ImageButton editPlan = (ImageButton) mTop.findViewById(R.id.main_btn_edit_plan);
-            editPlan.setOnClickListener(new View.OnClickListener() {
+            final ImageButton morePlan = (ImageButton) mTop.findViewById(R.id.main_btn_more_plan);
+            morePlan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    switch (view.getId()) {
-                        case R.id.main_btn_edit_plan:
-                            Intent intent = new Intent(getActivity(), EditTrainingPlanActivity.class);
-                            intent.putExtra("planName", workoutPlanName);
-                            startActivityForResult(intent, REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY);
-                            break;
-                    }
+
+                    Context wrapper = new ContextThemeWrapper(mainActivity.getBaseContext(), R.style.MyPopupMenu);
+                    PopupMenu popup = new PopupMenu(wrapper, morePlan);
+                    popup.getMenuInflater()
+                            .inflate(R.menu.menu_training, popup.getMenu());
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Toast.makeText(mainActivity.getBaseContext(),
+                                    item.getTitle(),
+                                    Toast.LENGTH_SHORT).show();
+                            switch (item.getItemId()) {
+                                case R.id.edit_plan_mt:
+                                    Intent intent = new Intent(getActivity(), EditTrainingPlanActivity.class);
+                                    intent.putExtra("planName", workoutPlanName);
+                                    startActivityForResult(intent, REQUEST_EDIT_WORKOUT_PLAN_ACTIVITY);
+                                    break;
+                                case R.id.notify_plan_mt:
+                                    final TimePickerDialog dialog = (TimePickerDialog) new TimePickerDialog(mainActivity,R.style.TimePickerDialog)
+                                            //.title("Поставить напоминание?")
+                                            .positiveAction("Поставить").negativeAction("Отмена");
+                                    dialog.positiveActionClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            snackBar.text("Напоминание в " + dialog.getFormattedTime(new SimpleDateFormat("H:mm")));
+                                            dialog.dismiss();
+                                            snackBar.show(mainActivity);
+                                        }
+                                    });
+                                    dialog.negativeActionClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Toast.makeText(mainActivity, "Отменено", Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    dialog.show();
+                                    break;
+                                case R.id.share_plan_mt:
+                                    final SimpleDialog simpleDialog = new SimpleDialog(mainActivity);
+                                    simpleDialog.title("Выберите план");
+                                    final String[] plans = new String[]{"ПЛАН1", "ПЛАН2", "ПЛАН3", "ПЛАН4", "ПЛАН5", "ПЛАН6", "ПЛАН7", "ПЛАН8"};
+                                    simpleDialog.items(plans, -1);
+                                    simpleDialog.positiveAction("Выбрать").positiveActionClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Toast.makeText(mainActivity,
+                                                    "Выбран план - " + plans[simpleDialog.getSelectedIndex()],
+                                                    Toast.LENGTH_SHORT).show();
+                                            simpleDialog.dismiss();
+                                        }
+                                    });
+                                    simpleDialog.negativeAction("Отмена").negativeActionClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            simpleDialog.dismiss();
+                                        }
+                                    });
+                                    simpleDialog.show();
+                                    break;
+                                case R.id.delete_plan_mt:
+                                    break;
+                            }
+                            return true;
+                        }
+                    });
+                    popup.show();
                 }
             });
+
+            Button start = (Button) mTop.findViewById(R.id.btn_start_plan_top);
+            start.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), WorkoutActivity.class);
+                    startActivity(intent);
+                }
+            });
+
             lv_plan_workouts = (ListView) mTop.findViewById(R.id.lv_main_workouts);
             workoutsAdapter = new WorkoutsAdapter(getActivity(), workoutPlan, false);
             lv_plan_workouts.setAdapter(workoutsAdapter);
@@ -221,18 +296,25 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
                             // Disallow ScrollView to intercept touch events.
                             v.getParent().requestDisallowInterceptTouchEvent(true);
                             break;
-
                         case MotionEvent.ACTION_UP:
                             // Allow ScrollView to intercept touch events.
                             v.getParent().requestDisallowInterceptTouchEvent(false);
                             break;
                     }
-
                     // Handle ListView touch events.
                     v.onTouchEvent(event);
                     return true;
                 }
             });
+            //changing height programmatically
+            ViewGroup.LayoutParams params = lv_plan_workouts.getLayoutParams();
+            if (workoutPlan.size()>=4){
+                params.height = 2*55*4-32; // -32 to let user know that there is something to scroll for
+            }else {
+                params.height = 2*55*workoutPlan.size();
+            }
+            lv_plan_workouts.setLayoutParams(params);
+            lv_plan_workouts.requestLayout();
 
         } else {
             mTop = mInflater.inflate(R.layout.row_main_plan_t_main_empty,null);
@@ -271,67 +353,67 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
         }
     }
 
-    private void setAnimation(){
-        scaleAnimationIn.setDuration(500);
-        scaleAnimationIn.setStartOffset(150);
-        scaleAnimationOut.setDuration(500);
-        scaleAnimationOut.setStartOffset(150);
-    }
-    private void animateFAB(int which, boolean in){
-        switch (which) {
-            case 0: //mainFAB
-                if (in){
-                    mainFAB.setAnimation(scaleAnimationIn);
-                    mainFAB.setVisibility(View.VISIBLE);
-
-                    secondFAB.setVisibility(View.GONE);
-                    thirdFAB.setVisibility(View.GONE);
-                }else{
-                    mainFAB.setAnimation(scaleAnimationOut);
-                    mainFAB.setVisibility(View.GONE);
-                }
-                break;
-            case 1:
-                if (in) {
-                    secondFAB.setAnimation(scaleAnimationIn);
-                    secondFAB.setVisibility(View.VISIBLE);
-                }else {
-                    secondFAB.setAnimation(scaleAnimationOut);
-                    secondFAB.setVisibility(View.GONE);
-                }
-                break;
-            case 2:
-                if (in) {
-                    thirdFAB.setAnimation(scaleAnimationIn);
-                    thirdFAB.setVisibility(View.VISIBLE);
-                }else {
-                    thirdFAB.setAnimation(scaleAnimationOut);
-                    thirdFAB.setVisibility(View.GONE);
-                }
-                break;
-            case -1:
-                if (in){
-                    mainFAB.setAnimation(scaleAnimationIn);
-                    mainFAB.setVisibility(View.VISIBLE);
-
-                    secondFAB.setAnimation(scaleAnimationIn);
-                    secondFAB.setVisibility(View.VISIBLE);
-
-                    thirdFAB.setAnimation(scaleAnimationIn);
-                    thirdFAB.setVisibility(View.VISIBLE);
-                }else{
-                    mainFAB.setAnimation(scaleAnimationOut);
-                    mainFAB.setVisibility(View.GONE);
-
-                    secondFAB.setAnimation(scaleAnimationOut);
-                    secondFAB.setVisibility(View.GONE);
-
-                    thirdFAB.setAnimation(scaleAnimationOut);
-                    thirdFAB.setVisibility(View.GONE);
-                }
-
-        }
-    }
+//    private void setAnimation(){
+//        scaleAnimationIn.setDuration(500);
+//        scaleAnimationIn.setStartOffset(150);
+//        scaleAnimationOut.setDuration(500);
+//        scaleAnimationOut.setStartOffset(150);
+//    }
+//    private void animateFAB(int which, boolean in){
+//        switch (which) {
+//            case 0: //mainFAB
+//                if (in){
+//                    mainFAB.setAnimation(scaleAnimationIn);
+//                    mainFAB.setVisibility(View.VISIBLE);
+//
+////                    secondFAB.setVisibility(View.GONE);
+////                    thirdFAB.setVisibility(View.GONE);
+//                }else{
+//                    mainFAB.setAnimation(scaleAnimationOut);
+//                    mainFAB.setVisibility(View.GONE);
+//                }
+//                break;
+////            case 1:
+////                if (in) {
+////                    secondFAB.setAnimation(scaleAnimationIn);
+////                    secondFAB.setVisibility(View.VISIBLE);
+////                }else {
+////                    secondFAB.setAnimation(scaleAnimationOut);
+////                    secondFAB.setVisibility(View.GONE);
+////                }
+////                break;
+////            case 2:
+////                if (in) {
+////                    thirdFAB.setAnimation(scaleAnimationIn);
+////                    thirdFAB.setVisibility(View.VISIBLE);
+////                }else {
+////                    thirdFAB.setAnimation(scaleAnimationOut);
+////                    thirdFAB.setVisibility(View.GONE);
+////                }
+////                break;
+//            case -1:
+//                if (in){
+//                    mainFAB.setAnimation(scaleAnimationIn);
+//                    mainFAB.setVisibility(View.VISIBLE);
+//
+////                    secondFAB.setAnimation(scaleAnimationIn);
+////                    secondFAB.setVisibility(View.VISIBLE);
+////
+////                    thirdFAB.setAnimation(scaleAnimationIn);
+////                    thirdFAB.setVisibility(View.VISIBLE);
+//                }else{
+//                    mainFAB.setAnimation(scaleAnimationOut);
+//                    mainFAB.setVisibility(View.GONE);
+//
+////                    secondFAB.setAnimation(scaleAnimationOut);
+////                    secondFAB.setVisibility(View.GONE);
+////
+////                    thirdFAB.setAnimation(scaleAnimationOut);
+////                    thirdFAB.setVisibility(View.GONE);
+//                }
+//
+//        }
+//    }
 
 
 

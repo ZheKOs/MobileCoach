@@ -51,14 +51,14 @@ public class DishActivity extends AppCompatActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.l_dish_edit);
-                ImageButton back = (ImageButton) findViewById(R.id.btn_back_to_watch_dish);
-                back.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        setContentView(R.layout.l_dish_watch);
-                    }
-                });
+//                setContentView(R.layout.l_dish_edit);
+//                ImageButton back = (ImageButton) findViewById(R.id.btn_back_to_watch_dish);
+//                back.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        setContentView(R.layout.l_dish_watch);
+//                    }
+//                });
             }
         });
         final ImageButton finish = (ImageButton) findViewById(R.id.btn_back_dish);

@@ -176,6 +176,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
             sharedPref = context.getSharedPreferences("mysettings",Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("pickedplan", "MainPlan");
+            editor.putString("pickednutrition","MainNutritionPlan");
             editor.commit();
         }catch (SQLException e){
             Log.e("TAG_ERROR","can't create TEST workoutPlan");

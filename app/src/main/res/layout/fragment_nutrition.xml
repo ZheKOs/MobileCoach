@@ -16,7 +16,7 @@
         android:dividerHeight="0dp"
         android:scrollbars="none"
         android:clipToPadding="false"
-        android:paddingTop="75dp"
+        android:paddingTop="65dp"
         android:paddingLeft="6dp"
         android:paddingRight="6dp"
         android:paddingBottom="6dp" />
@@ -61,7 +61,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="ИМЯ ПЛАНА"
                 android:textSize="17sp"
-                android:id="@+id/textView2"
+                android:id="@+id/tv_nutrition_name"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -71,18 +71,17 @@
             <com.rey.material.widget.ImageButton
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:id="@+id/imageButton"
+                android:id="@+id/ib_nutr_more"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/dots_vertical_dgrey"
+                android:src="@drawable/dots_vertical_black"
                 android:scaleType="center"
                 app:rd_enable="true"
                 app:rd_rippleType="wave"
                 app:rd_rippleColor="#ddd"
                 app:rd_delayClick="afterRelease"
-                android:background="#00ffffff"
-                android:layout_marginRight="6dp" />
+                android:background="#00ffffff"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
