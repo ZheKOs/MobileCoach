@@ -1,2 +1,2 @@
-# MobileCoach [![Build Status]]
+# MobileCoach 
 MobileCoach Android App.
