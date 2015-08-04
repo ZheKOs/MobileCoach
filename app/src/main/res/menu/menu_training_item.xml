@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/remove_pick"
-        android:title="Убрать"/>
+    <item android:id="@+id/set_pickedplan"
+        android:title="Выбрать"/>
     <item android:id="@+id/edit_plan_mt"
         android:title="Редактировать"/>
     <item android:id="@+id/notify_plan_mt"

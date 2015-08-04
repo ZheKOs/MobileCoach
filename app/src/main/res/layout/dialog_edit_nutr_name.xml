@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.rey.material.widget.EditText
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="Имя плана"
+        android:text=""
+        android:textSize="18sp"
+        app:et_labelEnable="true"
+        app:et_labelPadding="3dp"
+        app:et_dividerColor="@color/colorAccent"
+        app:et_dividerHeight="3dp"
+        android:id="@+id/et_dialog_edit_nutr_name"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp" />
+
+</LinearLayout>

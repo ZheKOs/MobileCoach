@@ -1,6 +1,7 @@
 package com.evdokimov.eugene.mobilecoach.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,9 @@ import com.evdokimov.eugene.mobilecoach.Adapters.NutritionAdapter;
 import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.plan.NutritionPlan;
+import com.evdokimov.eugene.mobilecoach.db.plan.NutritionPlanDAO;
+import com.rey.material.app.Dialog;
+import com.rey.material.widget.EditText;
 import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ImageButton;
 
@@ -29,7 +33,6 @@ import java.util.ArrayList;
 
 public class NutritionFragment extends Fragment {
 
-    private Context context;
     private FloatingActionButton fabMain;
 
     RecyclerView.Adapter mAdapter;
@@ -37,6 +40,9 @@ public class NutritionFragment extends Fragment {
     RecyclerView rv_nutrition;
 
     ImageButton more;
+
+    TextView tvNutritionName;
+    String nutritionName;
 
     private ArrayList<NutritionPlan> nPlan;
 
@@ -53,32 +59,66 @@ public class NutritionFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_nutrition, container, false);
 
         mainActivity = (MainActivity) getActivity();
-        context = mainActivity.getApplicationContext();
 
         SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings", Context.MODE_PRIVATE);
-        String nutritionName = sharedPref.getString("pickednutrition", "");
+        nutritionName = sharedPref.getString("pickednutrition", "");
 
-        TextView tvNutritionName = (TextView) v.findViewById(R.id.tv_nutrition_name);
+        tvNutritionName = (TextView) v.findViewById(R.id.tv_nutrition_name);
         tvNutritionName.setText(nutritionName);
 
         more = (ImageButton) v.findViewById(R.id.ib_nutr_more);
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Context wrapper = new ContextThemeWrapper(context, R.style.MyPopupMenu);
+                Context wrapper = new ContextThemeWrapper(mainActivity, R.style.MyPopupMenu);
                 PopupMenu popup = new PopupMenu(wrapper, more);
                 popup.getMenuInflater()
                         .inflate(R.menu.menu_nutrition, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(context,
-                                item.getTitle(),
-                                Toast.LENGTH_SHORT).show();
+
                         switch (item.getItemId()){
                             case R.id.edit_name_mn:
+                                final Dialog dialog = new Dialog(mainActivity);
+                                View dContentView = View.inflate(mainActivity, R.layout.dialog_edit_nutr_name, null);
+                                final EditText etNameNutr = (EditText) dContentView.findViewById(R.id.et_dialog_edit_nutr_name);
+                                etNameNutr.setText(nutritionName);
+                                dialog.setContentView(dContentView);
+                                dialog.positiveAction("Изменить")
+                                .positiveActionClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPref.edit();
+                                        String str = etNameNutr.getText().toString();
+                                        editor.putString("pickednutrition", str);
+                                        editor.apply();
+
+                                        updateNutritionPlanName(nutritionName, str);
+                                        nutritionName = str;
+                                        tvNutritionName.setText(str);
+                                        dialog.dismiss();
+                                    }
+                                });
+                                dialog.negativeAction("Отмена")
+                                .negativeActionClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                dialog.show();
+
                                 break;
-                            case R.id.change_mn:
+                            case R.id.share_plan_mn:
+                                //TODO list of the plan
+                                String shareBody = "Here is the share content body";
+                                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                                sharingIntent.setType("text/plain");
+                                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+                                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                                startActivity(Intent.createChooser(sharingIntent, "share_using"));
                                 break;
                         }
                         return true;
@@ -109,6 +149,18 @@ public class NutritionFragment extends Fragment {
         rv_nutrition.setAdapter(mAdapter);
 
         return v;
+    }
+
+    private void updateNutritionPlanName(String oldName, String newName){
+        try {
+            NutritionPlanDAO npDAO = HelperFactory.getDbHelper().getNutritionPlanDAO();
+            for (NutritionPlan nPlanItem : nPlan){
+                nPlanItem.setName(newName);
+                npDAO.update(nPlanItem);
+            }
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
     }
 
 

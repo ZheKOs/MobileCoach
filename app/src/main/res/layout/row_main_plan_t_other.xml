@@ -77,7 +77,7 @@
                 app:rd_enable="true"
                 app:rd_rippleType="wave"
                 app:rd_rippleColor="#70707070"
-                app:rd_delayClick="afterRelease"
+                app:rd_delayClick="none"
                 android:id="@+id/ib_more_plan_item"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"

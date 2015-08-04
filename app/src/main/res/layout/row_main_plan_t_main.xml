@@ -37,7 +37,7 @@
                     app:rd_enable="true"
                     app:rd_rippleType="wave"
                     app:rd_rippleColor="#ddd"
-                    app:rd_delayClick="afterRelease"
+                    app:rd_delayClick="none"
                     android:src="@drawable/dots_vertical_black"
                     android:scaleType="center"
                     android:layout_alignParentLeft="false"

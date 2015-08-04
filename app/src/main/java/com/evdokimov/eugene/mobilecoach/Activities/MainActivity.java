@@ -29,7 +29,6 @@ import com.evdokimov.eugene.mobilecoach.Fragments.NutritionFragment;
 import com.evdokimov.eugene.mobilecoach.Fragments.StatsFragment;
 import com.evdokimov.eugene.mobilecoach.Fragments.TrainingFragment;
 import com.evdokimov.eugene.mobilecoach.R;
-import com.evdokimov.eugene.mobilecoach.Utils.OnWorkoutPlanSelectedListener;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.rey.material.app.ToolbarManager;

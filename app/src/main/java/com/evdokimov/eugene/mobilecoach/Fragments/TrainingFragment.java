@@ -26,10 +26,12 @@ import android.widget.Toast;
 import com.evdokimov.eugene.mobilecoach.Activities.MainActivity;
 import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.Activities.WorkoutActivity;
+import com.evdokimov.eugene.mobilecoach.Utils.OnWorkoutPlanChangedListener;
 import com.evdokimov.eugene.mobilecoach.Utils.OnWorkoutPlanSelectedListener;
+import com.evdokimov.eugene.mobilecoach.db.DBHelper;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlan;
-import com.rey.material.app.SimpleDialog;
+import com.rey.material.app.Dialog;
 import com.rey.material.app.TimePickerDialog;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.FloatingActionButton;
@@ -41,7 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
-public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedListener {
+public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedListener, OnWorkoutPlanChangedListener {
 
 
 
@@ -92,8 +94,7 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
 
         mView = mInflater.inflate(R.layout.fragment_training, mContainer, false);
 
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings",Context.MODE_PRIVATE);
-        String workoutPlanName = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
+        String workoutPlanName = getSelectedPlan();
 
         getWorkoutPlan(workoutPlanName);
 
@@ -175,6 +176,15 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
         return mView;
     }
 
+    /**
+    *   Returns picked plan from SharedPreferences
+     **/
+    private String getSelectedPlan(){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings",Context.MODE_PRIVATE);
+        String workoutPlanName = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
+        return workoutPlanName;
+    }
+
     private void initSnackBar(){
         snackBar = new SnackBar(mainActivity);
         snackBar.applyStyle(R.style.SnackBarSingleLine)
@@ -216,6 +226,15 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
                                     item.getTitle(),
                                     Toast.LENGTH_SHORT).show();
                             switch (item.getItemId()) {
+                                case R.id.remove_pick:
+                                    SharedPreferences sharedPref = mainActivity.getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.putString("pickedplan", EMPTY_PICKED_PLAN);
+                                    editor.apply();
+
+                                    getAllPlans();
+                                    initializeAllList(EMPTY_PICKED_PLAN);
+                                    break;
                                 case R.id.edit_plan_mt:
                                     Intent intent = new Intent(getActivity(), EditTrainingPlanActivity.class);
                                     intent.putExtra("planName", workoutPlanName);
@@ -244,28 +263,53 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
                                     dialog.show();
                                     break;
                                 case R.id.share_plan_mt:
-                                    final SimpleDialog simpleDialog = new SimpleDialog(mainActivity);
-                                    simpleDialog.title("Выберите план");
-                                    final String[] plans = new String[]{"ПЛАН1", "ПЛАН2", "ПЛАН3", "ПЛАН4", "ПЛАН5", "ПЛАН6", "ПЛАН7", "ПЛАН8"};
-                                    simpleDialog.items(plans, -1);
-                                    simpleDialog.positiveAction("Выбрать").positiveActionClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            Toast.makeText(mainActivity,
-                                                    "Выбран план - " + plans[simpleDialog.getSelectedIndex()],
-                                                    Toast.LENGTH_SHORT).show();
-                                            simpleDialog.dismiss();
-                                        }
-                                    });
-                                    simpleDialog.negativeAction("Отмена").negativeActionClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            simpleDialog.dismiss();
-                                        }
-                                    });
-                                    simpleDialog.show();
+                                    //TODO list of the plan
+                                    String shareBody = "Here is the share content body";
+                                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                                    sharingIntent.setType("text/plain");
+                                    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+                                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                                    startActivity(Intent.createChooser(sharingIntent, "share_using"));
                                     break;
                                 case R.id.delete_plan_mt:
+                                    final Dialog deleteDialog = new Dialog(mainActivity);
+                                    deleteDialog
+                                            .title("Удалить план")
+                                            .positiveActionTextColor(Color.parseColor("#F44336"))
+                                            .positiveAction("УДАЛИТЬ")
+                                            .positiveActionClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    DBHelper dbHelper = HelperFactory.getDbHelper();
+                                                    try {
+                                                        dbHelper.getWorkoutPlanDAO().delete(
+                                                                dbHelper.getWorkoutPlanDAO().getWorkoutPlanByName(workoutPlanName)
+                                                        );
+                                                    } catch (SQLException e) {
+                                                        throw new RuntimeException(e);
+                                                    }
+                                                    SharedPreferences sharedPref = mainActivity.getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+
+                                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                                    editor.putString("pickedplan", EMPTY_PICKED_PLAN);
+                                                    editor.apply();
+
+                                                    deleteDialog.dismiss();
+
+                                                    getAllPlans();
+                                                    initializeAllList(EMPTY_PICKED_PLAN);
+                                                }
+                                            })
+                                            .negativeActionTextColor(Color.parseColor("#727272"))
+                                            .negativeAction("ОТМЕНА")
+                                            .negativeActionClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    deleteDialog.dismiss();
+                                                }
+                                            });
+                                    deleteDialog.show();
+
                                     break;
                             }
                             return true;
@@ -437,8 +481,7 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
                     break;
                 case EditTrainingPlanActivity.RESULT_SAVE:
                     //refreshing list after changing plan
-                    SharedPreferences sharedPref = getActivity().getSharedPreferences("mysettings", Context.MODE_PRIVATE);
-                    String pickedPlan = sharedPref.getString("pickedplan", EMPTY_PICKED_PLAN);
+                    String pickedPlan = getSelectedPlan();
                     if (!pickedPlan.equals(EMPTY_PICKED_PLAN)) {
 
                         getWorkoutPlan(pickedPlan);
@@ -505,5 +548,13 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
         Intent intent = new Intent(mainActivity, WatchTrainPlanActivity.class);
         intent.putExtra("planName",plans[position]);
         startActivityForResult(intent, REQUEST_WATCH_WORKOUT_PLAN);
+    }
+
+    @Override
+    public void onWorkoutPlanChanged() {
+        getWorkoutPlan(getSelectedPlan());
+        getAllPlans();
+        initializeAllList(getSelectedPlan());
+        plansAdapter.notifyDataSetChanged();
     }
 }

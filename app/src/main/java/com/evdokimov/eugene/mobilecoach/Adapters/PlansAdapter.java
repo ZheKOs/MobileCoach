@@ -1,8 +1,11 @@
 package com.evdokimov.eugene.mobilecoach.Adapters;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v7.internal.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
@@ -15,15 +18,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.evdokimov.eugene.mobilecoach.Activities.EditTrainingPlanActivity;
-import com.evdokimov.eugene.mobilecoach.Fragments.TrainingFragment;
 import com.evdokimov.eugene.mobilecoach.R;
-import com.evdokimov.eugene.mobilecoach.Activities.WatchTrainPlanActivity;
+import com.evdokimov.eugene.mobilecoach.Utils.OnWorkoutPlanChangedListener;
 import com.evdokimov.eugene.mobilecoach.Utils.OnWorkoutPlanSelectedListener;
-import com.rey.material.app.SimpleDialog;
+import com.evdokimov.eugene.mobilecoach.db.DBHelper;
+import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
+import com.rey.material.app.Dialog;
 import com.rey.material.app.TimePickerDialog;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.ImageButton;
+import com.rey.material.widget.SnackBar;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 public class PlansAdapter extends ArrayAdapter<String>
@@ -31,7 +37,8 @@ public class PlansAdapter extends ArrayAdapter<String>
     private Context context;
     private String[] strings;
 
-    private OnWorkoutPlanSelectedListener mCallback;
+    private OnWorkoutPlanSelectedListener onWPSelectedCallback;
+    private OnWorkoutPlanChangedListener onWPChangedCallback;
 
     public PlansAdapter(Context context, Fragment fragment, String[] objects) {
         super(context, R.layout.row_main_plan_t_other, objects);
@@ -42,10 +49,16 @@ public class PlansAdapter extends ArrayAdapter<String>
         // This makes sure that the container fragment has implemented
         // the callback interface. If not, it throws an exception
         try{
-            mCallback = (OnWorkoutPlanSelectedListener) fragment;
+            onWPSelectedCallback = (OnWorkoutPlanSelectedListener) fragment;
         }catch (ClassCastException e){
             throw new ClassCastException(context.toString()
                                         + " must implement OnWorkoutPlanSelectedListener");
+        }
+        try{
+            onWPChangedCallback = (OnWorkoutPlanChangedListener) fragment;
+        }catch (ClassCastException e){
+            throw new ClassCastException(context.toString()
+                    + " must implement OnWorkoutPlanChangedListener");
         }
 
     }
@@ -57,76 +70,108 @@ public class PlansAdapter extends ArrayAdapter<String>
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView;
 
+        final String curPlan = strings[position];
+
 //            if(position != 0) {
         rowView = inflater.inflate(R.layout.row_main_plan_t_other, parent, false);
         TextView tvPlanName = (TextView) rowView.findViewById(R.id.tv_plan_name);
-        tvPlanName.setText(strings[position]);
+        tvPlanName.setText(curPlan);
         final ImageButton more = (ImageButton) rowView.findViewById(R.id.ib_more_plan_item);
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                final SnackBar snackbar = new SnackBar(context);
+                snackbar.applyStyle(R.style.SnackBarSingleLine)
+                        .singleLine(false) //to be sure :D
+                        .actionText("Отмена")
+                        .actionClickListener(new SnackBar.OnActionClickListener() {
+                            @Override
+                            public void onActionClick(SnackBar snackBar, int i) {
+                                Toast.makeText(context, "Отменено", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .duration(3500)
+                        .actionTextColor(context.getResources().getColor(R.color.colorAccent))
+                        .textColor(Color.WHITE);
+
                 Context wrapper = new ContextThemeWrapper(context, R.style.MyPopupMenu);
                 PopupMenu popup = new PopupMenu(wrapper, more);
                 popup.getMenuInflater()
-                        .inflate(R.menu.menu_training, popup.getMenu());
+                        .inflate(R.menu.menu_training_item, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(context,
-                                item.getTitle(),
-                                Toast.LENGTH_SHORT).show();
+
                         switch (item.getItemId()) {
+                            case R.id.set_pickedplan:
+                                SharedPreferences sharedPref = context.getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+
+                                editor.putString("pickedplan", curPlan);
+                                editor.apply();
+
+                                onWPChangedCallback.onWorkoutPlanChanged();
+                                break;
                             case R.id.edit_plan_mt:
                                 Intent intent = new Intent(context, EditTrainingPlanActivity.class);
-                                intent.putExtra("planName", strings[position]);
+                                intent.putExtra("planName", curPlan);
                                 context.startActivity(intent);
                                 break;
-//                            case R.id.notify_plan_mt:
-//                                final TimePickerDialog dialog = (TimePickerDialog) new TimePickerDialog(mainActivity,R.style.TimePickerDialog)
-//                                        //.title("Поставить напоминание?")
-//                                        .positiveAction("Поставить").negativeAction("Отмена");
-//                                dialog.positiveActionClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View view) {
-//                                        snackBar.text("Напоминание в " + dialog.getFormattedTime(new SimpleDateFormat("H:mm")));
-//                                        dialog.dismiss();
-//                                        snackBar.show(mainActivity);
-//                                    }
-//                                });
-//                                dialog.negativeActionClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View view) {
-//                                        Toast.makeText(mainActivity, "Отменено", Toast.LENGTH_SHORT).show();
-//                                        dialog.dismiss();
-//                                    }
-//                                });
-//
-//                                dialog.show();
-//                                break;
-//                            case R.id.share_plan_mt:
-//                                final SimpleDialog simpleDialog = new SimpleDialog(mainActivity);
-//                                simpleDialog.title("Выберите план");
-//                                final String[] plans = new String[]{"ПЛАН1", "ПЛАН2", "ПЛАН3", "ПЛАН4", "ПЛАН5", "ПЛАН6", "ПЛАН7", "ПЛАН8"};
-//                                simpleDialog.items(plans, -1);
-//                                simpleDialog.positiveAction("Выбрать").positiveActionClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View view) {
-//                                        Toast.makeText(mainActivity,
-//                                                "Выбран план - " + plans[simpleDialog.getSelectedIndex()],
-//                                                Toast.LENGTH_SHORT).show();
-//                                        simpleDialog.dismiss();
-//                                    }
-//                                });
-//                                simpleDialog.negativeAction("Отмена").negativeActionClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View view) {
-//                                        simpleDialog.dismiss();
-//                                    }
-//                                });
-//                                simpleDialog.show();
-//                                break;
-//                            case R.id.delete_plan_mt:
-//                                break;
+                            case R.id.notify_plan_mt:
+                                final TimePickerDialog dialog = (TimePickerDialog) new TimePickerDialog(context,R.style.TimePickerDialog)
+                                        //.title("Поставить напоминание?")
+                                        .positiveAction("Поставить").negativeAction("Отмена");
+                                dialog.positiveActionClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        snackbar.text("Напоминание в " + dialog.getFormattedTime(new SimpleDateFormat("H:mm")));
+                                        dialog.dismiss();
+                                        snackbar.show((Activity) context);
+                                    }
+                                });
+                                dialog.negativeActionClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Toast.makeText(context, "Отменено", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                dialog.show();
+                                break;
+                            case R.id.share_plan_mt:
+                                //TODO list of the plan
+                                String shareBody = "Here is the share content body";
+                                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                                sharingIntent.setType("text/plain");
+                                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+                                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                                context.startActivity(Intent.createChooser(sharingIntent, "share_using"));
+                                break;
+                            case R.id.delete_plan_mt:
+                                final Dialog deleteDialog = new Dialog(context);
+                                deleteDialog
+                                        .title("Удалить план")
+                                        .positiveActionTextColor(Color.parseColor("#F44336"))
+                                        .positiveAction("УДАЛИТЬ")
+                                        .positiveActionClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                deletePlan(position);
+                                                deleteDialog.dismiss();
+                                            }
+                                        })
+                                        .negativeActionTextColor(Color.parseColor("#727272"))
+                                        .negativeAction("ОТМЕНА")
+                                        .negativeActionClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                deleteDialog.dismiss();
+                                            }
+                                        });
+                                deleteDialog.show();
+                                break;
                         }
                         return true;
                     }
@@ -141,7 +186,7 @@ public class PlansAdapter extends ArrayAdapter<String>
 //                Intent intent = new Intent(context, WatchTrainPlanActivity.class);
 //                intent.putExtra("planName",strings[position]);
 //                context.startActivity(intent);
-                mCallback.onWorkoutPlanSelected(position);
+                onWPSelectedCallback.onWorkoutPlanSelected(position);
             }
         });
 //            }else {
@@ -153,6 +198,26 @@ public class PlansAdapter extends ArrayAdapter<String>
 
 
         return rowView;
+    }
+
+    private void deletePlan(int pos){
+        DBHelper dbHelper = HelperFactory.getDbHelper();
+        try {
+            dbHelper.getWorkoutPlanDAO().delete(
+                    dbHelper.getWorkoutPlanDAO().getWorkoutPlanByName(strings[pos])
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        SharedPreferences sharedPref = context.getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+        String workoutPlanName = sharedPref.getString("pickedplan", "_empty_");
+        if (strings[pos].equals(workoutPlanName)){
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("pickedplan", "_empty_");
+            editor.apply();
+        }
+        onWPChangedCallback.onWorkoutPlanChanged();
+        this.notifyDataSetInvalidated();
     }
 
 }

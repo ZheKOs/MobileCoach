@@ -80,7 +80,7 @@
                 app:rd_enable="true"
                 app:rd_rippleType="wave"
                 app:rd_rippleColor="#ddd"
-                app:rd_delayClick="afterRelease"
+                app:rd_delayClick="none"
                 android:background="#00ffffff"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>

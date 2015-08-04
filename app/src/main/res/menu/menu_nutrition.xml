@@ -5,13 +5,7 @@
         android:id="@+id/edit_name_mn"
         android:title="Изменить имя плана"/>
     <item
-        android:id="@+id/change_mn"
-        android:title="Сменить план"/>
-    <item
         android:id="@+id/share_plan_mn"
         android:title="Поделиться"/>
-    <item
-        android:id="@+id/delete_plan_mn"
-        android:title="Удалить"/>
 
 </menu>
