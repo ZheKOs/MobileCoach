@@ -40,7 +40,9 @@ public class AllItemsActivity extends AppCompatActivity {
 
         if (isWorkoutMode){
             mLayoutManager = new LinearLayoutManager(getBaseContext());
-        }else { mLayoutManager = new GridLayoutManager(getBaseContext(), 2); }
+        }else {
+            mLayoutManager = new GridLayoutManager(getBaseContext(), 2);
+        }
 
         recyclerView.setLayoutManager(mLayoutManager);
 

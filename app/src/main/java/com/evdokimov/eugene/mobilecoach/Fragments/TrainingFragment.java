@@ -28,6 +28,7 @@ import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.Activities.WorkoutActivity;
 import com.evdokimov.eugene.mobilecoach.Utils.OnWorkoutPlanChangedListener;
 import com.evdokimov.eugene.mobilecoach.Utils.OnWorkoutPlanSelectedListener;
+import com.evdokimov.eugene.mobilecoach.Utils.SharingContentManager;
 import com.evdokimov.eugene.mobilecoach.db.DBHelper;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlan;
@@ -263,13 +264,8 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
                                     dialog.show();
                                     break;
                                 case R.id.share_plan_mt:
-                                    //TODO list of the plan
-                                    String shareBody = "Here is the share content body";
-                                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                                    sharingIntent.setType("text/plain");
-                                    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
-                                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                                    startActivity(Intent.createChooser(sharingIntent, "share_using"));
+                                    SharingContentManager sharingContentManager = new SharingContentManager(mainActivity,2, getSelectedPlan());
+                                    sharingContentManager.prepareAndShareContent();
                                     break;
                                 case R.id.delete_plan_mt:
                                     final Dialog deleteDialog = new Dialog(mainActivity);

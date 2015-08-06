@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.evdokimov.eugene.mobilecoach.Activities.MainActivity;
 import com.evdokimov.eugene.mobilecoach.Adapters.NutritionAdapter;
 import com.evdokimov.eugene.mobilecoach.R;
+import com.evdokimov.eugene.mobilecoach.Utils.SharingContentManager;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.plan.NutritionPlan;
 import com.evdokimov.eugene.mobilecoach.db.plan.NutritionPlanDAO;
@@ -54,7 +55,7 @@ public class NutritionFragment extends Fragment {
     private MainActivity mainActivity;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.fragment_nutrition, container, false);
 
@@ -113,12 +114,9 @@ public class NutritionFragment extends Fragment {
                                 break;
                             case R.id.share_plan_mn:
                                 //TODO list of the plan
-                                String shareBody = "Here is the share content body";
-                                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                                sharingIntent.setType("text/plain");
-                                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
-                                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                                startActivity(Intent.createChooser(sharingIntent, "share_using"));
+                                SharingContentManager sharingContentManager
+                                        = new SharingContentManager(mainActivity, 3, nutritionName);
+                                sharingContentManager.prepareAndShareContent();
                                 break;
                         }
                         return true;
