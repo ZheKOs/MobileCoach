@@ -10,9 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.evdokimov.eugene.mobilecoach.R;
+import com.evdokimov.eugene.mobilecoach.Utils.SharingContentManager;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.dish.Dish;
 import com.rey.material.widget.Button;
+import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ImageButton;
 import com.squareup.picasso.Picasso;
 
@@ -24,6 +26,8 @@ public class DishActivity extends AppCompatActivity {
 
     ImageView iv;
     TextView dName, kcal, receipt;
+
+    FloatingActionButton fabShare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,19 @@ public class DishActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        fabShare = (FloatingActionButton) findViewById(R.id.btn_float_main);
+        fabShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                share();
+            }
+        });
+    }
+
+    private void share(){
+        SharingContentManager scm = new SharingContentManager(this,1,dish.getName());
+        scm.prepareAndShareContent();
     }
 
     @Override
@@ -76,7 +93,6 @@ public class DishActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_watch_dish, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

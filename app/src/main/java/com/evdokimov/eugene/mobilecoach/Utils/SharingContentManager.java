@@ -93,7 +93,7 @@ public class SharingContentManager {
                             + "\n" + "Посмотри на список упражнений:");
                     int i = 1;
                     for (WorkoutPlan workoutPlan : workoutPlanItems){
-                        contentToSend.append("\n " + i + " " + workoutPlan.getWorkout().getName() + " " + workoutPlan.getCount() + "раз");
+                        contentToSend.append("\n " + i++ + " " + workoutPlan.getWorkout().getName() + " - " + workoutPlan.getCount() + " раз");
                     }
                     contentToSend.append("\n" + "MobileCoach - приложение для Вас и вашего тела!");
                     isContentReady = true;
@@ -110,7 +110,7 @@ public class SharingContentManager {
                             + "\n" + "Посмотри на список блюд:");
                     int i = 1;
                     for (NutritionPlan nutritionPlan : nutritionPlanItems){
-                        contentToSend.append("\n" + i + " " + nutritionPlan.getDish().getName() + " " + nutritionPlan.getDish().getKcal() + " ккал");
+                        contentToSend.append("\n" + i++ + " " + nutritionPlan.getDish().getName() + " " + nutritionPlan.getDish().getKcal() + " ккал");
                     }
                     contentToSend.append("\n" + "MobileCoach - приложение для Вас и вашего тела!");
                     isContentReady = true;

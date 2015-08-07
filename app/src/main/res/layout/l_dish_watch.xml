@@ -63,7 +63,7 @@
                     app:rd_rippleColor="@color/colorAccentDark"
                     app:rd_delayClick="afterRelease"
                     app:rd_enable="true"
-                    app:fab_iconSrc="@drawable/check_white"
+                    app:fab_iconSrc="@drawable/share_variant_white"
                     app:rd_rippleType="touch"
                     android:layout_alignParentEnd="true"/>
 

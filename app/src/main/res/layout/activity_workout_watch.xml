@@ -16,7 +16,7 @@
         <com.rey.material.widget.ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/btn_delete_workout_ai"
+            android:id="@+id/btn_more_workout_watch"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -33,7 +33,7 @@
         <com.rey.material.widget.ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/btn_share_workout_ai"
+            android:id="@+id/btn_share_workout_watch"
             android:src="@drawable/share_variant_white"
             android:scaleType="center"
             app:rd_enable="true"
@@ -42,13 +42,13 @@
             app:rd_delayClick="afterRelease"
             android:background="@color/colorPrimary"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/btn_delete_workout_ai"
-            android:layout_toStartOf="@+id/btn_delete_workout_ai"
+            android:layout_toLeftOf="@+id/btn_more_workout_watch"
+            android:layout_toStartOf="@+id/btn_more_workout_watch"
             android:layout_marginRight="10dp" />
         <com.rey.material.widget.ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/btn_back_workout_ai"
+            android:id="@+id/btn_back_workout_watch"
             android:src="@drawable/arrowleft_white_36"
             android:scaleType="fitXY"
             app:rd_enable="true"
