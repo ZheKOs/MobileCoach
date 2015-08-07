@@ -55,7 +55,7 @@ public class DishActivity extends AppCompatActivity {
 //                ImageButton back = (ImageButton) findViewById(R.id.btn_back_to_watch_dish);
 //                back.setOnClickListener(new View.OnClickListener() {
 //                    @Override
-//                    public void onClick(View v) {
+//                    public void switchWorkoutListener(View v) {
 //                        setContentView(R.layout.l_dish_watch);
 //                    }
 //                });

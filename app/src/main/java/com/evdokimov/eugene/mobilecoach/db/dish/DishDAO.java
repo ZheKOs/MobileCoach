@@ -15,7 +15,7 @@ public class DishDAO extends BaseDaoImpl<Dish, Integer> {
         super(connectionSource,dataClass);
     }
 
-    List<Dish> getAllDish() throws SQLException{
+    public List<Dish> getAllDish() throws SQLException{
         return this.queryForAll();
     }
 

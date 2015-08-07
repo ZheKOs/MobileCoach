@@ -118,15 +118,19 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
             throw new RuntimeException(e);
         }
 
+        Resources res = context.getResources();
+
         Workout squats, pushups, pullups, plank, dolphin, situps;
 
         try {
             squats = new Workout();
             squats.setName("Приседания");
+            squats.setInstruction(res.getString(R.string.squats_info));
             getWorkoutDAO().create(squats);
 
             pushups = new Workout();
             pushups.setName("Отжимания");
+            pushups.setInstruction(res.getString(R.string.pushups_info));
             getWorkoutDAO().create(pushups);
 
             pullups = new Workout();
@@ -135,14 +139,17 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
             plank = new Workout();
             plank.setName("Планка");
-            getWorkoutDAO().create(plank);
+            plank.setInstruction(res.getString(R.string.plank_info));
+                    getWorkoutDAO().create(plank);
 
             dolphin = new Workout();
-            dolphin.setName("Дельфин");
+            dolphin.setName("Отжимания «Дельфин»");
+            dolphin.setInstruction(res.getString(R.string.Pushups_Dolphin_info));
             getWorkoutDAO().create(dolphin);
 
             situps = new Workout();
             situps.setName("Скручивания");
+            situps.setInstruction(res.getString(R.string.situps_info));
             getWorkoutDAO().create(situps);
 
         } catch (SQLException e){
@@ -189,7 +196,6 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
                 saladShopski,saladSpring;
 
         Uri uri;
-        Resources res = context.getResources();
         try {
 
             cauliflowerBakedWithEggsAndSoySauce = new Dish();
@@ -287,16 +293,10 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
         }
 
         ArrayList<Dish> dishes = new ArrayList<>();
-        dishes.add(cauliflowerBakedWithEggsAndSoySauce);
         dishes.add(chickenBreastWithLemonAndChili);
-        dishes.add(chickenCutletsWithCheese);
-        dishes.add(chickenFilletWithTomatoesAndOlives);
+        dishes.add(chickenCutletsWithCheese);;
         dishes.add(eggsBakedWithChickenAndVegetables);
-        dishes.add(fishStewWithOnionsAndSourCream);
-        dishes.add(fruitPizza);
-        dishes.add(lahanorizo);
         dishes.add(ricePilafWithTomatoesAndBasil);
-        dishes.add(saladShopski);
         dishes.add(saladSpring);
 
         NutritionPlan nPlan;

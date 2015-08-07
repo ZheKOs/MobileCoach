@@ -109,7 +109,7 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
 
 //        View.OnClickListener listener = new View.OnClickListener() {
 //            @Override
-//            public void onClick(View view) {
+//            public void switchWorkoutListener(View view) {
 //                switch (view.getId()) {
 //                    case R.id.btn_float_third:
 //                        final TimePickerDialog dialog = (TimePickerDialog) new TimePickerDialog(mainActivity,R.style.TimePickerDialog)
@@ -117,7 +117,7 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
 //                                .positiveAction("Поставить").negativeAction("Отмена");
 //                        dialog.positiveActionClickListener(new View.OnClickListener() {
 //                            @Override
-//                            public void onClick(View view) {
+//                            public void switchWorkoutListener(View view) {
 //                                snackBar.text("Напоминание в " + dialog.getFormattedTime(new SimpleDateFormat("H:mm")));
 //                                dialog.dismiss();
 //                                snackBar.show(mainActivity);
@@ -125,7 +125,7 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
 //                        });
 //                        dialog.negativeActionClickListener(new View.OnClickListener() {
 //                            @Override
-//                            public void onClick(View view) {
+//                            public void switchWorkoutListener(View view) {
 //                                Toast.makeText(mainActivity, "Отменено", Toast.LENGTH_SHORT).show();
 //                                dialog.dismiss();
 //                            }
@@ -140,7 +140,7 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
 //                        simpleDialog.items(plans, -1);
 //                        simpleDialog.positiveAction("Выбрать").positiveActionClickListener(new View.OnClickListener() {
 //                            @Override
-//                            public void onClick(View view) {
+//                            public void switchWorkoutListener(View view) {
 //                                Toast.makeText(mainActivity,
 //                                        "Выбран план - " + plans[simpleDialog.getSelectedIndex()],
 //                                        Toast.LENGTH_SHORT).show();
@@ -149,7 +149,7 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
 //                        });
 //                        simpleDialog.negativeAction("Отмена").negativeActionClickListener(new View.OnClickListener() {
 //                            @Override
-//                            public void onClick(View view) {
+//                            public void switchWorkoutListener(View view) {
 //                                simpleDialog.dismiss();
 //                            }
 //                        });
@@ -320,6 +320,7 @@ public class TrainingFragment extends Fragment implements OnWorkoutPlanSelectedL
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), WorkoutActivity.class);
+                    intent.putExtra("planname", workoutPlanName);
                     startActivity(intent);
                 }
             });

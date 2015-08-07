@@ -159,7 +159,7 @@ public class NutritionAdapter extends RecyclerView.Adapter<NutritionAdapter.View
 //        Button btnInfo = (Button) rowView.findViewById(R.id.btn_info_nutrition_card);
 //        btnInfo.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//            public void onClick(View v) {
+//            public void switchWorkoutListener(View v) {
 //                Intent intent = new Intent(getActivity(), DishActivity.class);
 //                startActivity(intent);
 //            }

@@ -11,7 +11,11 @@ import android.view.View;
 
 import com.evdokimov.eugene.mobilecoach.Adapters.AllItemsAdapter;
 import com.evdokimov.eugene.mobilecoach.R;
+import com.evdokimov.eugene.mobilecoach.db.dish.Dish;
+import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
 import com.rey.material.widget.ImageButton;
+
+import java.util.ArrayList;
 
 public class AllItemsActivity extends AppCompatActivity {
 
@@ -19,6 +23,9 @@ public class AllItemsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter aiAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    ArrayList<Workout> workouts;
+    ArrayList<Dish> dishes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +50,9 @@ public class AllItemsActivity extends AppCompatActivity {
         }else {
             mLayoutManager = new GridLayoutManager(getBaseContext(), 2);
         }
-
         recyclerView.setLayoutManager(mLayoutManager);
 
-        aiAdapter = new AllItemsAdapter(getBaseContext(), isWorkoutMode);
+        aiAdapter = new AllItemsAdapter(this, isWorkoutMode);
         recyclerView.setAdapter(aiAdapter);
 
     }
