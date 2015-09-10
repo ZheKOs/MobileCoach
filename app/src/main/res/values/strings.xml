@@ -1122,6 +1122,7 @@
     <string name="title_activity_watch_dish">WatchDishActivity</string>
     <string name="title_activity_all_workouts">AllWorkoutsActivity</string>
     <string name="title_activity_workout_watch">WorkoutWatchActivity</string>
+    <string name="title_activity_workout_edit">WorkoutEditActivity</string>
 
 
     <!--_________________________________________-->

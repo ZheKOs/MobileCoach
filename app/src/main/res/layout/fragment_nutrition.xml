@@ -45,10 +45,11 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/card_view_plan_name_nutrition"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
         app:cardElevation="5dp"
-        android:layout_marginTop="6dp">
+        android:layout_marginTop="6dp"
+        cardview:cardPreventCornerOverlap="false">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

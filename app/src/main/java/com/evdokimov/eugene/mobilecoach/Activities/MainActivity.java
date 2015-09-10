@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -30,11 +31,17 @@ import com.evdokimov.eugene.mobilecoach.Fragments.StatsFragment;
 import com.evdokimov.eugene.mobilecoach.Fragments.TrainingFragment;
 import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
+import com.evdokimov.eugene.mobilecoach.db.dish.Dish;
+import com.evdokimov.eugene.mobilecoach.db.plan.NutritionPlan;
+import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.rey.material.app.Dialog;
 import com.rey.material.app.ToolbarManager;
 import com.rey.material.widget.SnackBar;
+import com.rey.material.widget.Spinner;
 
 import java.lang.reflect.Field;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -70,7 +77,7 @@ public class MainActivity extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        context = this.getApplicationContext(); //save context for using it in specific components
+        context = this;
 
         HelperFactory.setDbHelper(context);
 
@@ -394,7 +401,54 @@ public class MainActivity extends ActionBarActivity{
                         Toast.makeText(context,"добавление нового плана",Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
-                        Toast.makeText(context,"добавление в план блюло",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "добавление в план блюло", Toast.LENGTH_SHORT).show();
+                        final Dialog dialog = new Dialog(context);
+
+                        View contentView = View.inflate(context, R.layout.dialog_add_dish, null);
+                        final Spinner spinner = (Spinner) contentView.findViewById(R.id.dialog_add_dish_spinner);
+
+                        final ArrayList<Dish> dishes;
+                        try {
+                                dishes = new ArrayList<>(
+                                    HelperFactory.getDbHelper().getDishDAO().getAllDish()
+                            );
+                        }catch (SQLException e){
+                            throw new RuntimeException(e);
+                        }
+                        final String[] items = new String[dishes.size()];
+                        int i = 0;
+                        for (Dish dish : dishes) { items[i++] = dish.getName(); }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context,R.layout.row_spn, items);
+                        adapter.setDropDownViewResource(R.layout.row_spn_dropdown);
+                        spinner.setAdapter(adapter);
+
+                        dialog.setContentView(contentView);
+                        dialog.positiveAction("ДОБАВИТЬ")
+                                .positiveActionClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        try {
+                                            int item = spinner.getSelectedItemPosition();
+                                            NutritionPlan newNP = new NutritionPlan();
+                                            Dish dish = HelperFactory.getDbHelper().getDishDAO().getDishByName(items[item]);
+                                            newNP.setDish(dish);
+                                            newNP.setName(HelperFactory.getDbHelper().getNutritionPlanDAO().getAllNutritionPlans().get(0).getName());
+                                            HelperFactory.getDbHelper().getNutritionPlanDAO().create(newNP);
+                                        } catch (SQLException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                        dialog.dismiss();
+                                    }
+                                });
+                        dialog.negativeAction("ОТМЕНА")
+                                .negativeActionClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        dialog.show();
                         break;
                     case 2:
                         Toast.makeText(context,"добавление статистики",Toast.LENGTH_SHORT).show();

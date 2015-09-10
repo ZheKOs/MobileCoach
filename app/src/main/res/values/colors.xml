@@ -3,7 +3,7 @@
 
     <color name="colorPrimary">#4CAF50</color>
     <color name="colorPrimaryDark">#388E3C</color>
-    <color name="colorPrimaryDarker">#1b5e20</color>
+    <color name="colorPrimaryDarker">#1B5E20</color>
     <color name="colorAccent">#536DFE</color>
 
     <color name="halfColorPrimary">#804CAF50</color>
@@ -22,6 +22,9 @@
     <color name="halfBlack">#80000000</color>
 
     <color name="dgrey">#727272</color>
+
+    <color name="dwhite">#F5F5F5</color>
+    <color name="black_t">#77212121</color>
 
     <color name="icon_enabled">#FFFFFFFF</color>
     <color name="icon_disabled">#FF63727B</color>

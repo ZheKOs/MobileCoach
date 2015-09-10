@@ -2,11 +2,14 @@ package com.evdokimov.eugene.mobilecoach.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.TransitionDrawable;
+import android.support.v7.internal.view.ContextThemeWrapper;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -15,14 +18,20 @@ import android.widget.TextView;
 
 import com.evdokimov.eugene.mobilecoach.Activities.DishActivity;
 import com.evdokimov.eugene.mobilecoach.R;
+import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.plan.NutritionPlan;
+import com.evdokimov.eugene.mobilecoach.db.stats.Stats;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.CheckBox;
 import com.rey.material.widget.FloatingActionButton;
+import com.rey.material.widget.ImageButton;
 import com.squareup.picasso.Picasso;
 
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 public class NutritionAdapter extends RecyclerView.Adapter<NutritionAdapter.ViewHolder>
 {
@@ -42,6 +51,7 @@ public class NutritionAdapter extends RecyclerView.Adapter<NutritionAdapter.View
         // each data item is just a string in this case
 
         public ImageView iv;
+        public ImageButton btnMore;
         public TextView tvDishName;
         public TextView tvKcal;
         public CheckBox checkBox;
@@ -51,6 +61,7 @@ public class NutritionAdapter extends RecyclerView.Adapter<NutritionAdapter.View
             super(v);
             //mTextView = v;
             iv = (ImageView) v.findViewById(R.id.iv_nutrition_card);
+            btnMore = (ImageButton) v.findViewById(R.id.btn_more_dish);
             tvDishName = (TextView) v.findViewById(R.id.tv_dish_name);
             tvKcal = (TextView) v.findViewById(R.id.tv_kcal_dish);
             checkBox = (CheckBox) v.findViewById(R.id.checkbox_nc);
@@ -94,9 +105,32 @@ public class NutritionAdapter extends RecyclerView.Adapter<NutritionAdapter.View
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+
+        holder.btnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context wrapper = new ContextThemeWrapper(context, R.style.MyPopupMenu);
+                PopupMenu popup = new PopupMenu(wrapper, holder.btnMore);
+                popup.getMenuInflater()
+                        .inflate(R.menu.menu_dish, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.action_remove:
+                                removeDish(position);
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                popup.show();
+            }
+        });
 
         final TransitionDrawable transition = (TransitionDrawable) holder.checkBox.getBackground();
 
@@ -190,8 +224,41 @@ public class NutritionAdapter extends RecyclerView.Adapter<NutritionAdapter.View
 //        return rowView;
 //    }
 
+    private void removeDish(int position){
+        try {
+            HelperFactory.getDbHelper().getNutritionPlanDAO().delete(nutritionPlan.get(position));
+            this.notifyDataSetChanged();
+        }catch (SQLException e){
+            Log.e("TAG_ERROR","can't remove dish from plan");
+            throw new RuntimeException(e);
+        }
+        nutritionPlan.remove(position);
+    }
+
+    private void writeNewStats(){
+        for (int i = 0; i < checks.length; i++) {
+            Stats stats = new Stats();
+            stats.setName(nutritionPlan.get(0).getName());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String date = sdf.format(new Date());
+            stats.setDate(date);
+            short type = 1;
+            stats.setType(type);
+
+            short value = (short) nutritionPlan.get(i).getDish().getKcal();
+            stats.setValue(value);
+
+            try {
+                HelperFactory.getDbHelper().getStatsDAO().create(stats);
+            }catch (SQLException e){
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     private void clearChecks()
     {
+        writeNewStats();
         Arrays.fill(checks, false);
         this.notifyDataSetChanged();
     }
@@ -203,4 +270,5 @@ public class NutritionAdapter extends RecyclerView.Adapter<NutritionAdapter.View
         }
         return true;
     }
+
 }

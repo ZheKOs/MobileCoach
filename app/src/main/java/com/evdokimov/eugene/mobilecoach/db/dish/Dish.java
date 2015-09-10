@@ -56,7 +56,8 @@ public class Dish implements Parcelable { //same implementation is in Workout.cl
         return "Dish{" +
                 "fullName=\'" + name + "\'" +
                 "receipt=\'" + receipt + "\'" +
-                "kcal = \'" + getKcal() + "\'";
+                "kcal = \'" + getKcal() + "\'" +
+                "}";
     }
 
 

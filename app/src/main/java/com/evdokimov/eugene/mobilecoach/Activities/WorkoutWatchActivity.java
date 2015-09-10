@@ -1,10 +1,7 @@
 package com.evdokimov.eugene.mobilecoach.Activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.internal.view.ContextThemeWrapper;
@@ -14,20 +11,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.Utils.SharingContentManager;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
-import com.rey.material.app.Dialog;
-import com.rey.material.app.TimePickerDialog;
+
+import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ImageButton;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 
 public class WorkoutWatchActivity extends AppCompatActivity {
+
+    Context context;
 
     Workout workout;
     String workoutName;
@@ -40,6 +37,17 @@ public class WorkoutWatchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout_watch);
+
+        context = this;
+
+        FloatingActionButton fabEditWorkout = (FloatingActionButton) findViewById(R.id.btn_edit_workout);
+        fabEditWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, WorkoutEditActivity.class);
+                startActivity(intent);
+            }
+        });
 
         workoutName = getIntent().getStringExtra("workoutName");
         getWorkout();

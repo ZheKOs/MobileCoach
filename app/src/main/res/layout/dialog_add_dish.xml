@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.rey.material.widget.Spinner
+        style="@style/Material.Widget.Spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_add_dish_spinner"
+        app:rd_style="@style/Material.Drawable.Ripple.Wave"
+        app:spn_label="Блюдо"
+        app:spn_labelTextColor="#FF909090"
+        app:spn_labelEnable="true"
+        android:dropDownWidth="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp" />
+
+</LinearLayout>

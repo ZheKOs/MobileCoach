@@ -60,7 +60,7 @@
 
     <style name="TabRippleStyle" parent="Material.Drawable.Ripple.Wave">
         <item name="android:background">@null</item>
-        <item name="rd_rippleColor">#388E3C</item>
+        <item name="rd_rippleColor">@color/colorAccent</item>
         <item name="rd_rippleAnimDuration">300</item>
         <item name="rd_maskType">rectangle</item>
         <item name="rd_cornerRadius">0dp</item>
@@ -76,9 +76,12 @@
     <!-- Navigator Drawable -->
 
     <style name="NavigatorDrawableIcon" parent="Material.Drawable.NavigationDrawerIcon">
-        <item name="lmd_strokeSize">3dp</item>
-        <item name="lmd_padding">18dp</item>
-        <item name="lmd_strokeColor">#1B5E20</item>
+        <item name="lmd_strokeSize">2dp</item>
+        <item name="lmd_paddingLeft">20dp</item>>
+        <item name="lmd_paddingRight">20dp</item>>
+        <item name="lmd_paddingTop">21dp</item>>
+        <item name="lmd_paddingBottom">21dp</item>>
+        <item name="lmd_strokeColor">@color/colorPrimaryDarker</item>
     </style>
 
     <style name="NavigationDrawerDrawable">

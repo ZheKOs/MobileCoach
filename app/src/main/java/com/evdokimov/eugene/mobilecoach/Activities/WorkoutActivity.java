@@ -12,11 +12,15 @@ import android.widget.TextView;
 import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.db.HelperFactory;
 import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlan;
+import com.evdokimov.eugene.mobilecoach.db.stats.Stats;
 import com.rey.material.app.Dialog;
 import com.rey.material.widget.Button;
+import com.rey.material.widget.FloatingActionButton;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class WorkoutActivity extends AppCompatActivity{
 
@@ -26,6 +30,8 @@ public class WorkoutActivity extends AppCompatActivity{
     TextView curWorkout, prevWorkout, nextWorkout;
     ImageView ivPrev, ivNext;
     Button btnInfo, btnIterator;
+
+    FloatingActionButton fabMain;
 
     Dialog dialog;
 
@@ -47,6 +53,10 @@ public class WorkoutActivity extends AppCompatActivity{
         ivNext = (ImageView) findViewById(R.id.iv_next_workout);
         nextWorkout = (TextView) findViewById(R.id.tv_next_workout);
 
+        btnInfo = (Button) findViewById(R.id.btn_info_workout);
+
+        btnIterator = (Button) findViewById(R.id.btn_iterator);
+
         View.OnClickListener btnListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,19 +73,43 @@ public class WorkoutActivity extends AppCompatActivity{
             }
         };
 
-        btnInfo = (Button) findViewById(R.id.btn_info_workout);
         btnInfo.setOnClickListener(btnListener);
-        btnIterator = (Button) findViewById(R.id.btn_iterator);
-        btnIterator.setText(String.valueOf(workoutPlan.get(position).getCount()));
         btnIterator.setOnClickListener(btnListener);
+        refreshCount();
 
         refreshPrevNextAndCurLinks();
 
+        fabMain = (FloatingActionButton) findViewById(R.id.btn_float_main);
+        fabMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                writeNewStats();
+            }
+        });
+
+    }
+
+    private void writeNewStats(){
+        Stats stats = new Stats();
+        stats.setName(curWorkout.getText().toString());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(new Date());
+        stats.setDate(date);
+        short type = 0;
+        stats.setType(type);
+
+        stats.setValue(count);
+
+        try {
+            HelperFactory.getDbHelper().getStatsDAO().create(stats);
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
     }
 
     private void initDialog(){
         dialog = new Dialog(this);
-        dialog.title(workoutPlan.get(position).getName());
+        dialog.title(workoutPlan.get(position).getWorkout().getName());
         View contentView = View.inflate(this, R.layout.dialog_text_content, null);
         ((TextView) contentView.findViewById(R.id.tv_dialog_text_content))
                 .setText(workoutPlan.get(position).getWorkout().getInstruction());

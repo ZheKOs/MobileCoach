@@ -1,6 +1,5 @@
 package com.evdokimov.eugene.mobilecoach.db;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -15,6 +14,8 @@ import com.evdokimov.eugene.mobilecoach.db.plan.NutritionPlan;
 import com.evdokimov.eugene.mobilecoach.db.plan.NutritionPlanDAO;
 import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlan;
 import com.evdokimov.eugene.mobilecoach.db.plan.WorkoutPlanDAO;
+import com.evdokimov.eugene.mobilecoach.db.stats.Stats;
+import com.evdokimov.eugene.mobilecoach.db.stats.StatsDAO;
 import com.evdokimov.eugene.mobilecoach.db.workout.Workout;
 import com.evdokimov.eugene.mobilecoach.db.workout.WorkoutDAO;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
@@ -37,6 +38,8 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
     private WorkoutPlanDAO workoutPlanDAO = null;
     private NutritionPlanDAO nutritionPlanDAO = null;
+
+    private StatsDAO statsDAO = null;
 
     private SharedPreferences sharedPref;
 
@@ -95,8 +98,6 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 //                    + COLUMN_PLAN_NUTRITION_ID + " integer primary key autoincrement, "
 //                    + COLUMN_PLAN_NUTRITION_DISH_ID + " integer not null" + ");";
 
-
-
     private SQLiteDatabase mDataBase;
     private final Context context;
 
@@ -113,6 +114,8 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
             TableUtils.createTable(connectionSource, Dish.class);
             TableUtils.createTable(connectionSource, NutritionPlan.class);
+
+            TableUtils.createTable(connectionSource, Stats.class);
         }catch (SQLException e){
             Log.e(TAG, "error creating DB " + DB_NAME);
             throw new RuntimeException(e);
@@ -294,7 +297,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
         ArrayList<Dish> dishes = new ArrayList<>();
         dishes.add(chickenBreastWithLemonAndChili);
-        dishes.add(chickenCutletsWithCheese);;
+        dishes.add(chickenCutletsWithCheese);
         dishes.add(eggsBakedWithChickenAndVegetables);
         dishes.add(ricePilafWithTomatoesAndBasil);
         dishes.add(saladSpring);
@@ -311,10 +314,112 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
             Log.e("TAG_ERROR","can't create test nutrition plan");
             throw new RuntimeException(e);
         }
+
+        short type = 0;
+        Stats s1,s2,s3,s4,s5,s6;
+        s1 = new Stats();
+        s1.setName("Отжимания");
+        s1.setValue(5f);
+        s1.setType(type);
+        s1.setDate("2015-09-05");
+        s1.setIsChartInList(true);
+
+        s2 = new Stats();
+        s2.setName("Отжимания");
+        s2.setValue(5f);
+        s2.setType(type);
+        s2.setDate("2015-09-06");
+        s2.setIsChartInList(true);
+
+        s3 = new Stats();
+        s3.setName("Отжимания");
+        s3.setValue(9f);
+        s3.setType(type);
+        s3.setDate("2015-09-07");
+        s3.setIsChartInList(true);
+
+        s4 = new Stats();
+        s4.setName("Отжимания");
+        s4.setValue(10f);
+        s4.setType(type);
+        s4.setDate("2015-09-08");
+        s4.setIsChartInList(true);
+
+        s5 = new Stats();
+        s5.setName("Отжимания");
+        s5.setValue(5f);
+        s5.setType(type);
+        s5.setDate("2015-09-09");
+        s5.setIsChartInList(true);
+
+        s6 = new Stats();
+        s6.setName("Отжимания");
+        s6.setValue(5f);
+        s6.setType(type);
+        s6.setDate("2015-09-09");
+        s6.setIsChartInList(true);
+
+        Stats sd1,sd2,sd3,sd4,sd5;
+        type = 1;
+        sd1 = new Stats();
+        sd1.setName("Куриные котлеты с сыром");
+        sd1.setValue(193f);
+        sd1.setType(type);
+        sd1.setDate("2015-09-05");
+        sd1.setIsChartInList(true);
+
+        sd2 = new Stats();
+        sd2.setName("Куриные котлеты с сыром");
+        sd2.setValue(193f);
+        sd2.setType(type);
+        sd2.setDate("2015-09-06");
+        sd2.setIsChartInList(true);
+
+        sd3 = new Stats();
+        sd3.setName("Куриные котлеты с сыром");
+        sd3.setValue(193f);
+        sd3.setType(type);
+        sd3.setDate("2015-09-07");
+        sd3.setIsChartInList(true);
+
+        sd4 = new Stats();
+        sd4.setName("Куриные котлеты с сыром");
+        sd4.setValue(193f);
+        sd4.setType(type);
+        sd4.setDate("2015-09-08");
+        sd4.setIsChartInList(true);
+
+        sd5 = new Stats();
+        sd5.setName("Куриные котлеты с сыром");
+        sd5.setValue(193f);
+        sd5.setType(type);
+        sd5.setDate("2015-09-09");
+        sd5.setIsChartInList(true);
+
+
+        ArrayList<Stats> statsList = new ArrayList<>();
+        statsList.add(s1);
+        statsList.add(s2);
+        statsList.add(s3);
+        statsList.add(s4);
+        statsList.add(s5);
+        statsList.add(s6);
+
+        statsList.add(sd1);
+        statsList.add(sd2);
+        statsList.add(sd3);
+        statsList.add(sd4);
+        statsList.add(sd5);
+
+        try {
+            getStatsDAO().create(statsList);
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+
         /*
             creating db using common method
          */
-
 //        database.execSQL(CREATE_DISH_TABLE);
 //        database.execSQL(CREATE_WORKOUT_TABLE);
 ////        database.execSQL(CREATE_PLAN_WORKOUT);
@@ -478,6 +583,13 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
         return nutritionPlanDAO;
     }
 
+    public StatsDAO getStatsDAO() throws SQLException{
+        if (statsDAO == null){
+            statsDAO = new StatsDAO(getConnectionSource(), Stats.class);
+        }
+        return statsDAO;
+    }
+
     @Override
     public void close() {
         super.close();
@@ -486,5 +598,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
         workoutPlanDAO = null;
         nutritionPlanDAO = null;
+
+        statsDAO = null;
     }
 }

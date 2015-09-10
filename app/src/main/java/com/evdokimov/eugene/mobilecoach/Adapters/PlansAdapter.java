@@ -38,7 +38,7 @@ public class PlansAdapter extends ArrayAdapter<String>
     private Context context;
     private String[] strings;
 
-    private OnWorkoutPlanSelectedListener onWPSelectedCallback;
+    private OnWorkoutPlanSelectedListener onWPSelectedCallback;//these two need to communicate with other adapters
     private OnWorkoutPlanChangedListener onWPChangedCallback;
 
     public PlansAdapter(Context context, Fragment fragment, String[] objects) {
