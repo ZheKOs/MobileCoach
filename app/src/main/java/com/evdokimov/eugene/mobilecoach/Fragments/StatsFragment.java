@@ -3,6 +3,8 @@ package com.evdokimov.eugene.mobilecoach.Fragments;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +27,10 @@ import java.util.HashSet;
 
 public class StatsFragment extends Fragment {
 
-    //private Context context;
-    private LineChart chart;
+    RecyclerView.Adapter mAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
+    RecyclerView rvStats;
+
 
     public static StatsFragment newInstance(){
         return new StatsFragment();
@@ -37,15 +41,14 @@ public class StatsFragment extends Fragment {
     {
         View v = inflater.inflate(R.layout.fragment_stats, container, false);
 
-        ListView listView = (ListView) v.findViewById(R.id.lv_chart);
+        rvStats = (RecyclerView) v.findViewById(R.id.rv_chart);
+        rvStats.setHasFixedSize(true);
 
-        StatsAdapter adapter = new StatsAdapter(getActivity(),getPickedChartNames());
-        listView.setAdapter(adapter);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        rvStats.setLayoutManager(mLayoutManager);
 
-//        chart = (LineChart) v.findViewById(R.id.chart);
-//        createChart(getEntryArray());
-
-        //mainActivity = (MainActivity) getActivity();
+        mAdapter = new StatsAdapter(getActivity(),getPickedChartNames());
+        rvStats.setAdapter(mAdapter);
 
         return v;
     }
@@ -89,38 +92,5 @@ public class StatsFragment extends Fragment {
         }
         return result;
     }
-
-    private Entry[] getEntryArray()
-    {
-        return new Entry[]{new Entry(3, 1), new Entry(5, 2), new Entry(4, 3), new Entry(6, 4)};
-    }
-
-    private void createChart(Entry[] entries)
-    {
-        //TODO if it is Workout => change name of lineDataSet to WorkoutName
-        //TODO else name it as calories
-
-        ArrayList<Entry> valsComp1 = new ArrayList<>(Arrays.asList(entries));
-
-        LineDataSet setComp1 = new LineDataSet(valsComp1, "ккал");
-        setComp1.setLineWidth(5);
-        setComp1.setCircleSize(6);
-        setComp1.setColor(getResources().getColor(R.color.colorAccent));
-        setComp1.setCircleColor(getResources().getColor(R.color.colorAccent));
-        setComp1.setCircleColorHole(getResources().getColor(R.color.colorAccent));
-        setComp1.setFillColor(Color.WHITE);
-
-        ArrayList<LineDataSet> dataSets = new ArrayList<>(); //this array contains all lines
-        dataSets.add(setComp1);
-
-        ArrayList<String> xVals = new ArrayList<>();
-        xVals.add("01."+"МАЙ"); xVals.add("02."+"МАЙ");
-        xVals.add("03."+"МАЙ");xVals.add("04."+"МАЙ");
-        xVals.add("05."+"МАЙ"); xVals.add("06."+"МАЙ");
-
-        LineData data = new LineData(xVals, dataSets);
-        chart.setData(data);
-    }
-
 
 }

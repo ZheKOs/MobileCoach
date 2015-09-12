@@ -23,43 +23,52 @@ public class ChartCreator {
      */
     public LineChart initLineChart(LineChart chart, ArrayList<Stats>  stats, short period){
 
-        ArrayList<Entry> yValsComp1 = statsToEntries(stats, period);
-
-        LineDataSet setComp1 = new LineDataSet(yValsComp1, stats.get(0).getName());
-        setComp1.setLineWidth(3);
-        setComp1.setCircleSize(4);
-        setComp1.setColor(Color.WHITE);
-        setComp1.setCircleColor(Color.WHITE);
-        setComp1.setCircleColorHole(Color.WHITE);
-        setComp1.setDrawValues(false);
-        //setComp1.setFillColor(color);
-
         ArrayList<LineDataSet> dataSets = new ArrayList<>(); //this array contains all lines
-        dataSets.add(setComp1);
+        if (stats.size()>0) {
+            ArrayList<Entry> yValsComp1 = statsToEntries(stats, period);
 
-        ArrayList<String> xVals = new ArrayList<>();
-        if(period==0){ //period 0 year, 1 month
-            xVals.add("ЯНВ"); xVals.add("ФЕВ");
-            xVals.add("МАР"); xVals.add("АПР");
-            xVals.add("МАЙ"); xVals.add("ИЮН");
-            xVals.add("ИЮЛ"); xVals.add("АВГ");
-            xVals.add("СЕН"); xVals.add("ОКТ");
-            xVals.add("НОЯ"); xVals.add("ДЕК");
-        }else{
-            Calendar cal = new GregorianCalendar(
-                    Integer.valueOf(stats.get(0).getDate().substring(0, 4)), //year
-                    Integer.valueOf(stats.get(0).getDate().substring(6,7))-1, //month
-                    Integer.valueOf(stats.get(0).getDate().substring(9,10)) //day
-            );
-            int maxDays = cal.getMaximum(Calendar.DAY_OF_MONTH);
-            for (int i = 1; i <= maxDays; i++){
-                xVals.add(String.valueOf(i));
+            LineDataSet setComp1 = new LineDataSet(yValsComp1, stats.get(0).getName());
+            setComp1.setLineWidth(2);
+            setComp1.setCircleSize(3);
+            setComp1.setColor(Color.WHITE);
+            setComp1.setCircleColor(Color.WHITE);
+            setComp1.setCircleColorHole(Color.WHITE);
+            setComp1.setDrawValues(false);
+            //setComp1.setFillColor(color);
+
+            dataSets.add(setComp1);
+
+
+            ArrayList<String> xVals = new ArrayList<>();
+            if (period == 0) { //period 0 year, 1 month
+                xVals.add("ЯНВ");
+                xVals.add("ФЕВ");
+                xVals.add("МАР");
+                xVals.add("АПР");
+                xVals.add("МАЙ");
+                xVals.add("ИЮН");
+                xVals.add("ИЮЛ");
+                xVals.add("АВГ");
+                xVals.add("СЕН");
+                xVals.add("ОКТ");
+                xVals.add("НОЯ");
+                xVals.add("ДЕК");
+            } else {
+                Calendar cal = new GregorianCalendar(
+                        Integer.valueOf(stats.get(0).getDate().substring(0, 4)), //year
+                        Integer.valueOf(stats.get(0).getDate().substring(6, 7)) - 1, //month
+                        Integer.valueOf(stats.get(0).getDate().substring(9, 10)) //day
+                );
+                int maxDays = cal.getMaximum(Calendar.DAY_OF_MONTH);
+                for (int i = 1; i <= maxDays; i++) {
+                    xVals.add(String.valueOf(i));
+                }
             }
+
+            LineData data = new LineData(xVals, dataSets);
+
+            chart.setData(data);
         }
-
-        LineData data = new LineData(xVals, dataSets);
-
-        chart.setData(data);
 
         chart.setDrawGridBackground(false);
 
