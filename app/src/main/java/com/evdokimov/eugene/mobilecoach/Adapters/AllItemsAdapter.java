@@ -3,12 +3,14 @@ package com.evdokimov.eugene.mobilecoach.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.TransitionDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,6 +37,8 @@ public class AllItemsAdapter extends RecyclerView.Adapter<AllItemsAdapter.ViewHo
     ArrayList<Workout> workouts;
     ArrayList<Dish> dishes;
 
+    private boolean[] checks;
+
     int resizeTargetWidth, resizeTargetHeight;
 
     public AllItemsAdapter(Context mContext, boolean isWorkoutMode){
@@ -45,6 +49,7 @@ public class AllItemsAdapter extends RecyclerView.Adapter<AllItemsAdapter.ViewHo
             setWorkouts();
         }else {
             setDishes();
+            checks = new boolean[dishes.size()];
         }
 
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
@@ -101,6 +106,7 @@ public class AllItemsAdapter extends RecyclerView.Adapter<AllItemsAdapter.ViewHo
             iv = (ImageView) v.findViewById(R.id.iv_nutrition_card);
             tvDishName = (TextView) v.findViewById(R.id.tv_dish_name);
             tvKcal = (TextView) v.findViewById(R.id.tv_kcal_dish);
+            checkBox = (CheckBox) v.findViewById(R.id.checkbox_nc);
             btnInfo = (Button) v.findViewById(R.id.btn_info_nutrition_card);
         }
     }
@@ -134,6 +140,26 @@ public class AllItemsAdapter extends RecyclerView.Adapter<AllItemsAdapter.ViewHo
                 }
             });
         }else {
+
+            final TransitionDrawable transition = (TransitionDrawable) holder.checkBox.getBackground();
+
+            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                    checks[position] = checked;
+                    if (checked) {
+                        transition.startTransition(150);
+                    } else {
+                        transition.reverseTransition(150);
+//                        if (allFalse())
+//                            fabMain.setVisibility(View.GONE);
+                    }
+
+                }
+            });
+            holder.checkBox.setChecked(checks[position]);
+            if (holder.checkBox.isChecked())
+                transition.startTransition(150);
 
             holder.btnInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
