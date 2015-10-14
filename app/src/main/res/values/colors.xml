@@ -13,8 +13,8 @@
     <color name="windowBackground">#ECECED</color>
     <color name="navigationBarColor">#263238</color>
 
-    <color name="colorAccentDark">#3F51B5</color>
-    <color name="colorAccentDarker">#303F9F</color>
+    <color name="colorAccentDark">#303F9F</color>
+    <color name="colorAccentDarker">#1A237E</color>
 
     <color name="empty_dgrey">#00707070</color>
     <color name="half_dgrey">#50707070</color>

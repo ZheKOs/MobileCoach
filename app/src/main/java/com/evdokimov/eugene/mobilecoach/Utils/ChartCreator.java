@@ -1,7 +1,9 @@
 package com.evdokimov.eugene.mobilecoach.Utils;
 
+import android.content.Context;
 import android.graphics.Color;
 
+import com.evdokimov.eugene.mobilecoach.R;
 import com.evdokimov.eugene.mobilecoach.db.stats.Stats;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -11,9 +13,14 @@ import com.github.mikephil.charting.data.LineDataSet;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ChartCreator {
-    public ChartCreator(){}
+    private Context context;
+    public ChartCreator(Context context){
+        this.context = context;
+    }
 
     /**
      * @param chart chart that should be prepared
@@ -41,22 +48,22 @@ public class ChartCreator {
 
             ArrayList<String> xVals = new ArrayList<>();
             if (period == 0) { //period 0 year, 1 month
-                xVals.add("ЯНВ");
-                xVals.add("ФЕВ");
-                xVals.add("МАР");
-                xVals.add("АПР");
-                xVals.add("МАЙ");
-                xVals.add("ИЮН");
-                xVals.add("ИЮЛ");
-                xVals.add("АВГ");
-                xVals.add("СЕН");
-                xVals.add("ОКТ");
-                xVals.add("НОЯ");
-                xVals.add("ДЕК");
+                xVals.add(context.getString(R.string.january).substring(0,3).toUpperCase());
+                xVals.add(context.getString(R.string.february).substring(0,3).toUpperCase());
+                xVals.add(context.getString(R.string.march).substring(0,3).toUpperCase());
+                xVals.add(context.getString(R.string.april).substring(0,3).toUpperCase());
+                xVals.add(context.getString(R.string.may).substring(0,3).toUpperCase());
+                xVals.add(context.getString(R.string.june).substring(0,3).toUpperCase());
+                xVals.add(context.getString(R.string.july).substring(0,3).toUpperCase());
+                xVals.add(context.getString(R.string.august).substring(0,3).toUpperCase());
+                xVals.add(context.getString(R.string.september).substring(0,3).toUpperCase());
+                xVals.add(context.getString(R.string.october).substring(0,3).toUpperCase());
+                xVals.add(context.getString(R.string.november).substring(0,3).toUpperCase());
+                xVals.add(context.getString(R.string.december).substring(0,3).toUpperCase());
             } else {
                 Calendar cal = new GregorianCalendar(
                         Integer.valueOf(stats.get(0).getDate().substring(0, 4)), //year
-                        Integer.valueOf(stats.get(0).getDate().substring(6, 7)) - 1, //month
+                        Integer.valueOf(stats.get(0).getDate().substring(6, 7)) - 1, //month; -1 because count starts form 0
                         Integer.valueOf(stats.get(0).getDate().substring(9, 10)) //day
                 );
                 int maxDays = cal.getMaximum(Calendar.DAY_OF_MONTH);
@@ -85,7 +92,7 @@ public class ChartCreator {
 
 
         chart.setDescription("");
-        chart.setNoDataTextDescription("You need to provide data for the chart.");
+        chart.setNoDataTextDescription("Нужно добавить данные для графика.");
 
         chart.getLegend().setTextColor(Color.WHITE);
 
@@ -95,60 +102,41 @@ public class ChartCreator {
     private ArrayList<Entry> statsToEntries(ArrayList<Stats> stats, short period){
 
         ArrayList<Entry> entries = new ArrayList<>();
-        int i=0;
-        int j=0;
-        for (; j < stats.size()-1; j++){
-            if (checkSameDate(period, stats.get(j).getDate(), stats.get(j + 1).getDate())) {
-                float tmp;
-                if (entries.size()<i) tmp = entries.get(i).getVal();
-                else tmp=0;
-                //formate of date - yyyy-MM-DD
-                if (period==0) {
-                    entries.add(i,
-                            new Entry(tmp + stats.get(j).getValue(),
-                                    Integer.valueOf(stats.get(j).getDate().substring(6, 7))-1)//get month
-                    );
-                }else{
-                    entries.add(i,
-                            new Entry(tmp + stats.get(j).getValue(),
-                                    Integer.valueOf(stats.get(j).getDate().substring(9, 10))-1) //get day
-                    );
-                }
 
-            }else {
-                if (period==0) {
-                    entries.add(i++,
-                            new Entry(stats.get(j).getValue(),
-                                    Integer.valueOf(stats.get(j).getDate().substring(6, 7))-1)//get month
-                    );
-                }else{
-                    entries.add(i++,
-                            new Entry(stats.get(j).getValue(),
-                                    Integer.valueOf(stats.get(j).getDate().substring(9, 10))-1)//get day
-                    );
-                }
-            }
-        }
         if (period==0) {
-            entries.add(i,
-                    new Entry(stats.get(j).getValue(),
-                            Integer.valueOf(stats.get(j).getDate().substring(6, 7))-1)//get month
-            );
-        }else{
-            entries.add(i,
-                    new Entry(stats.get(j).getValue(),
-                            Integer.valueOf(stats.get(j).getDate().substring(9, 10))-1)//get day
-            );
+
+        }else {
+            for (Stats s: stats)
+                entries.add(new Entry(s.getValue(),Integer.valueOf(s.getDate().substring(8, 10))));
+//            Set<String> uniqueDates = new HashSet<>();
+//            for (Stats s : stats) {
+//                if (!uniqueDates.contains(s.getDate())) {
+//                    uniqueDates.add(s.getDate());
+//                }
+//            }
+//            int i = 0;
+//            for (String str : uniqueDates){
+//                float tmpVal = 0;
+//                for (Stats s : stats){
+//                    if (str.equals(s.getDate())){
+//                        tmpVal = tmpVal+s.getValue();
+//                        entries.add(new Entry(tmpVal,i));
+//                    }
+//                }
+//                i++;
+//            }
         }
+
         return entries;
+
     }
 
     private boolean checkSameDate(short period,String firstDate, String secondDate){
         //formate of date - yyyy-MM-DD
-        if (period == 0) //should check year
-            return firstDate.substring(5, 6).equals(secondDate.substring(0, 4));
-        else //should check month
-            return firstDate.substring(0, 3).equals(secondDate.substring(6, 7));
+        if (period == 0) //should check year and month
+            return firstDate.substring(0, 7).equals(secondDate.substring(0, 7));
+        else //should check all date
+            return firstDate.equals(secondDate);
     }
 
 }

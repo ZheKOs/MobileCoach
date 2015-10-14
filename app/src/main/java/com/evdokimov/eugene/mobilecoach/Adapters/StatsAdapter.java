@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +24,6 @@ import java.util.Date;
 
 public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.ViewHolder> {
 
-    private Context context;
     private String[] chartNames;
     private short[] periods;
     private String[] curDate;
@@ -63,7 +61,6 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.ViewHolder> 
 
     public StatsAdapter(Context context, String[] chartNames) {
         //super(context, R.layout.row_main_plan_t_other, chartNames);
-        this.context = context;
         this.chartNames = chartNames;
 
         this.periods = new short[chartNames.length];
@@ -76,7 +73,7 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.ViewHolder> 
             this.curDate[i] = sdf.format(new Date());
         }
 
-        chartCreator = new ChartCreator();
+        chartCreator = new ChartCreator(context);
     }
 
     // Create new views (invoked by the layout manager)
@@ -91,24 +88,26 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position){
 
-        final ArrayList<Stats> curStats = getStats(chartNames[position], periods[position], curDate[position]);
+        ArrayList<Stats> curStats = getStats(chartNames[position], periods[position], curDate[position]);
 
         holder.chart = chartCreator.initLineChart(holder.chart,curStats,periods[position]);
 
-        int color = 0x000;
-        switch (curStats.get(0).getType()){
-            case 0: //workout
-                color = Color.parseColor("#3F51B5");
-                break;
-            case 1: //dish
-                color = Color.parseColor("#009688");
-                break;
-            case 2: //workout plan
-                color = Color.parseColor("#673AB7");
-                break;
-            case 3:// nutrition
-                color = Color.parseColor("#4CAF50");
-                break;
+        int color = Color.parseColor("#ffffff");
+        if(curStats.size()>0) {
+            switch (curStats.get(0).getType()) {
+                case 0: //workout
+                    color = Color.parseColor("#3F51B5");
+                    break;
+                case 1: //dish
+                    color = Color.parseColor("#009688");
+                    break;
+                case 2: //workout plan
+                    color = Color.parseColor("#673AB7");
+                    break;
+                case 3:// nutrition
+                    color = Color.parseColor("#4CAF50");
+                    break;
+            }
         }
         holder.cardView.setCardBackgroundColor(color);
         holder.chart.setBackgroundColor(color);
@@ -138,12 +137,12 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.ViewHolder> 
         holder.tvMonth.setOnClickListener(pickPeriodListener);
 
         if (periods[position]==0){
-            holder.tvCur.setText(curStats.get(0).getDate().substring(0, 4));//get year from stats
+            if (curStats.size()>0)holder.tvCur.setText(curStats.get(0).getDate().substring(0, 4));//get year from stats
             //styling TextView's
             holder.tvYear.setTextColor(Color.WHITE);
             holder.tvMonth.setTextColor(Color.parseColor("#77212121"));
         }else{
-            holder.tvCur.setText(curStats.get(0).getDate().substring(0, 7));//get year and month from stats
+            if (curStats.size()>0)holder.tvCur.setText(curStats.get(0).getDate().substring(0, 7));//get year and month from stats
             //styling TextView's
             holder.tvMonth.setTextColor(Color.WHITE);
             holder.tvYear.setTextColor(Color.parseColor("#77212121"));
@@ -155,83 +154,77 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.ViewHolder> 
                 StringBuilder builder = new StringBuilder(curDate[position]);
                 switch (v.getId()){
                     case R.id.chart_iv_prev:
-
-                        if (periods[position]==0){//year
+                        if (periods[position] == 0) {//year
                             int curYear = Integer.valueOf(builder.substring(0, 4));
-                            if (curYear>0) curYear--;
+                            if (curYear > 0) curYear--;
                             String newYear = String.valueOf(curYear);
-                            while (newYear.length()<3)
+                            while (newYear.length() < 3)
                                 newYear = "0" + newYear;
-                            builder.replace(0,4,newYear);
+                            builder.replace(0, 4, newYear);
                             curDate[position] = builder.toString();
-                        }else {//month
+                        } else {//month
                             int month = Integer.valueOf(builder.substring(6, 7));
-                            if (month>0){
+                            if (month > 0) {
                                 month--;
                                 String newMonth = String.valueOf(month);
-                                if (month<10)
+                                if (month < 10)
                                     newMonth = "0" + newMonth;
-                                builder.replace(6,7,newMonth);
+                                builder.replace(6, 7, newMonth);
                                 curDate[position] = builder.toString();
-                            }else{
+                            } else {
                                 month = 11;
-                                builder.replace(6,7,String.valueOf(month));
+                                builder.replace(6, 7, String.valueOf(month));
 
                                 int curYear = Integer.valueOf(builder.substring(0, 4));
-                                if (curYear>0) curYear--;
+                                if (curYear > 0) curYear--;
                                 String newYear = String.valueOf(curYear);
-                                while (newYear.length()<3)
+                                while (newYear.length() < 3)
                                     newYear = "0" + newYear;
-                                builder.replace(0,4,newYear);
+                                builder.replace(0, 4, newYear);
                                 curDate[position] = builder.toString();
                             }
-
                             notifyDataSetChanged();
                         }
                         break;
                     case R.id.chart_iv_next:
-
-                        if (periods[position]==0){//year
+                        if (periods[position] == 0) {//year
                             int curYear = Integer.valueOf(builder.substring(0, 4));
                             curYear++;
                             String newYear = String.valueOf(curYear);
-                            while (newYear.length()<3)
+                            while (newYear.length() < 3)
                                 newYear = "0" + newYear;
-                            builder.replace(0,4,newYear);
+                            builder.replace(0, 4, newYear);
                             curDate[position] = builder.toString();
                             notifyDataSetChanged();
-                        }else {//month
+                        } else {//month
                             int month = Integer.valueOf(builder.substring(6, 7));
-                            if (month<11){
+                            if (month < 11) {
                                 month++;
                                 String newMonth = String.valueOf(month);
-                                if (month<10)
+                                if (month < 10)
                                     newMonth = "0" + newMonth;
-                                builder.replace(6,7,newMonth);
+                                builder.replace(6, 7, newMonth);
                                 curDate[position] = builder.toString();
-                            }else{
+                            } else {
 
-                                builder.replace(6,7,"00");
+                                builder.replace(6, 7, "00");
 
                                 int curYear = Integer.valueOf(builder.substring(0, 4));
                                 curYear++;
                                 String newYear = String.valueOf(curYear);
-                                while (newYear.length()<3)
+                                while (newYear.length() < 3)
                                     newYear = "0" + newYear;
-                                builder.replace(0,4,newYear);
+                                builder.replace(0, 4, newYear);
                                 curDate[position] = builder.toString();
                             }
-
                             notifyDataSetChanged();
                         }
                         break;
                 }
             }
         };
-
-        holder.ivPrev.setOnClickListener(choseCurDateListener);
-        holder.ivNext.setOnClickListener(choseCurDateListener);
-
+//        holder.ivPrev.setOnClickListener(choseCurDateListener);
+//        holder.ivNext.setOnClickListener(choseCurDateListener);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

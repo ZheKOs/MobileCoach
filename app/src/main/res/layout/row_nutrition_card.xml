@@ -152,7 +152,7 @@
                 android:id="@+id/btn_more_dish"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/dots_vertical_white"
+                android:src="@drawable/dots_vertical_shadow_white"
                 android:scaleType="fitCenter"
                 app:rd_enable="true"
                 app:rd_rippleType="wave"

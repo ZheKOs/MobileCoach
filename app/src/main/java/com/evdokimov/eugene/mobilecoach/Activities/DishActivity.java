@@ -1,5 +1,7 @@
 package com.evdokimov.eugene.mobilecoach.Activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +24,8 @@ import java.sql.SQLException;
 
 public class DishActivity extends AppCompatActivity {
 
+    Context context;
+
     Dish dish;
 
     ImageView iv;
@@ -29,12 +33,16 @@ public class DishActivity extends AppCompatActivity {
 
     FloatingActionButton fabShare;
 
+    final int EDIT_DISH = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.l_dish_watch);
 
-        String dishName = getIntent().getStringExtra("dishName");
+        context = this;
+
+        final String dishName = getIntent().getStringExtra("dishName");
 
         try{
             dish = HelperFactory.getDbHelper().getDishDAO().getDishByName(dishName);
@@ -55,14 +63,11 @@ public class DishActivity extends AppCompatActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                setContentView(R.layout.l_dish_edit);
-//                ImageButton back = (ImageButton) findViewById(R.id.btn_back_to_watch_dish);
-//                back.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void switchWorkoutListener(View v) {
-//                        setContentView(R.layout.l_dish_watch);
-//                    }
-//                });
+                Intent intent = new Intent(context, EditDishActivity.class);
+
+                intent.putExtra("id",dish.getId());
+
+                startActivityForResult(intent, EDIT_DISH);
             }
         });
         final ImageButton finish = (ImageButton) findViewById(R.id.btn_back_dish);

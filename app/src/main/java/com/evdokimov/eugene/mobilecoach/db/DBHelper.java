@@ -316,48 +316,97 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
         }
 
         short type = 0;
-        Stats s1,s2,s3,s4,s5,s6;
+        Stats s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13;
         s1 = new Stats();
         s1.setName("Отжимания");
-        s1.setValue(5f);
+        s1.setValue(15f);
         s1.setType(type);
-        s1.setDate("2015-09-05");
+        s1.setDate("2015-10-01");
         s1.setIsChartInList(true);
 
         s2 = new Stats();
         s2.setName("Отжимания");
-        s2.setValue(5f);
+        s2.setValue(15f);
         s2.setType(type);
-        s2.setDate("2015-09-06");
+        s2.setDate("2015-10-02");
         s2.setIsChartInList(true);
 
         s3 = new Stats();
         s3.setName("Отжимания");
-        s3.setValue(9f);
+        s3.setValue(16f);
         s3.setType(type);
-        s3.setDate("2015-09-07");
+        s3.setDate("2015-10-03");
         s3.setIsChartInList(true);
 
         s4 = new Stats();
         s4.setName("Отжимания");
-        s4.setValue(10f);
+        s4.setValue(18f);
         s4.setType(type);
-        s4.setDate("2015-09-08");
+        s4.setDate("2015-10-04");
         s4.setIsChartInList(true);
 
         s5 = new Stats();
         s5.setName("Отжимания");
-        s5.setValue(5f);
+        s5.setValue(10f);
         s5.setType(type);
-        s5.setDate("2015-09-09");
+        s5.setDate("2015-10-05");
         s5.setIsChartInList(true);
 
         s6 = new Stats();
         s6.setName("Отжимания");
-        s6.setValue(5f);
+        s6.setValue(15f);
         s6.setType(type);
-        s6.setDate("2015-09-09");
+        s6.setDate("2015-10-06");
         s6.setIsChartInList(true);
+
+        s7 = new Stats();
+        s7.setName("Отжимания");
+        s7.setValue(20f);
+        s7.setType(type);
+        s7.setDate("2015-10-07");
+        s7.setIsChartInList(true);
+
+        s8 = new Stats();
+        s8.setName("Отжимания");
+        s8.setValue(20f);
+        s8.setType(type);
+        s8.setDate("2015-10-08");
+        s8.setIsChartInList(true);
+
+        s9 = new Stats();
+        s9.setName("Отжимания");
+        s9.setValue(15f);
+        s9.setType(type);
+        s9.setDate("2015-10-09");
+        s9.setIsChartInList(true);
+
+        s10 = new Stats();
+        s10.setName("Отжимания");
+        s10.setValue(15f);
+        s10.setType(type);
+        s10.setDate("2015-10-10");
+        s10.setIsChartInList(true);
+
+        s11 = new Stats();
+        s11.setName("Отжимания");
+        s11.setValue(20f);
+        s11.setType(type);
+        s11.setDate("2015-10-11");
+        s11.setIsChartInList(true);
+
+        s12 = new Stats();
+        s12.setName("Отжимания");
+        s12.setValue(12f);
+        s12.setType(type);
+        s12.setDate("2015-10-12");
+        s12.setIsChartInList(true);
+
+        s13 = new Stats();
+        s13.setName("Отжимания");
+        s13.setValue(15f);
+        s13.setType(type);
+        s13.setDate("2015-10-13");
+        s13.setIsChartInList(true);
 
         Stats sd1,sd2,sd3,sd4,sd5;
         type = 1;
@@ -365,45 +414,52 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
         sd1.setName("Куриные котлеты с сыром");
         sd1.setValue(193f);
         sd1.setType(type);
-        sd1.setDate("2015-09-05");
+        sd1.setDate("2015-10-05");
         sd1.setIsChartInList(true);
 
         sd2 = new Stats();
         sd2.setName("Куриные котлеты с сыром");
         sd2.setValue(193f);
         sd2.setType(type);
-        sd2.setDate("2015-09-06");
+        sd2.setDate("2015-10-06");
         sd2.setIsChartInList(true);
 
         sd3 = new Stats();
         sd3.setName("Куриные котлеты с сыром");
         sd3.setValue(193f);
         sd3.setType(type);
-        sd3.setDate("2015-09-07");
+        sd3.setDate("2015-10-07");
         sd3.setIsChartInList(true);
 
         sd4 = new Stats();
         sd4.setName("Куриные котлеты с сыром");
         sd4.setValue(193f);
         sd4.setType(type);
-        sd4.setDate("2015-09-08");
+        sd4.setDate("2015-10-08");
         sd4.setIsChartInList(true);
 
         sd5 = new Stats();
         sd5.setName("Куриные котлеты с сыром");
         sd5.setValue(193f);
         sd5.setType(type);
-        sd5.setDate("2015-09-09");
+        sd5.setDate("2015-10-09");
         sd5.setIsChartInList(true);
 
 
         ArrayList<Stats> statsList = new ArrayList<>();
-        statsList.add(s1);
+//        statsList.add(s1);
         statsList.add(s2);
         statsList.add(s3);
         statsList.add(s4);
         statsList.add(s5);
         statsList.add(s6);
+        statsList.add(s7);
+        statsList.add(s8);
+        statsList.add(s9);
+        statsList.add(s10);
+        statsList.add(s11);
+        statsList.add(s12);
+        statsList.add(s13);
 
         statsList.add(sd1);
         statsList.add(sd2);

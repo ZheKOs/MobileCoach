@@ -71,6 +71,7 @@ public class NutritionFragment extends Fragment {
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Context wrapper = new ContextThemeWrapper(mainActivity, R.style.MyPopupMenu);
                 PopupMenu popup = new PopupMenu(wrapper, more);
                 popup.getMenuInflater()
@@ -110,7 +111,6 @@ public class NutritionFragment extends Fragment {
                                     }
                                 });
                                 dialog.show();
-
                                 break;
                             case R.id.share_plan_mn:
                                 //TODO list of the plan
@@ -127,7 +127,6 @@ public class NutritionFragment extends Fragment {
         });
 
         try {
-
             nPlan = new ArrayList<>(
                     HelperFactory.getDbHelper().getNutritionPlanDAO().getNutritionPlanByName(nutritionName)
             );
