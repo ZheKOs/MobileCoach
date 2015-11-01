@@ -85,8 +85,8 @@ public class MainActivity extends ActionBarActivity{
         fl_drawer = (FrameLayout) findViewById(R.id.main_fl_drawer);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mToolbar.setTitle("");
-        mToolbarManager = new ToolbarManager(this, mToolbar, 0, R.style.ToolbarRippleStyle, R.anim.abc_fade_in, R.anim.abc_fade_out);
-        mToolbarManager.setNavigationManager(new ToolbarManager.BaseNavigationManager(R.style.NavigationDrawerDrawable, this, mToolbar, dl_navigator) {
+        mToolbarManager = new ToolbarManager(this.getDelegate(), mToolbar, 0, R.style.ToolbarRippleStyle, R.anim.abc_fade_in, R.anim.abc_fade_out);
+        mToolbarManager.setNavigationManager(new ToolbarManager.BaseNavigationManager(R.style.NavigationDrawerDrawable, this.getSupportFragmentManager(), mToolbar, dl_navigator) {
             @Override
             public void onNavigationClick() {
                 if (mToolbarManager.getCurrentGroup() != 0)
