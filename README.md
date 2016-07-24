@@ -12,3 +12,6 @@
  - [ ] Poland
  - [x] Russian
  - [ ] Ukrainian
+
+
+There is new version of this app. Link: https://github.com/ZheKOs/MobileCoach_V2
